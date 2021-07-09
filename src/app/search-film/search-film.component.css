@@ -1,0 +1,22 @@
+.search-input {
+  width: 250px;
+  height: 35px;
+  cursor: pointer;
+  margin: 0 auto;
+  border: .1px solid rgb(0, 0, 241);
+  border-radius: 30px;
+  text-align: center;
+  letter-spacing: 1px;
+}
+
+.search-component {
+  position: relative;
+}
+
+.search-icon {
+  text-decoration: none;
+  position: absolute;
+  top: 9px;
+  right: 0px;
+  padding-right: 15px;
+}

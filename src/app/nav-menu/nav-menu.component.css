@@ -2,6 +2,22 @@ a.navbar-brand {
   white-space: normal;
   text-align: center;
   word-break: break-all;
+  color: #0000d4;
+  font-weight: bold;
+  font-size: 24px;
+}
+
+a.navbar-brand:hover {
+  color: #0000c4;
+}
+
+.location_icon {
+  color: #0000d4;
+}
+
+.user-icon {
+  position: relative;
+  top: 2px;
 }
 
 html {
@@ -15,4 +31,12 @@ html {
 
 .box-shadow {
   box-shadow: 0 .25rem .75rem rgba(0, 0, 0, .05);
+}
+
+.center-component {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  margin-right: -50%;
+  transform: translate(-50%, -50%);
 }
