@@ -26,7 +26,6 @@ export class NavMenuComponent {
     });
 
     dialogRef.afterClosed().subscribe(result => {
-      console.log('The dialog was closed');
       this.location = result;
     });
   }
