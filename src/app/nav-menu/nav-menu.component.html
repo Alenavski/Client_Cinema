@@ -20,13 +20,10 @@
         [ngClass]="{ show: isExpanded }"
       >
         <ul class="navbar-nav flex-grow">
-
           <app-search-film class="center-component"></app-search-film>
-
           <button type="button" class="btn" (click)="openDialog()">
             {{location}} <i class="fas fa-map-marker-alt location_icon"></i>
           </button>
-
           <li class="nav-item">
             <ng-container *ngIf="isAuthed; else authBtn">
               <a class="fas fa-user user-icon" href="/"></a>

@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
-import {MatDialog} from '@angular/material/dialog';
-import {SelectCityComponent} from '../select-city/select-city.component';
+import { MatDialog } from '@angular/material/dialog';
+import { SelectCityComponent } from '../select-city/select-city.component';
 
 @Component({
   selector: 'app-nav-menu',
@@ -24,7 +24,6 @@ export class NavMenuComponent {
       width: '250px',
       data: this.location
     });
-
     dialogRef.afterClosed().subscribe(result => {
       this.location = result;
     });
