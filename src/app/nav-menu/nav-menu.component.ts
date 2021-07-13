@@ -15,11 +15,11 @@ export class NavMenuComponent {
   constructor(public dialog: MatDialog) {
   }
 
-  collapse() {
+  collapse(): void {
     this.isExpanded = false;
   }
 
-  openDialog() {
+  openDialog(): void {
     const dialogRef = this.dialog.open(SelectCityComponent, {
       width: '250px',
       data: this.location
@@ -29,15 +29,7 @@ export class NavMenuComponent {
     });
   }
 
-  signInClick() {
+  onSignInClick(): void {
     this.isAuthed = true;
-  }
-
-  signOutClick() {
-    this.isAuthed = false;
-  }
-
-  toggle() {
-    this.isExpanded = !this.isExpanded;
   }
 }

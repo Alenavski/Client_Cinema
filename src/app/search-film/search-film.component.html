@@ -1,4 +1,15 @@
-<div class="search-component">
-  <input type="text" placeholder="Search" class="form-control search-input" />
+<div class="search-component" (click)="searchFieldExpanded = true; search.focus()" (focusout)="searchFieldExpanded = false">
   <a class="fas fa-search search-icon"></a>
+  <mat-form-field class="search-input" [class.expanded]="searchFieldExpanded" appearance="standard">
+    <input type="text"
+           placeholder="Search"
+           matInput
+           #search
+           [matAutocomplete]="auto">
+    <mat-autocomplete autoActiveFirstOption #auto="matAutocomplete">
+      <mat-option *ngFor="let film of randomFilms" [value]="film">
+        {{film}}
+      </mat-option>
+    </mat-autocomplete>
+  </mat-form-field>
 </div>

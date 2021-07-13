@@ -9,6 +9,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { MatOptionModule } from '@angular/material/core';
+import { MatToolbarModule } from '@angular/material/toolbar';
 
 import { AppComponent } from './app.component';
 import { NavMenuComponent } from './nav-menu/nav-menu.component';
@@ -24,21 +25,21 @@ import { SelectCityComponent } from './select-city/select-city.component';
     SearchFilmComponent,
     SelectCityComponent
   ],
-  imports: [
-    BrowserModule.withServerTransition({ appId: 'ng-cli-universal' }),
-    HttpClientModule,
-    FormsModule,
-    RouterModule.forRoot([
-      { path: '', component: HomeComponent, pathMatch: 'full' }
-    ]),
-    BrowserAnimationsModule,
-    MatDialogModule,
-    MatInputModule,
-    MatButtonModule,
-    MatAutocompleteModule,
-    MatOptionModule,
-  ],
-  providers: [],
-  bootstrap: [AppComponent]
+	imports: [
+	  BrowserModule.withServerTransition({ appId: 'ng-cli-universal' }),
+		HttpClientModule,
+		FormsModule,
+		RouterModule.forRoot([
+			{ path: '', component: HomeComponent, pathMatch: 'full' }
+		]),
+		BrowserAnimationsModule,
+		MatDialogModule,
+		MatInputModule,
+		MatButtonModule,
+		MatAutocompleteModule,
+		MatOptionModule,
+		MatToolbarModule,
+	],
+  providers: []
 })
 export class AppModule { }

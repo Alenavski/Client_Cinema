@@ -1,44 +1,16 @@
 <header>
-  <nav
-    class="navbar fixed-top navbar-expand-sm navbar-toggleable-sm navbar-light box-shadow"
-  >
-    <div class="container">
-      <a class="navbar-brand" [routerLink]="['/']">Cinema</a>
-      <button
-        class="navbar-toggler"
-        type="button"
-        data-toggle="collapse"
-        data-target=".navbar-collapse"
-        aria-label="Toggle navigation"
-        [attr.aria-expanded]="isExpanded"
-        (click)="toggle()"
-      >
-        <span class="navbar-toggler-icon"></span>
-      </button>
-      <div
-        class="navbar-collapse collapse d-sm-inline-flex justify-content-end"
-        [ngClass]="{ show: isExpanded }"
-      >
-        <ul class="navbar-nav flex-grow">
-          <app-search-film class="center-component"></app-search-film>
-          <button type="button" class="btn" (click)="openDialog()">
-            {{location}} <i class="fas fa-map-marker-alt location_icon"></i>
-          </button>
-          <li class="nav-item">
-            <ng-container *ngIf="isAuthed; else authBtn">
-              <a class="fas fa-user user-icon" href="/"></a>
-              <button type="button" class="btn btn-sign-out" (click)="signOutClick()">
-                Log out
-              </button>
-            </ng-container>
-            <ng-template #authBtn>
-              <button type="button" class="btn btn-sign" (click)="signInClick()">
-                Sign in/up
-              </button>
-            </ng-template>
-          </li>
-        </ul>
-      </div>
-    </div>
-  </nav>
+  <mat-toolbar class="container nav-toolbar box-shadow">
+    <a class="navbar-brand" [routerLink]="['/']">Cinema</a>
+    <span class="nav-spacer"></span>
+    <app-search-film class="container-item"></app-search-film>
+    <a class="fas fa-map-marker-alt location-icon container-item" (click)="openDialog()">
+      <span>{{location}}</span>
+    </a>
+    <ng-container *ngIf="isAuthed; else authBtn">
+      <a class="fas fa-house-user user-icon container-item" href="/"></a>
+    </ng-container>
+    <ng-template #authBtn>
+      <a class="fas fa-user sign-icon container-item" (click)="onSignInClick()"></a>
+    </ng-template>
+  </mat-toolbar>
 </header>
