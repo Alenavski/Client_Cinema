@@ -25,21 +25,22 @@ import { SelectCityComponent } from './select-city/select-city.component';
     SearchFilmComponent,
     SelectCityComponent
   ],
-	imports: [
-	  BrowserModule.withServerTransition({ appId: 'ng-cli-universal' }),
-		HttpClientModule,
-		FormsModule,
-		RouterModule.forRoot([
-			{ path: '', component: HomeComponent, pathMatch: 'full' }
-		]),
-		BrowserAnimationsModule,
-		MatDialogModule,
-		MatInputModule,
-		MatButtonModule,
-		MatAutocompleteModule,
-		MatOptionModule,
-		MatToolbarModule,
-	],
-  providers: []
+  imports: [
+    BrowserModule.withServerTransition({ appId: 'ng-cli-universal' }),
+    HttpClientModule,
+    FormsModule,
+    RouterModule.forRoot([
+      { path: '', component: HomeComponent, pathMatch: 'full' }
+    ]),
+    BrowserAnimationsModule,
+    MatDialogModule,
+    MatInputModule,
+    MatButtonModule,
+    MatAutocompleteModule,
+    MatOptionModule,
+    MatToolbarModule,
+  ],
+  providers: [],
+  bootstrap: [AppComponent]
 })
 export class AppModule { }
