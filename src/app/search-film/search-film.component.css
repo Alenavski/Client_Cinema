@@ -1,0 +1,18 @@
+.search-input {
+  letter-spacing: 1px;
+  width: 0;
+  transition: width 0.5s;
+  color: #0000d4;
+}
+
+.search-input.expanded {
+  width: 250px;
+}
+
+.search-icon {
+  color: #0000d4;
+  text-decoration: none;
+  position: relative;
+  top: -1px;
+  cursor: pointer;
+}

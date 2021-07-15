@@ -2,6 +2,44 @@ a.navbar-brand {
   white-space: normal;
   text-align: center;
   word-break: break-all;
+  color: #0000d4;
+  font-weight: bold;
+  font-size: 24px;
+  text-decoration: none;
+}
+
+a.navbar-brand:hover {
+  color: #0000c4;
+}
+
+.nav-spacer {
+  flex: 1 1 auto;
+}
+
+.location-icon {
+  color: #0000d4;
+  cursor: pointer;
+}
+
+.location-icon span {
+  font-family: Arial, "Arial", sans-serif;
+  font-size: 16px;
+  font-weight: normal;
+  color: black;
+  margin-left: 4px;
+}
+
+.user-icon,
+.sign-icon {
+  position: relative;
+  top: 2px;
+  color: #0000d4;
+  cursor: pointer;
+}
+
+.user-icon:hover,
+.sign-icon:hover {
+  color: #0000c4;
 }
 
 html {
@@ -15,4 +53,18 @@ html {
 
 .box-shadow {
   box-shadow: 0 .25rem .75rem rgba(0, 0, 0, .05);
+}
+
+.nav-toolbar {
+  background-color: transparent;
+  position: fixed;
+  transition: background-color 0.5s;
+}
+
+.container {
+  padding: 0 50px;
+}
+
+.container-item {
+  margin: 0 10px;
 }

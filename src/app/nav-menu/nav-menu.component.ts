@@ -1,4 +1,6 @@
 import { Component } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
+import { SelectCityComponent } from '../select-city/select-city.component';
 
 @Component({
   selector: 'app-nav-menu',
@@ -7,12 +9,27 @@ import { Component } from '@angular/core';
 })
 export class NavMenuComponent {
   isExpanded = false;
+  isAuthed = false;
+  location = 'Minsk';
 
-  collapse() {
+  constructor(public dialog: MatDialog) {
+  }
+
+  collapse(): void {
     this.isExpanded = false;
   }
 
-  toggle() {
-    this.isExpanded = !this.isExpanded;
+  openDialog(): void {
+    const dialogRef = this.dialog.open(SelectCityComponent, {
+      width: '250px',
+      data: this.location
+    });
+    dialogRef.afterClosed().subscribe((result: string) => {
+      this.location = result;
+    });
+  }
+
+  onSignInClick(): void {
+    this.isAuthed = true;
   }
 }
