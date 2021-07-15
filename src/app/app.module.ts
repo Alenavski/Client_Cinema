@@ -26,7 +26,7 @@ import { SelectCityComponent } from './select-city/select-city.component';
     SelectCityComponent
   ],
   imports: [
-    BrowserModule.withServerTransition({ appId: 'ng-cli-universal' }),
+    BrowserModule,
     HttpClientModule,
     FormsModule,
     RouterModule.forRoot([

@@ -4,7 +4,6 @@
     <input type="text"
            matInput
            [(ngModel)]="data"
-           cdkFocusInitial
            [matAutocomplete]="auto">
     <mat-autocomplete autoActiveFirstOption #auto="matAutocomplete">
       <mat-option *ngFor="let option of options" [value]="option">

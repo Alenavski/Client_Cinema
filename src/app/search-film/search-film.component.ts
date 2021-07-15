@@ -7,5 +7,5 @@ import { Component } from '@angular/core';
 })
 export class SearchFilmComponent {
   searchFieldExpanded: boolean = false;
-  randomFilms: string[] = ['Interstellar', 'Inception', 'Prestige']
+  randomFilms: string[] = ['Interstellar', 'Inception', 'Prestige'];
 }
