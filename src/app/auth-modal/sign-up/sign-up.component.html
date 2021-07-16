@@ -1,0 +1,26 @@
+<div class="container" [formGroup]="regForm">
+  <mat-form-field appearance="standard" class="auth-form">
+    <mat-label>e-mail</mat-label>
+    <input type="email"
+           matInput
+           formControlName="email">
+    <mat-error *ngIf="!regForm.get('email')?.valid">Email is not valid.</mat-error>
+  </mat-form-field>
+  <mat-form-field appearance="standard" class="auth-form">
+    <mat-label>password</mat-label>
+    <input type="password"
+           matInput
+           formControlName="password">
+    <mat-error *ngIf="!regForm.get('password')?.valid">Password is not valid.</mat-error>
+  </mat-form-field>
+  <mat-form-field appearance="standard" class="auth-form">
+    <mat-label>repeat password</mat-label>
+    <input type="password"
+           matInput
+           formControlName="confirmPassword">
+    <mat-error *ngIf="!regForm.get('confirmPassword')?.valid">Passwords don't match.</mat-error>
+  </mat-form-field>
+</div>
+<div mat-dialog-actions>
+  <button mat-button class="button" (click)="onSignUpClick()">Sign up</button>
+</div>

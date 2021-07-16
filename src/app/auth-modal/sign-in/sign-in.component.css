@@ -1,0 +1,12 @@
+.container {
+  margin: 0 auto;
+  width: 75%;
+}
+
+.auth-form {
+  display: block;
+}
+
+.button {
+  margin-bottom: 20px;
+}

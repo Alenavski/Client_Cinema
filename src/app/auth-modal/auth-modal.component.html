@@ -1,0 +1,9 @@
+<mat-tab-group dynamicHeight mat-align-tabs="center">
+  <mat-tab label="Authentication">
+    <app-sign-in class="container" (closeRequest)="onCloseRequest($event)"></app-sign-in>
+  </mat-tab>
+  <mat-tab label="Registration">
+    <app-sign-up class="container" (closeRequest)="onCloseRequest($event)"></app-sign-up>
+  </mat-tab>
+</mat-tab-group>
+

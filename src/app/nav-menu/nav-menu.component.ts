@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { SelectCityComponent } from '../select-city/select-city.component';
+import { AuthModalComponent } from '../auth-modal/auth-modal.component';
 
 @Component({
   selector: 'app-nav-menu',
@@ -8,19 +9,15 @@ import { SelectCityComponent } from '../select-city/select-city.component';
   styleUrls: ['./nav-menu.component.css']
 })
 export class NavMenuComponent {
-  isExpanded = false;
   isAuthed = false;
   location = 'Minsk';
 
-  constructor(public dialog: MatDialog) {
+  constructor(public dialogCity: MatDialog,
+              public dialogAuth: MatDialog) {
   }
 
-  collapse(): void {
-    this.isExpanded = false;
-  }
-
-  openDialog(): void {
-    const dialogRef = this.dialog.open(SelectCityComponent, {
+  openDialogCity(): void {
+    const dialogRef = this.dialogCity.open(SelectCityComponent, {
       width: '250px',
       data: this.location
     });
@@ -29,7 +26,13 @@ export class NavMenuComponent {
     });
   }
 
-  onSignInClick(): void {
-    this.isAuthed = true;
+  openDialogAuth(): void {
+    const dialogRef = this.dialogAuth.open(AuthModalComponent, {
+      width: '450px'
+    });
+    dialogRef.afterClosed().subscribe((result: boolean) => {
+      console.log(result);
+      this.isAuthed = result;
+    });
   }
 }
