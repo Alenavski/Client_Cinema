@@ -12,8 +12,10 @@ export class NavMenuComponent {
   isAuthed = false;
   location = 'Minsk';
 
-  constructor(public dialogCity: MatDialog,
-              public dialogAuth: MatDialog) {
+  constructor(
+    public dialogCity: MatDialog,
+    public dialogAuth: MatDialog
+  ) {
   }
 
   openDialogCity(): void {
@@ -31,7 +33,6 @@ export class NavMenuComponent {
       width: '450px'
     });
     dialogRef.afterClosed().subscribe((result: boolean) => {
-      console.log(result);
       this.isAuthed = result;
     });
   }
