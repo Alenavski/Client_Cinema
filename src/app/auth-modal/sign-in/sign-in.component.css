@@ -3,7 +3,7 @@
   width: 75%;
 }
 
-.auth-form {
+.container mat-form-field {
   display: block;
 }
 

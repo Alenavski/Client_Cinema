@@ -10,13 +10,10 @@ export class SignInComponent {
   @Output() closeRequest = new EventEmitter<boolean>();
   authForm = new FormGroup({
     email: new FormControl('', [
-      // eslint-disable-next-line @typescript-eslint/unbound-method
       Validators.required,
-      // eslint-disable-next-line @typescript-eslint/unbound-method
       Validators.email
     ]),
     password: new FormControl('', [
-      // eslint-disable-next-line @typescript-eslint/unbound-method
       Validators.required,
       Validators.minLength(8)
     ])

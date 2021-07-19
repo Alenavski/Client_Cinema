@@ -1,15 +1,6 @@
 import { Component, EventEmitter, Output } from '@angular/core';
-import { AbstractControl, FormControl, FormGroup, ValidationErrors, ValidatorFn, Validators } from '@angular/forms';
-
-export function confirmValidator(matchingForm: AbstractControl | null): ValidatorFn {
-  return (control: AbstractControl): ValidationErrors | null => {
-    const isEqual = matchingForm?.value === control.value;
-    const errors: ValidationErrors = {
-      confirmError: control
-    };
-    return isEqual ? null : errors;
-  };
-}
+import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { confirmValidator } from '../../../tools/form-validation';
 
 @Component({
   selector: 'app-sign-up',
@@ -20,13 +11,10 @@ export class SignUpComponent {
   @Output() closeRequest = new EventEmitter<boolean>();
   regForm = new FormGroup({
     email: new FormControl('', [
-      // eslint-disable-next-line @typescript-eslint/unbound-method
       Validators.required,
-      // eslint-disable-next-line @typescript-eslint/unbound-method
       Validators.email
     ]),
     password: new FormControl('', [
-      // eslint-disable-next-line @typescript-eslint/unbound-method
       Validators.required,
       Validators.minLength(8)
     ]),
@@ -35,7 +23,6 @@ export class SignUpComponent {
 
   constructor() {
     this.regForm.get('confirmPassword')?.setValidators([
-      // eslint-disable-next-line @typescript-eslint/unbound-method
       Validators.required,
       confirmValidator(this.regForm.get('password'))]);
   }

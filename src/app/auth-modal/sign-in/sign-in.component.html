@@ -1,12 +1,12 @@
 <div class="container" [formGroup]="authForm">
-  <mat-form-field appearance="standard" class="auth-form">
+  <mat-form-field appearance="standard">
     <mat-label>e-mail</mat-label>
     <input type="email"
            matInput
            formControlName="email">
     <mat-error *ngIf="!authForm.get('email')?.valid">Email is not valid.</mat-error>
   </mat-form-field>
-  <mat-form-field appearance="standard" class="auth-form">
+  <mat-form-field appearance="standard">
     <mat-label>password</mat-label>
     <input type="password"
            matInput
