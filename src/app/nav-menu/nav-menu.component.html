@@ -3,14 +3,14 @@
     <a class="navbar-brand" [routerLink]="['/']">Cinema</a>
     <span class="nav-spacer"></span>
     <app-search-film class="container-item"></app-search-film>
-    <a class="fas fa-map-marker-alt location-icon container-item" (click)="openDialog()">
+    <a class="fas fa-map-marker-alt location-icon container-item" (click)="openDialogCity()">
       <span>{{location}}</span>
     </a>
     <ng-container *ngIf="isAuthed; else authBtn">
       <a class="fas fa-house-user user-icon container-item" href="/"></a>
     </ng-container>
     <ng-template #authBtn>
-      <a class="fas fa-user sign-icon container-item" (click)="onSignInClick()"></a>
+      <a class="fas fa-user sign-icon container-item" (click)="openDialogAuth()"></a>
     </ng-template>
   </mat-toolbar>
 </header>
