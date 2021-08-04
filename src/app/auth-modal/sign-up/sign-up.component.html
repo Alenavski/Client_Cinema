@@ -22,5 +22,5 @@
   </mat-form-field>
 </div>
 <div mat-dialog-actions>
-  <button mat-button class="button" (click)="onSignUpClick()">Sign up</button>
+  <button mat-button class="button" (click)="onSignUpClick()" [disabled]="!regForm.valid">Sign up</button>
 </div>

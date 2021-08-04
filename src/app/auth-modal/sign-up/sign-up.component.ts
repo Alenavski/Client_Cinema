@@ -1,11 +1,14 @@
 import { Component, EventEmitter, Output } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { AuthModel } from '../../../models/auth.model';
+import { UserService } from '../../../service/user.service';
 import { confirmValidator } from '../../../tools/form-validation';
 
 @Component({
   selector: 'app-sign-up',
   templateUrl: './sign-up.component.html',
-  styleUrls: ['./sign-up.component.css']
+  styleUrls: ['./sign-up.component.css'],
+  providers: [UserService]
 })
 export class SignUpComponent {
   @Output() closeRequest = new EventEmitter<boolean>();
@@ -21,13 +24,20 @@ export class SignUpComponent {
     confirmPassword: new FormControl('')
   });
 
-  constructor() {
+  constructor(
+    private readonly userService: UserService
+  ) {
     this.regForm.get('confirmPassword')?.setValidators([
       Validators.required,
       confirmValidator(this.regForm.get('password'))]);
   }
 
   onSignUpClick(): void {
-    this.closeRequest.emit(true);
+    this.userService.register(this.regForm.get('email')?.value, this.regForm.get('password')?.value)
+      .subscribe((authModel: AuthModel | null) => {
+      if (authModel) {
+        this.closeRequest.emit(true);
+      }
+    });
   }
 }
