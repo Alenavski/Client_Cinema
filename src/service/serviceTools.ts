@@ -8,16 +8,14 @@ export class ServiceTools {
     return (error: HttpErrorResponse) => {
       const message: string | null = messageSwitcher(error);
       if (message !== null) {
-        const bar = snackBar.open(message, 'Close');
-        bar._dismissAfter(3 * 1000);
+        snackBar.open(message, 'Close');
         if (!environment.production) {
           return throwError(error);
         }
         return throwError(message);
       }
       else {
-        const bar = snackBar.open('Something is wrong. Please, try later', 'Close');
-        bar._dismissAfter(3 * 1000);
+        snackBar.open('Something is wrong. Please, try later', 'Close');
         if (!environment.production) {
           return throwError(error);
         }

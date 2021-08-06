@@ -4,6 +4,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import jwt_decode from 'jwt-decode';
 import { Observable } from 'rxjs';
 import { catchError } from 'rxjs/operators';
+import { environment } from '../environments/environment';
 import { AuthModel } from '../models/auth.model';
 import { GetRole } from '../models/roles';
 import { TokenModel } from '../models/token.model';
@@ -12,7 +13,6 @@ import { ServiceTools } from './serviceTools';
 
 @Injectable()
 export class UserService {
-  private readonly hostURL: string = 'https://localhost:5001/user/';
 
   constructor(
     private readonly httpClient: HttpClient,
@@ -32,7 +32,7 @@ export class UserService {
 
     const errorHandler = ServiceTools.ErrorHandlerFactory(messageSwitcher, this.snackBar);
 
-    const observable = this.httpClient.post<AuthModel>(this.hostURL + 'register', { Email: email, Password: password })
+    const observable = this.httpClient.post<AuthModel>(environment.hostURL + 'user/register', { Email: email, Password: password })
       .pipe(
         catchError(errorHandler)
       );
@@ -60,7 +60,7 @@ export class UserService {
 
     const errorHandler = ServiceTools.ErrorHandlerFactory(messageSwitcher, this.snackBar);
 
-    const observable = this.httpClient.post<AuthModel>(this.hostURL + 'login', { Email: email, Password: password })
+    const observable = this.httpClient.post<AuthModel>(environment.hostURL + 'user/login', { Email: email, Password: password })
       .pipe(
         catchError(errorHandler)
       );
