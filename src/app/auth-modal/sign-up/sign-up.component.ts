@@ -1,14 +1,12 @@
 import { Component, EventEmitter, Output } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { AuthModel } from '../../../models/auth.model';
 import { UserService } from '../../../service/user.service';
 import { confirmValidator } from '../../../tools/form-validation';
 
 @Component({
   selector: 'app-sign-up',
   templateUrl: './sign-up.component.html',
-  styleUrls: ['./sign-up.component.css'],
-  providers: [UserService]
+  styleUrls: ['./sign-up.component.css']
 })
 export class SignUpComponent {
   @Output() closeRequest = new EventEmitter<boolean>();
@@ -17,10 +15,7 @@ export class SignUpComponent {
       Validators.required,
       Validators.email
     ]),
-    password: new FormControl('', [
-      Validators.required,
-      Validators.minLength(8)
-    ]),
+    password: new FormControl(''),
     confirmPassword: new FormControl('')
   });
 
@@ -29,15 +24,18 @@ export class SignUpComponent {
   ) {
     this.regForm.get('confirmPassword')?.setValidators([
       Validators.required,
-      confirmValidator(this.regForm.get('password'))]);
+      Validators.minLength(8),
+      confirmValidator(this.regForm.get('password'))
+    ]);
+    this.regForm.get('password')?.valueChanges.subscribe(() => {
+      this.regForm.get('confirmPassword')?.updateValueAndValidity();
+    });
   }
 
   onSignUpClick(): void {
-    this.userService.register(this.regForm.get('email')?.value, this.regForm.get('password')?.value)
-      .subscribe((authModel: AuthModel | null) => {
-      if (authModel) {
-        this.closeRequest.emit(true);
-      }
-    });
+    const isSignedUp = this.userService.register(this.regForm.get('email')?.value, this.regForm.get('password')?.value);
+    if (isSignedUp) {
+      this.closeRequest.emit(true);
+    }
   }
 }

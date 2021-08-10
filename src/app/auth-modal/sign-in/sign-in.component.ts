@@ -1,13 +1,11 @@
 import { Component, EventEmitter, Output } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { AuthModel } from '../../../models/auth.model';
 import { UserService } from '../../../service/user.service';
 
 @Component({
   selector: 'app-sign-in',
   templateUrl: './sign-in.component.html',
-  styleUrls: ['./sign-in.component.css'],
-  providers: [UserService]
+  styleUrls: ['./sign-in.component.css']
 })
 export class SignInComponent {
   @Output() closeRequest = new EventEmitter<boolean>();
@@ -32,11 +30,9 @@ export class SignInComponent {
   }
 
   onSignInClick(): void {
-    this.userService.login(this.authForm.get('email')?.value, this.authForm.get('password')?.value)
-      .subscribe((authModel: AuthModel | null) => {
-        if (authModel) {
-          this.closeRequest.emit(true);
-        }
-    });
+    const isSignedIn = this.userService.login(this.authForm.get('email')?.value, this.authForm.get('password')?.value);
+    if (isSignedIn) {
+      this.closeRequest.emit(true);
+    }
   }
 }
