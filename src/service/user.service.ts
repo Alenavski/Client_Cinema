@@ -1,4 +1,4 @@
-import { HttpClient, HttpErrorResponse } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import jwt_decode from 'jwt-decode';
 import { catchError } from 'rxjs/operators';
@@ -7,7 +7,8 @@ import { AuthModel } from '../models/auth.model';
 import { GetRole } from '../models/roles';
 import { TokenModel } from '../models/token.model';
 import { UserModel } from '../models/user.model';
-import { ServiceTools } from '../tools/serviceTools';
+import { ErrorHandlerFactory } from '../tools/serviceTools';
+import { SnackBarService } from './snack-bar.service';
 
 const enum Token {
   role = 'http://schemas.microsoft.com/ws/2008/06/identity/claims/role',
@@ -22,23 +23,14 @@ export class UserService {
 
   constructor(
     private readonly httpClient: HttpClient,
-    private readonly serviceTools: ServiceTools
+    private readonly snackBarService: SnackBarService
   ) {
   }
 
-  register(email: string, password: string): boolean {
-    const messageSwitcher = (error: HttpErrorResponse) => {
-      switch (error.status) {
-        case 500:
-          return 'Server error occurred';
-        case 400:
-          return error.error.message;
-      }
-    };
-
-    const errorHandler = this.serviceTools.ErrorHandlerFactory(messageSwitcher);
-
+  public register(email: string, password: string): boolean {
+    const errorHandler = ErrorHandlerFactory(this.snackBarService);
     let status: boolean = false;
+
     this.httpClient.post<AuthModel>(environment.hostURL + 'user/register', { Email: email, Password: password })
       .pipe(
         catchError(errorHandler)
@@ -49,24 +41,14 @@ export class UserService {
           this.saveToken(authModel.token);
         }
       );
+
     return status;
   }
 
-  login(email: string, password: string): boolean {
-    const messageSwitcher = (error: HttpErrorResponse) => {
-      switch (error.status) {
-        case 500:
-          return 'Server error occurred';
-        case 401:
-          return error.error.message;
-        case 400:
-          return 'Invalid data';
-      }
-    };
-
-    const errorHandler = this.serviceTools.ErrorHandlerFactory(messageSwitcher);
-
+  public login(email: string, password: string): boolean {
+    const errorHandler = ErrorHandlerFactory(this.snackBarService);
     let status: boolean = false;
+
     this.httpClient.post<AuthModel>(environment.hostURL + 'user/login', { Email: email, Password: password })
       .pipe(
         catchError(errorHandler)
@@ -77,7 +59,17 @@ export class UserService {
           status = true;
         }
       );
+
     return status;
+  }
+
+  public getUserModel(): UserModel {
+    const decoded: TokenModel = jwt_decode(this.getToken());
+    return {
+      token: localStorage.getItem('token')!,
+      id: Number(decoded[Token.id]),
+      role: GetRole(decoded[Token.role])
+    };
   }
 
   private saveToken(token: string): void {
@@ -86,14 +78,5 @@ export class UserService {
 
   private getToken(): string {
     return localStorage.getItem('token')!;
-  }
-
-  public getUserModel(): UserModel {
-    const decoded: TokenModel = jwt_decode(this.getToken());
-    return {
-      token : localStorage.getItem('token')!,
-      id : Number(decoded[Token.id]),
-      role : GetRole(decoded[Token.role])
-    };
   }
 }

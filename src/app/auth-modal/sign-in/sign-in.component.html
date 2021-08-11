@@ -11,7 +11,7 @@
     <input type="password"
            matInput
            formControlName="password">
-    <mat-error *ngIf="!authForm.get('password')?.valid">Password is not valid.</mat-error>
+    <mat-error *ngIf="!authForm.get('password')?.valid">Password is too short.</mat-error>
   </mat-form-field>
 </div>
 <div mat-dialog-actions>

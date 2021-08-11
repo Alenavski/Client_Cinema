@@ -14,8 +14,6 @@ import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatTabsModule } from '@angular/material/tabs';
 import { SnackBarService } from '../service/snack-bar.service';
 import { UserService } from '../service/user.service';
-import { ServiceTools } from '../tools/serviceTools';
-
 import { AppComponent } from './app.component';
 import { SignInComponent } from './auth-modal/sign-in/sign-in.component';
 import { NavMenuComponent } from './nav-menu/nav-menu.component';
@@ -56,8 +54,7 @@ import { SignUpComponent } from './auth-modal/sign-up/sign-up.component';
   ],
   providers: [
     UserService,
-    SnackBarService,
-    ServiceTools
+    SnackBarService
   ],
   bootstrap: [AppComponent]
 })
