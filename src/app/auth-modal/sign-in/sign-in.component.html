@@ -11,10 +11,10 @@
     <input type="password"
            matInput
            formControlName="password">
-    <mat-error *ngIf="!authForm.get('password')?.valid">Password is not valid.</mat-error>
+    <mat-error *ngIf="!authForm.get('password')?.valid">Password is too short.</mat-error>
   </mat-form-field>
 </div>
 <div mat-dialog-actions>
   <button mat-button class="button" (click)="onCloseClick()">No Thanks</button>
-  <button mat-button class="button" (click)="onSignInClick()">Sign in</button>
+  <button mat-button class="button" (click)="onSignInClick()" [disabled]="!authForm.valid">Sign in</button>
 </div>

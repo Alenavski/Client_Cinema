@@ -1,3 +1,4 @@
+import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
@@ -11,7 +12,8 @@ import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { MatOptionModule } from '@angular/material/core';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatTabsModule } from '@angular/material/tabs';
-
+import { SnackBarService } from '../service/snack-bar.service';
+import { UserService } from '../service/user.service';
 import { AppComponent } from './app.component';
 import { SignInComponent } from './auth-modal/sign-in/sign-in.component';
 import { NavMenuComponent } from './nav-menu/nav-menu.component';
@@ -34,22 +36,26 @@ import { SignUpComponent } from './auth-modal/sign-up/sign-up.component';
   ],
   imports: [
     BrowserModule,
-    HttpClientModule,
-    FormsModule,
+    BrowserAnimationsModule,
     RouterModule.forRoot([
       { path: '', component: HomeComponent, pathMatch: 'full' }
     ]),
-    BrowserAnimationsModule,
-    MatDialogModule,
+    HttpClientModule,
+    FormsModule,
+    ReactiveFormsModule,
     MatInputModule,
-    MatButtonModule,
     MatAutocompleteModule,
+    MatButtonModule,
     MatOptionModule,
     MatToolbarModule,
     MatTabsModule,
-    ReactiveFormsModule,
+    MatDialogModule,
+    MatSnackBarModule
   ],
-  providers: [],
+  providers: [
+    UserService,
+    SnackBarService
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

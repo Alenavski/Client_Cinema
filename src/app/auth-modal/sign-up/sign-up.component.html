@@ -11,16 +11,20 @@
     <input type="password"
            matInput
            formControlName="password">
-    <mat-error *ngIf="!regForm.get('password')?.valid">Password is not valid.</mat-error>
+    <mat-error *ngIf="!!regForm.get('password')?.getError('minlength')">
+      Password is too short
+    </mat-error>
   </mat-form-field>
   <mat-form-field appearance="standard">
     <mat-label>repeat password</mat-label>
     <input type="password"
            matInput
            formControlName="confirmPassword">
-    <mat-error *ngIf="!regForm.get('confirmPassword')?.valid">Passwords don't match.</mat-error>
+    <mat-error *ngIf="!!regForm.get('confirmPassword')?.getError('confirmError')">
+      Passwords are not equal
+    </mat-error>
   </mat-form-field>
 </div>
 <div mat-dialog-actions>
-  <button mat-button class="button" (click)="onSignUpClick()">Sign up</button>
+  <button mat-button class="button" (click)="onSignUpClick()" [disabled]="!regForm.valid">Sign up</button>
 </div>

@@ -1,5 +1,6 @@
 import { Component, EventEmitter, Output } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { UserService } from '../../../service/user.service';
 import { confirmValidator } from '../../../tools/form-validation';
 
 @Component({
@@ -21,13 +22,21 @@ export class SignUpComponent {
     confirmPassword: new FormControl('')
   });
 
-  constructor() {
+  constructor(
+    private readonly userService: UserService
+  ) {
     this.regForm.get('confirmPassword')?.setValidators([
-      Validators.required,
-      confirmValidator(this.regForm.get('password'))]);
+      confirmValidator(this.regForm.get('password'))
+    ]);
+    this.regForm.get('password')?.valueChanges.subscribe(() => {
+      this.regForm.get('confirmPassword')?.updateValueAndValidity();
+    });
   }
 
   onSignUpClick(): void {
-    this.closeRequest.emit(true);
+    const isSignedUp = this.userService.register(this.regForm.get('email')?.value, this.regForm.get('password')?.value);
+    if (isSignedUp) {
+      this.closeRequest.emit(true);
+    }
   }
 }

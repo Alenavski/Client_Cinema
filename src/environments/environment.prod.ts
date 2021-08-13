@@ -1,3 +1,4 @@
 export const environment = {
-  production: true
+  production: true,
+  hostURL: 'https://localhost:5001/'
 };

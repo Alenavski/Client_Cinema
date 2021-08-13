@@ -1,5 +1,6 @@
 import { Component, EventEmitter, Output } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { UserService } from '../../../service/user.service';
 
 @Component({
   selector: 'app-sign-in',
@@ -19,11 +20,19 @@ export class SignInComponent {
     ])
   });
 
+  constructor(
+    private readonly userService: UserService
+  ) {
+  }
+
   onCloseClick(): void {
     this.closeRequest.emit();
   }
 
   onSignInClick(): void {
-    this.closeRequest.emit(true);
+    const isSignedIn = this.userService.login(this.authForm.get('email')?.value, this.authForm.get('password')?.value);
+    if (isSignedIn) {
+      this.closeRequest.emit(true);
+    }
   }
 }
