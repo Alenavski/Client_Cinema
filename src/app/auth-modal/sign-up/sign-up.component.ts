@@ -26,8 +26,6 @@ export class SignUpComponent {
     private readonly userService: UserService
   ) {
     this.regForm.get('confirmPassword')?.setValidators([
-      Validators.required,
-      Validators.minLength(8),
       confirmValidator(this.regForm.get('password'))
     ]);
     this.regForm.get('password')?.valueChanges.subscribe(() => {
