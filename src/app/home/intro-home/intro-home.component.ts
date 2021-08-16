@@ -4,7 +4,7 @@ import { FormControl, FormGroup } from '@angular/forms';
 @Component({
   selector: 'app-intro-home',
   templateUrl: './intro-home.component.html',
-  styleUrls: ['./intro-home.component.css']
+  styleUrls: ['./intro-home.component.less']
 })
 export class IntroHomeComponent {
   introForm = new FormGroup({

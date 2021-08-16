@@ -96,6 +96,11 @@
     }
   },
   "defaultProject": "Cinema",
+  "schematics": {
+    "@schematics/angular:component": {
+      "style": "less"
+    }
+  },
   "cli": {
     "defaultCollection": "@angular-eslint/schematics"
   }

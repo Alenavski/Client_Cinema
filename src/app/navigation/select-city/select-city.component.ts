@@ -4,7 +4,7 @@ import { MAT_DIALOG_DATA } from '@angular/material/dialog';
 @Component({
   selector: 'app-select-city',
   templateUrl: './select-city.component.html',
-  styleUrls: ['./select-city.component.css']
+  styleUrls: ['./select-city.component.less']
 })
 export class SelectCityComponent {
   options: string[] = ['Minsk', 'Bobruisk'];
