@@ -1,15 +1,17 @@
+@import "../../../color-schema";
+
 a.navbar-brand {
   white-space: normal;
   text-align: center;
   word-break: break-all;
-  color: #0000d4;
+  color: @dark-blue;
   font-weight: bold;
   font-size: 24px;
   text-decoration: none;
-}
 
-a.navbar-brand:hover {
-  color: #0000c4;
+  &:hover {
+    color: @main-blue;
+  }
 }
 
 .nav-spacer {
@@ -17,29 +19,28 @@ a.navbar-brand:hover {
 }
 
 .location-icon {
-  color: #0000d4;
+  color: @dark-blue;
   cursor: pointer;
-}
 
-.location-icon span {
-  font-family: Arial, "Arial", sans-serif;
-  font-size: 16px;
-  font-weight: normal;
-  color: black;
-  margin-left: 4px;
+  span {
+    font-family: Arial, "Arial", sans-serif;
+    font-size: 16px;
+    font-weight: normal;
+    color: black;
+    margin-left: 4px;
+  }
 }
 
 .user-icon,
 .sign-icon {
   position: relative;
   top: 2px;
-  color: #0000d4;
+  color: @dark-blue;
   cursor: pointer;
-}
 
-.user-icon:hover,
-.sign-icon:hover {
-  color: #0000c4;
+  &:hover {
+    color: @main-blue;
+  }
 }
 
 html {

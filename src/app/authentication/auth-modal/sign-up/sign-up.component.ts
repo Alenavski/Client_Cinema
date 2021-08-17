@@ -1,12 +1,12 @@
 import { Component, EventEmitter, Output } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { UserService } from '../../../service/user.service';
-import { confirmValidator } from '../../../tools/form-validation';
+import { UserService } from '@service/user.service';
+import { confirmValidator } from '@tools/form-validation';
 
 @Component({
   selector: 'app-sign-up',
   templateUrl: './sign-up.component.html',
-  styleUrls: ['./sign-up.component.css']
+  styleUrls: ['./sign-up.component.less']
 })
 export class SignUpComponent {
   @Output() closeRequest = new EventEmitter<boolean>();

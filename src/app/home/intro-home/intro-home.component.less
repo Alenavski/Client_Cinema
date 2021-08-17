@@ -1,0 +1,39 @@
+@import "../../../color-schema";
+
+.intro-inner {
+  padding-top: 35vh;
+  padding-left: 500px;
+
+  &:after {
+    background: url('../../../assets/backgrounds/intro-home.png') no-repeat;
+    background-size: auto 100vh;
+    content: "";
+    inset: 0;
+    z-index: -1;
+    position: absolute;
+  }
+}
+
+.container {
+  margin: 0 auto;
+  width: 50%;
+
+  h2 {
+    color: @main-blue;
+    text-align: center;
+    font-size: 40px;
+  }
+
+  mat-form-field {
+    display: block;
+    font-size: 20px;
+  }
+}
+
+.button {
+  font-size: 20px;
+  color: white;
+  margin: 0 auto;
+  display: block;
+  background-color: @main-blue;
+}

@@ -3,11 +3,11 @@ import { Injectable } from '@angular/core';
 import jwt_decode from 'jwt-decode';
 import { catchError } from 'rxjs/operators';
 import { environment } from '../environments/environment';
-import { AuthModel } from '../models/auth.model';
-import { GetRole } from '../models/roles';
-import { TokenModel } from '../models/token.model';
-import { UserModel } from '../models/user.model';
-import { ErrorHandlerFactory } from '../tools/serviceTools';
+import { AuthModel } from '@models/auth.model';
+import { GetRole } from '@models/roles';
+import { TokenModel } from '@models/token.model';
+import { UserModel } from '@models/user.model';
+import { ErrorHandlerFactory } from '@tools/serviceTools';
 import { SnackBarService } from './snack-bar.service';
 
 const enum Token {

@@ -1,7 +1,7 @@
 import { HttpErrorResponse } from '@angular/common/http';
 import { throwError } from 'rxjs';
 import { environment } from '../environments/environment';
-import { SnackBarService } from '../service/snack-bar.service';
+import { SnackBarService } from '@service/snack-bar.service';
 
 export function  ErrorHandlerFactory(
   snackBarService: SnackBarService

@@ -1,12 +1,12 @@
 import { Component } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { SelectCityComponent } from '../select-city/select-city.component';
-import { AuthModalComponent } from '../auth-modal/auth-modal.component';
+import { AuthModalComponent } from '@app/authentication/auth-modal/auth-modal.component';
 
 @Component({
   selector: 'app-nav-menu',
   templateUrl: './nav-menu.component.html',
-  styleUrls: ['./nav-menu.component.css']
+  styleUrls: ['./nav-menu.component.less']
 })
 export class NavMenuComponent {
   isAuthed = false;
