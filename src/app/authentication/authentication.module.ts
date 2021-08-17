@@ -12,11 +12,15 @@ import { AuthModalComponent } from './auth-modal/auth-modal.component';
 import { SignInComponent } from './auth-modal/sign-in/sign-in.component';
 import { SignUpComponent } from './auth-modal/sign-up/sign-up.component';
 
+const components = [
+  AuthModalComponent,
+  SignInComponent,
+  SignUpComponent
+];
+
 @NgModule({
   declarations: [
-    AuthModalComponent,
-    SignInComponent,
-    SignUpComponent
+    ...components
   ],
   imports: [
     CommonModule,
@@ -26,6 +30,9 @@ import { SignUpComponent } from './auth-modal/sign-up/sign-up.component';
     MatDialogModule,
     MatButtonModule,
     MatTabsModule
+  ],
+  exports: [
+    ...components
   ]
 })
 export class AuthenticationModule { }

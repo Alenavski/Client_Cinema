@@ -9,10 +9,14 @@ import { MatInputModule } from '@angular/material/input';
 import { HomeComponent } from './home.component';
 import { IntroHomeComponent } from './intro-home/intro-home.component';
 
+const components = [
+  HomeComponent,
+  IntroHomeComponent
+];
+
 @NgModule({
   declarations: [
-    HomeComponent,
-    IntroHomeComponent
+    ...components
   ],
   imports: [
     CommonModule,
@@ -20,6 +24,9 @@ import { IntroHomeComponent } from './intro-home/intro-home.component';
     MatFormFieldModule,
     MatInputModule,
     MatButtonModule
+  ],
+  exports: [
+    ...components
   ]
 })
 export class HomeModule { }

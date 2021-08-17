@@ -14,14 +14,15 @@ import { NavMenuComponent } from './nav-menu/nav-menu.component';
 import { SearchFilmComponent } from './search-film/search-film.component';
 import { SelectCityComponent } from './select-city/select-city.component';
 
+const components = [
+  NavMenuComponent,
+  SelectCityComponent,
+  SearchFilmComponent
+];
+
 @NgModule({
   declarations: [
-    NavMenuComponent,
-    SelectCityComponent,
-    SearchFilmComponent
-  ],
-  exports: [
-    NavMenuComponent
+    ...components
   ],
   imports: [
     CommonModule,
@@ -33,6 +34,9 @@ import { SelectCityComponent } from './select-city/select-city.component';
     MatAutocompleteModule,
     MatButtonModule,
     MatToolbarModule
-  ]
+  ],
+  exports: [
+    ...components
+  ],
 })
 export class NavigationModule { }

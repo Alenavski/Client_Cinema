@@ -1,7 +1,7 @@
 import { Component, EventEmitter, Output } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { UserService } from '../../../../service/user.service';
-import { confirmValidator } from '../../../../tools/form-validation';
+import { UserService } from '@service/user.service';
+import { confirmValidator } from '@tools/form-validation';
 
 @Component({
   selector: 'app-sign-up',

@@ -1,30 +1,45 @@
 <div class="container" [formGroup]="regForm">
   <mat-form-field appearance="standard">
     <mat-label>e-mail</mat-label>
-    <input type="email"
-           matInput
-           formControlName="email">
-    <mat-error *ngIf="!regForm.get('email')?.valid">Email is not valid.</mat-error>
+    <input
+      type="email"
+      matInput
+      formControlName="email"
+    >
+    <mat-error *ngIf="!regForm.get('email')?.valid">
+      Email is not valid.
+    </mat-error>
   </mat-form-field>
   <mat-form-field appearance="standard">
     <mat-label>password</mat-label>
-    <input type="password"
-           matInput
-           formControlName="password">
+    <input
+      type="password"
+      matInput
+      formControlName="password"
+    >
     <mat-error *ngIf="!!regForm.get('password')?.getError('minlength')">
       Password is too short
     </mat-error>
   </mat-form-field>
   <mat-form-field appearance="standard">
     <mat-label>repeat password</mat-label>
-    <input type="password"
-           matInput
-           formControlName="confirmPassword">
+    <input
+      type="password"
+      matInput
+      formControlName="confirmPassword"
+    >
     <mat-error *ngIf="!!regForm.get('confirmPassword')?.getError('confirmError')">
       Passwords are not equal
     </mat-error>
   </mat-form-field>
 </div>
 <div mat-dialog-actions>
-  <button mat-button class="button" (click)="onSignUpClick()" [disabled]="!regForm.valid">Sign up</button>
+  <button
+    mat-button
+    class="button"
+    (click)="onSignUpClick()"
+    [disabled]="!regForm.valid"
+  >
+    Sign up
+  </button>
 </div>

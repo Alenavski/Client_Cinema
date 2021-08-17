@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { SelectCityComponent } from '../select-city/select-city.component';
-import { AuthModalComponent } from '../../authentication/auth-modal/auth-modal.component';
+import { AuthModalComponent } from '@app/authentication/auth-modal/auth-modal.component';
 
 @Component({
   selector: 'app-nav-menu',

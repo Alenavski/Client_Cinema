@@ -19,7 +19,14 @@
     "lib": [
       "es2018",
       "dom"
-    ]
+    ],
+    "paths": {
+      "@service/*": ["src/service/*"],
+      "@models/*": ["src/models/*"],
+      "@tools/*": ["src/tools/*"],
+      "@assets/*": ["src/assets/*"],
+      "@app/*": ["src/app/*"],
+    }
   },
   "angularCompilerOptions": {
     "enableI18nLegacyMessageIdFormat": false,
