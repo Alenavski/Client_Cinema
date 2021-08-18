@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
-import { ReactiveFormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatNativeDateModule } from '@angular/material/core';
 import { MatDatepickerModule } from '@angular/material/datepicker';
@@ -12,6 +12,7 @@ import { MatInputModule } from '@angular/material/input';
 import { HomeComponent } from './home.component';
 import { IntroHomeComponent } from './intro-home/intro-home.component';
 import { DatePickerComponent } from './date-picker/date-picker.component';
+import { SelectingPanelComponent } from './selecting-panel/selecting-panel.component';
 
 const components = [
   HomeComponent,
@@ -21,7 +22,8 @@ const components = [
 
 @NgModule({
   declarations: [
-    ...components
+    ...components,
+    SelectingPanelComponent
   ],
   imports: [
     CommonModule,
@@ -31,7 +33,8 @@ const components = [
     MatButtonModule,
     MatDatepickerModule,
     MatNativeDateModule,
-    MatIconModule
+    MatIconModule,
+    FormsModule
   ],
   exports: [
     ...components
