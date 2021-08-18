@@ -1,0 +1,89 @@
+@import "../../../color-schema";
+
+.container{
+  margin: 10px auto;
+  width: 85%;
+}
+
+.title {
+  font-family: "Yu Gothic UI", cursive;
+  font-size: 34px;
+  margin-bottom: 30px;
+}
+
+.timeline {
+  padding-top: 10px;
+  position: relative;
+  display: flex;
+  width: 100%;
+  overflow: hidden;
+}
+
+.datepicker {
+  text-align: right;
+  position: absolute;
+  right: 0;
+  background: linear-gradient(90deg, transparent, white, white);
+  width: 100px;
+  height: 100px;
+  z-index: 1;
+}
+
+.icon {
+  position: relative;
+  top: 20px;
+  font-size: 24px;
+  padding: 5px;
+  border-radius: 50%;
+
+  &:hover {
+    background: lightgray;
+  }
+}
+
+.datepicker-input {
+  width: 0;
+  visibility: hidden;
+}
+
+.day {
+  display: inline;
+}
+
+.month {
+  position: absolute;
+  font-family: Verdana, fantasy;
+  font-size: 12px;
+  margin: -15px 0;
+}
+
+.button {
+  padding: 10px;
+  min-width: 50px;
+  font-size: 15px;
+  border-radius: 15px;
+  border: none;
+  margin: 10px;
+  background: none;
+
+  &:hover {
+    background: #ffd117;
+    cursor: pointer;
+  }
+}
+
+.current-day {
+  color: @main-blue;
+  font-size: 18px;
+  font-weight: bold;
+
+  &:hover {
+    background: none;
+  }
+}
+
+.other-date {
+  display: inline;
+  position: relative;
+  top: 18px;
+}

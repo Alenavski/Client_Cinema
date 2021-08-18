@@ -98,7 +98,8 @@
   "defaultProject": "Cinema",
   "schematics": {
     "@schematics/angular:component": {
-      "style": "less"
+      "style": "less",
+      "skipTests": true
     }
   },
   "cli": {

@@ -1,0 +1,34 @@
+<div class="container">
+  <h1 class="title">Pick a date</h1>
+  <div class="timeline">
+    <div *ngIf="dates[0] !== currentDay">
+      <i (click)="onBackArrowClick()" class="fas fa-chevron-left icon"></i>
+    </div>
+    <div class="day" *ngFor="let day of dates">
+      <span
+        class="month"
+        *ngIf="needToDisplayMonth(day)"
+      >
+        {{displayMonth(day.getMonth())}}
+      </span>
+      <button
+        class="button"
+        [class.current-day]="day === selectedDay"
+        (click)="onDateClick(day)"
+      >
+        <p>{{day.getDate()}}</p>
+        <p>{{displayDayOfWeek(day.getDay())}}</p>
+      </button>
+    </div>
+    <div class="datepicker">
+      <input
+        [matDatepickerFilter]="dateFilter"
+        [matDatepicker]="picker"
+        class="datepicker-input"
+        (dateChange)="onDateChange($event)"
+      >
+      <mat-datepicker #picker></mat-datepicker>
+      <i (click)="picker.open()" class="fas fa-chevron-down icon"></i>
+    </div>
+  </div>
+</div>
