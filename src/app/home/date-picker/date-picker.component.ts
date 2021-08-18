@@ -1,7 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { MatDatepickerInputEvent } from '@angular/material/datepicker';
+import { DaysOfWeek } from '@models/days-of-week';
+import { Months } from '@models/months';
 
 const dayCount: number = 30;
+const msecsInDay: number = 86400000;
 
 @Component({
   selector: 'app-date-picker',
@@ -10,8 +13,6 @@ const dayCount: number = 30;
 })
 export class DatePickerComponent implements OnInit {
   dates: Date[] = [];
-  months: string[] = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
-  days: string[] = ['Sun', 'Mon', 'Tue', 'Wen', 'Thu', 'Fri', 'Sat'];
   currentDay: Date;
   selectedDay: Date;
 
@@ -29,8 +30,20 @@ export class DatePickerComponent implements OnInit {
 
   dateFilter = (d: Date | null): boolean => {
     const day = (d ?? new Date());
-    return day >= new Date(this.currentDay.getTime() - 24 * 60 * 60 * 1000);
+    return day >= new Date(this.currentDay.getTime() - msecsInDay);
   };
+
+  public displayMonth(indexOfMonth: number): string {
+    return Months[indexOfMonth];
+  }
+
+  public displayDayOfWeek(indexOfDay: number): string {
+    return DaysOfWeek[indexOfDay];
+  }
+
+  public needToDisplayMonth(day: Date): boolean {
+    return day.getDate() === 1 || day === this.dates[0];
+  }
 
   public onDateClick(selectedDate: Date): void {
     this.selectedDay = selectedDate;
@@ -43,12 +56,12 @@ export class DatePickerComponent implements OnInit {
   }
 
   public onDateChange(event: MatDatepickerInputEvent<Date>): void {
-    this.selectedDay = event.value!;
+    this.selectedDay = event.value ?? this.currentDay;
     this.setDates(this.selectedDay);
   }
 
   private getTomorrow(today: Date): Date {
-    return new Date(today.getTime() + (24 * 60 * 60 * 1000));
+    return new Date(today.getTime() + msecsInDay);
   }
 
   private setDates(firstDay: Date): void {

@@ -7,9 +7,9 @@
     <div class="day" *ngFor="let day of dates">
       <span
         class="month"
-        *ngIf="day.getDate() === 1 || day === dates[0]"
+        *ngIf="needToDisplayMonth(day)"
       >
-        {{months[day.getMonth()]}}
+        {{displayMonth(day.getMonth())}}
       </span>
       <button
         class="button"
@@ -17,7 +17,7 @@
         (click)="onDateClick(day)"
       >
         <p>{{day.getDate()}}</p>
-        <p>{{days[day.getDay()]}}</p>
+        <p>{{displayDayOfWeek(day.getDay())}}</p>
       </button>
     </div>
     <div class="datepicker">
