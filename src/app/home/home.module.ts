@@ -17,13 +17,13 @@ import { SelectingPanelComponent } from './selecting-panel/selecting-panel.compo
 const components = [
   HomeComponent,
   IntroHomeComponent,
-  DatePickerComponent
+  DatePickerComponent,
+  SelectingPanelComponent
 ];
 
 @NgModule({
   declarations: [
-    ...components,
-    SelectingPanelComponent
+    ...components
   ],
   imports: [
     CommonModule,
