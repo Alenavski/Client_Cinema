@@ -1,0 +1,27 @@
+<div class="container">
+  <mat-form-field class="number-of-seats" appearance="standard">
+    <mat-label>Free seats</mat-label>
+    <input
+      type="number"
+      min="1"
+      matInput
+      [(ngModel)]="numberOfFreeSeats"
+    >
+  </mat-form-field>
+  <mat-form-field appearance="standard">
+    <mat-label>From</mat-label>
+    <input
+      type="time"
+      matInput
+      [(ngModel)]="timeFrom"
+    >
+  </mat-form-field>
+  <mat-form-field appearance="standard">
+    <mat-label>To</mat-label>
+    <input
+      type="time"
+      matInput
+      [(ngModel)]="timeTo"
+    >
+  </mat-form-field>
+</div>
