@@ -13,12 +13,14 @@ import { HomeComponent } from './home.component';
 import { IntroHomeComponent } from './intro-home/intro-home.component';
 import { DatePickerComponent } from './date-picker/date-picker.component';
 import { SelectingPanelComponent } from './selecting-panel/selecting-panel.component';
+import { ShowtimesSliderComponent } from './showtimes-slider/showtimes-slider.component';
 
 const components = [
   HomeComponent,
   IntroHomeComponent,
   DatePickerComponent,
-  SelectingPanelComponent
+  SelectingPanelComponent,
+  ShowtimesSliderComponent
 ];
 
 @NgModule({

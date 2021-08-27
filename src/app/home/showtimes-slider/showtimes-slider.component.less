@@ -1,0 +1,120 @@
+@import "../../../color-schema";
+
+.container{
+  margin: 10px auto;
+  width: 85%;
+  position: relative;
+}
+
+.title {
+  font-family: "Yu Gothic UI", cursive;
+  font-size: 34px;
+  margin-bottom: 30px;
+}
+
+.slider {
+  position: relative;
+  overflow: hidden;
+}
+
+.movie-list {
+  display: flex;
+  position: relative;
+  left: 0;
+  transition: left 500ms ease-in;
+}
+
+.movie {
+  position: relative;
+  min-width: 300px;
+  height: 450px;
+  margin-right: 100px;
+  overflow: hidden;
+  border-radius: 3%;
+  box-shadow: 6px 6px 2px 0px lightgrey;
+}
+
+.movie-info {
+  padding-left: 10px;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(to bottom, transparent, rgba(0,0,0,0.2) 5%, rgba(0,0,0,0.2));
+  position: absolute;
+  top: 415px;
+  transition: top 300ms;
+}
+
+.movie-title {
+  font-size: 30px;
+  font-weight: bold;
+  color: white;
+}
+
+.focused {
+  top: 250px;
+  background: linear-gradient(to bottom, transparent, rgba(0,0,0,0.3) 5%, rgba(0,0,0,0.3));
+}
+
+.description {
+  color: white;
+  font-size: 18px;
+}
+
+.showtime-title {
+  color: white;
+  font-size: 18px;
+}
+
+.showtime {
+  display: inline;
+  position: relative;
+  margin-right: 10px;
+}
+
+.time {
+  display: inline;
+  padding: 6px;
+  border-radius: 15%;
+  background-color: rgba(0,0,0,0.5);
+  color: white;
+}
+
+.cinema-list {
+  opacity: 0;
+  pointer-events: none;
+  border-radius: 5%;
+  padding: 10px;
+  background-color: white;
+  position: absolute;
+  z-index: 1;
+  top: -50px;
+  left: 50%;
+  color: black;
+  transition: opacity 300ms;
+}
+
+.cinema-list.focused {
+  opacity: 1;
+  background: white;
+}
+
+.icon {
+  position: absolute;
+  top: 0;
+  padding-top: 150px;
+  font-size: 100px;
+  z-index: 1;
+  width: 300px;
+  height: 450px;
+}
+
+.icon.left {
+  left: 0;
+  background: linear-gradient(to left, transparent, white);
+}
+
+.icon.right {
+  right: 0;
+  text-align: right;
+  background: linear-gradient(to right, transparent, white);
+}

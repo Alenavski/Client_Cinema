@@ -16,6 +16,7 @@ export class NavMenuComponent {
     public dialogCity: MatDialog,
     public dialogAuth: MatDialog
   ) {
+    this.saveCity();
   }
 
   openDialogCity(): void {
@@ -26,6 +27,7 @@ export class NavMenuComponent {
     dialogRef.afterClosed().subscribe((result: string) => {
       this.location = result;
     });
+    this.saveCity();
   }
 
   openDialogAuth(): void {
@@ -35,5 +37,9 @@ export class NavMenuComponent {
     dialogRef.afterClosed().subscribe((result: boolean) => {
       this.isAuthed = result;
     });
+  }
+
+  private saveCity(): void {
+    localStorage.setItem('city', this.location);
   }
 }

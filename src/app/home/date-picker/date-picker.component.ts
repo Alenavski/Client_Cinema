@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { MatDatepickerInputEvent } from '@angular/material/datepicker';
 import { DaysOfWeek } from '@models/days-of-week';
 import { Months } from '@models/months';
@@ -12,6 +12,8 @@ const msecsInDay: number = 86400000;
   styleUrls: ['./date-picker.component.less']
 })
 export class DatePickerComponent implements OnInit {
+  @Output() filterChanged = new EventEmitter();
+
   dates: Date[] = [];
   currentDay: Date;
   selectedDay: Date;
@@ -19,6 +21,7 @@ export class DatePickerComponent implements OnInit {
   constructor() {
     this.currentDay = new Date();
     this.selectedDay = this.currentDay;
+    this.saveSelectedDate();
   }
 
   ngOnInit(): void {
@@ -48,16 +51,22 @@ export class DatePickerComponent implements OnInit {
   public onDateClick(selectedDate: Date): void {
     this.selectedDay = selectedDate;
     this.setDates(this.selectedDay);
+    this.saveSelectedDate();
+    this.filterChanged.emit();
   }
 
   public onBackArrowClick(): void {
     this.selectedDay = this.currentDay;
     this.setDates(this.currentDay);
+    this.saveSelectedDate();
+    this.filterChanged.emit();
   }
 
   public onDateChange(event: MatDatepickerInputEvent<Date>): void {
     this.selectedDay = event.value ?? this.currentDay;
     this.setDates(this.selectedDay);
+    this.saveSelectedDate();
+    this.filterChanged.emit();
   }
 
   private getTomorrow(today: Date): Date {
@@ -70,5 +79,9 @@ export class DatePickerComponent implements OnInit {
     for (let i = 0; i < dayCount; i++) {
       this.dates.push(this.getTomorrow(this.dates[this.dates.length - 1]));
     }
+  }
+
+  private saveSelectedDate(): void {
+    localStorage.setItem('date', this.selectedDay.toString());
   }
 }
