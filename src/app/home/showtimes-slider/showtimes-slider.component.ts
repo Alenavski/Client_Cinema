@@ -28,7 +28,6 @@ export class ShowtimesSliderComponent {
 
   calculateMovieIndent(movieList: HTMLElement): void {
     this.movieIndent = Math.trunc((movieList.clientWidth / movieOuterWidth));
-    console.log(this.movieIndent);
   }
 
   moveRight(movieList: HTMLElement): void {

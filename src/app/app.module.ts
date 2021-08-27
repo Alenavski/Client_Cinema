@@ -11,6 +11,7 @@ import { NavigationModule } from './navigation/navigation.module';
 
 import { SnackBarService } from '@service/snack-bar.service';
 import { UserService } from '@service/user.service';
+import { ShowtimeService } from '@service/showtime.service';
 
 import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app-routing.module';
@@ -31,6 +32,7 @@ import { AppRoutingModule } from './app-routing.module';
   ],
   providers: [
     UserService,
+    ShowtimeService,
     SnackBarService
   ],
   bootstrap: [AppComponent]
