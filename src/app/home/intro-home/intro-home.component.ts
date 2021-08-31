@@ -1,5 +1,8 @@
-import { Component, EventEmitter, Output } from '@angular/core';
+import { Component } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
+
+import { ShowtimesFilterModel } from '@models/showtimes-filter.model';
+
 import { FilterService } from '@service/filter.service';
 
 @Component({
@@ -8,28 +11,26 @@ import { FilterService } from '@service/filter.service';
   styleUrls: ['./intro-home.component.less']
 })
 export class IntroHomeComponent {
-  @Output() filterChanged: EventEmitter<void> = new EventEmitter<void>();
-
   introForm = new FormGroup({
-    cinema: new FormControl(''),
-    film: new FormControl('')
+    cinema: new FormControl(null),
+    film: new FormControl(null)
   });
 
-  constructor(private readonly filterService: FilterService) {
+  constructor(
+    private readonly filterService: FilterService
+  ) {
   }
 
-  onSearchClick(): void {
-    this.saveCinema();
-    this.saveMovie();
-    this.filterChanged.emit();
+  public onSearchClick(): void {
+    const filter = this.getFormValues();
+
+    this.filterService.updateFilter(filter);
   }
 
-  private saveCinema(): void {
-    this.filterService.setCinema(this.introForm.get('cinema')?.value);
-  }
-
-  private saveMovie(): void {
-    this.filterService.setMovie(this.introForm.get('film')?.value);
+  private getFormValues(): ShowtimesFilterModel {
+    return {
+      cinemaName: this.introForm.get('cinema')?.value as string,
+      movieTitle: this.introForm.get('film')?.value as string
+    };
   }
 }
-

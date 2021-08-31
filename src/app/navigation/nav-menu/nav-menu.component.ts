@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
+import { ShowtimesFilterModel } from '@models/showtimes-filter.model';
 import { FilterService } from '@service/filter.service';
 import { SelectCityComponent } from '../select-city/select-city.component';
 import { AuthModalComponent } from '@app/authentication/auth-modal/auth-modal.component';
@@ -16,9 +17,10 @@ export class NavMenuComponent {
   constructor(
     public dialogCity: MatDialog,
     public dialogAuth: MatDialog,
-    private filterService: FilterService
+    private readonly filterService: FilterService
   ) {
-    this.saveCity();
+    const filter: ShowtimesFilterModel = { city: this.location };
+    this.filterService.updateFilter(filter);
   }
 
   openDialogCity(): void {
@@ -28,7 +30,8 @@ export class NavMenuComponent {
     });
     dialogRef.afterClosed().subscribe((result: string) => {
       this.location = result;
-      this.saveCity();
+      const filter: ShowtimesFilterModel = { city: this.location };
+      this.filterService.updateFilter(filter);
     });
   }
 
@@ -39,9 +42,5 @@ export class NavMenuComponent {
     dialogRef.afterClosed().subscribe((result: boolean) => {
       this.isAuthed = result;
     });
-  }
-
-  private saveCity(): void {
-    this.filterService.setCity(this.location);
   }
 }

@@ -1,4 +1,4 @@
-<app-intro-home (filterChanged)="slider.getShowtimes()"></app-intro-home>
-<app-date-picker (filterChanged)="slider.getShowtimes()"></app-date-picker>
-<app-selecting-panel (filterChanged)="slider.getShowtimes()"></app-selecting-panel>
-<app-showtimes-slider #slider></app-showtimes-slider>
+<app-intro-home></app-intro-home>
+<app-date-picker></app-date-picker>
+<app-selecting-panel></app-selecting-panel>
+<app-showtimes-slider [filteredMovies]="movies"></app-showtimes-slider>

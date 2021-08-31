@@ -1,11 +1,15 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { ShowtimeModel } from '@models/showtime.model';
-import { SnackBarService } from '@service/snack-bar.service';
-import { ErrorHandlerFactory } from '@tools/serviceTools';
 import { Observable } from 'rxjs';
 import { catchError } from 'rxjs/operators';
+
 import { environment } from '../environments/environment';
+import { ErrorHandlerFactory } from '@tools/serviceTools';
+
+import { MovieModel } from '@models/movie.model';
+import { ShowtimesFilterModel } from '@models/showtimes-filter.model';
+
+import { SnackBarService } from '@service/snack-bar.service';
 
 @Injectable({
   providedIn: 'root'
@@ -17,11 +21,15 @@ export class ShowtimeService {
   ) {
   }
 
-  public getShowtimes(): Observable<ShowtimeModel[]> {
+  public getShowtimes(filter: ShowtimesFilterModel): Observable<MovieModel[]> {
     const errorHandler = ErrorHandlerFactory(this.snackBarService);
-    const params = decodeURI(location.search);
-    console.log(params);
-    return this.httpClient.get<ShowtimeModel[]>(environment.hostURL + 'showtimes' + params)
+
+    const options = {
+      params: new HttpParams()
+    };
+    options.params.appendAll({ ...filter });
+
+    return this.httpClient.get<MovieModel[]>(`${environment.hostURL}showtimes`, options)
       .pipe(
         catchError(errorHandler)
       );

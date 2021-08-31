@@ -5,8 +5,8 @@
       type="number"
       min="1"
       matInput
-      [(ngModel)]="numberOfFreeSeats"
-      (change)="onFreeSeatsChange()"
+      [(ngModel)]="filter.numberOfFreeSeats"
+      (change)="onFilterChange()"
     >
   </mat-form-field>
   <mat-form-field appearance="standard">
@@ -14,8 +14,8 @@
     <input
       type="time"
       matInput
-      [(ngModel)]="timeFrom"
-      (change)="onTimeFromChange()"
+      [(ngModel)]="filter.startTime"
+      (change)="onFilterChange()"
     >
   </mat-form-field>
   <mat-form-field appearance="standard">
@@ -23,8 +23,8 @@
     <input
       type="time"
       matInput
-      [(ngModel)]="timeTo"
-      (change)="onTimeToChange()"
+      [(ngModel)]="filter.endTime"
+      (change)="onFilterChange()"
     >
   </mat-form-field>
 </div>
