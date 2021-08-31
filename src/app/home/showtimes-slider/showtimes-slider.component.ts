@@ -1,8 +1,10 @@
-import { Component } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
+import { Router } from '@angular/router';
 import { CinemaModel } from '@models/cinema.model';
 import { MovieModel } from '@models/movie.model';
 import { ShowtimeModel } from '@models/showtime.model';
 import { Time } from '@angular/common';
+import { FilterService } from '@service/filter.service';
 import { ShowtimeService } from '@service/showtime.service';
 
 const movieOuterWidth: number = 400;
@@ -12,22 +14,31 @@ const movieOuterWidth: number = 400;
   templateUrl: './showtimes-slider.component.html',
   styleUrls: ['./showtimes-slider.component.less']
 })
-export class ShowtimesSliderComponent {
+export class ShowtimesSliderComponent implements OnInit {
+  @ViewChild('movieList') movieList: HTMLElement | undefined;
+
   filteredMovies: MovieModel[] = [];
   sliderIndex = 0;
   movieIndent = 1;
 
-  constructor(private readonly showtimeService: ShowtimeService) {
-    this.clearFilter();
+  constructor(private readonly showtimeService: ShowtimeService,
+              private readonly filterService: FilterService) {
+  }
+
+  ngOnInit(): void {
     this.getShowtimes();
   }
 
-  getCity(): string {
-    return localStorage.getItem('city') ?? '';
+  get City(): string {
+    return this.filterService.filterForShowtimes.city;
   }
 
   calculateMovieIndent(movieList: HTMLElement): void {
     this.movieIndent = Math.trunc((movieList.clientWidth / movieOuterWidth));
+
+    if (this.filteredMovies.length - this.movieIndent < 0) {
+      this.movieIndent = this.filteredMovies.length;
+    }
   }
 
   moveRight(movieList: HTMLElement): void {
@@ -58,9 +69,15 @@ export class ShowtimesSliderComponent {
   private filterMovies(showtimes: ShowtimeModel[]): void {
     const movies: MovieModel[] = [];
     for (const sh of showtimes) {
-      const index: number = movies.indexOf(sh.movie);
-      if (index !== -1) {
-        movies[index].showtimes?.push(sh);
+      const idMovie: number = sh.movie.id;
+      let foundMovie = null;
+      for (const movie of movies) {
+        if (movie.id === idMovie) {
+          foundMovie = movie;
+        }
+      }
+      if (foundMovie) {
+        foundMovie.showtimes?.push(sh);
       }
       else {
         movies.push(sh.movie);
@@ -69,12 +86,6 @@ export class ShowtimesSliderComponent {
       }
     }
     this.filteredMovies = movies;
-  }
-
-  private clearFilter(): void {
-    localStorage.removeItem('cinemaName');
-    localStorage.removeItem('movieTitle');
-    localStorage.removeItem('endTime');
-    localStorage.removeItem('numberOfFreeSeats');
+    this.calculateMovieIndent(this.movieList!);
   }
 }

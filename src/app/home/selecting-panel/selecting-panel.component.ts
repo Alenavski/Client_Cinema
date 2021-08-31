@@ -1,4 +1,5 @@
 import { Component, EventEmitter, Output } from '@angular/core';
+import { FilterService } from '@service/filter.service';
 
 @Component({
   selector: 'app-selecting-panel',
@@ -6,13 +7,13 @@ import { Component, EventEmitter, Output } from '@angular/core';
   styleUrls: ['./selecting-panel.component.less']
 })
 export class SelectingPanelComponent {
-  @Output() filterChanged = new EventEmitter();
+  @Output() filterChanged: EventEmitter<void> = new EventEmitter<void>();
 
   timeFrom: string;
   timeTo: string = '';
   numberOfFreeSeats: number = 1;
 
-  constructor() {
+  constructor(private readonly filterService: FilterService) {
     const from = new Date();
     this.timeFrom = from.getHours().toString() + ':00';
     this.saveStartTime();
@@ -34,14 +35,14 @@ export class SelectingPanelComponent {
   }
 
   private saveStartTime(): void {
-    localStorage.setItem('startTime', this.timeFrom);
+    this.filterService.setStartTime(this.timeFrom);
   }
 
   private saveEndTime(): void {
-    localStorage.setItem('endTime', this.timeTo);
+    this.filterService.setEndTime(this.timeTo);
   }
 
   private saveNumberOfFreeSeats(): void {
-    localStorage.setItem('numberOfFreeSeats', this.numberOfFreeSeats.toString());
+    this.filterService.setNumberOfFreeSeats(this.numberOfFreeSeats);
   }
 }

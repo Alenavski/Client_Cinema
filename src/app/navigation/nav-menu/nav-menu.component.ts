@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
+import { FilterService } from '@service/filter.service';
 import { SelectCityComponent } from '../select-city/select-city.component';
 import { AuthModalComponent } from '@app/authentication/auth-modal/auth-modal.component';
 
@@ -14,7 +15,8 @@ export class NavMenuComponent {
 
   constructor(
     public dialogCity: MatDialog,
-    public dialogAuth: MatDialog
+    public dialogAuth: MatDialog,
+    private filterService: FilterService
   ) {
     this.saveCity();
   }
@@ -26,8 +28,8 @@ export class NavMenuComponent {
     });
     dialogRef.afterClosed().subscribe((result: string) => {
       this.location = result;
+      this.saveCity();
     });
-    this.saveCity();
   }
 
   openDialogAuth(): void {
@@ -40,6 +42,6 @@ export class NavMenuComponent {
   }
 
   private saveCity(): void {
-    localStorage.setItem('city', this.location);
+    this.filterService.setCity(this.location);
   }
 }

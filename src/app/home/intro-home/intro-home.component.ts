@@ -1,5 +1,6 @@
 import { Component, EventEmitter, Output } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
+import { FilterService } from '@service/filter.service';
 
 @Component({
   selector: 'app-intro-home',
@@ -7,12 +8,15 @@ import { FormControl, FormGroup } from '@angular/forms';
   styleUrls: ['./intro-home.component.less']
 })
 export class IntroHomeComponent {
-  @Output() filterChanged = new EventEmitter();
+  @Output() filterChanged: EventEmitter<void> = new EventEmitter<void>();
 
   introForm = new FormGroup({
     cinema: new FormControl(''),
     film: new FormControl('')
   });
+
+  constructor(private readonly filterService: FilterService) {
+  }
 
   onSearchClick(): void {
     this.saveCinema();
@@ -21,11 +25,11 @@ export class IntroHomeComponent {
   }
 
   private saveCinema(): void {
-    localStorage.setItem('cinemaName', this.introForm.get('cinema')?.value);
+    this.filterService.setCinema(this.introForm.get('cinema')?.value);
   }
 
   private saveMovie(): void {
-    localStorage.setItem('movieTitle', this.introForm.get('film')?.value);
+    this.filterService.setMovie(this.introForm.get('film')?.value);
   }
 }
 

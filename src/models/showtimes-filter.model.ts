@@ -1,11 +1,9 @@
-import { Time } from '@angular/common';
-
 export interface ShowtimesFilterModel {
   cinemaName: string,
   movieTitle: string,
   city: string,
   date: Date,
-  startTime: Time,
-  endTime: Time,
+  startTime: string,
+  endTime: string,
   numberOfFreeSeats: number
 }

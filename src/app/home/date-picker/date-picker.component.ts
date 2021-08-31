@@ -2,6 +2,7 @@ import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { MatDatepickerInputEvent } from '@angular/material/datepicker';
 import { DaysOfWeek } from '@models/days-of-week';
 import { Months } from '@models/months';
+import { FilterService } from '@service/filter.service';
 
 const dayCount: number = 30;
 const msecsInDay: number = 86400000;
@@ -12,13 +13,13 @@ const msecsInDay: number = 86400000;
   styleUrls: ['./date-picker.component.less']
 })
 export class DatePickerComponent implements OnInit {
-  @Output() filterChanged = new EventEmitter();
+  @Output() filterChanged: EventEmitter<void> = new EventEmitter<void>();
 
   dates: Date[] = [];
   currentDay: Date;
   selectedDay: Date;
 
-  constructor() {
+  constructor(private readonly filterService: FilterService) {
     this.currentDay = new Date();
     this.selectedDay = this.currentDay;
     this.saveSelectedDate();
@@ -82,6 +83,6 @@ export class DatePickerComponent implements OnInit {
   }
 
   private saveSelectedDate(): void {
-    localStorage.setItem('date', this.selectedDay.toString());
+    this.filterService.setDate(this.selectedDay);
   }
 }
