@@ -25,9 +25,10 @@ export class ShowtimeService {
     const errorHandler = ErrorHandlerFactory(this.snackBarService);
 
     const options = {
-      params: new HttpParams()
+      params: new HttpParams({
+        fromObject: { ...filter }
+      })
     };
-    options.params.appendAll({ ...filter });
 
     return this.httpClient.get<MovieModel[]>(`${environment.hostURL}showtimes`, options)
       .pipe(
