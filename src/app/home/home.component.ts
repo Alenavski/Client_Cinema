@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 
 import { MovieModel } from '@models/movie.model';
@@ -10,7 +10,7 @@ import { ShowtimeService } from '@service/showtime.service';
   selector: 'app-home',
   templateUrl: './home.component.html',
 })
-export class HomeComponent implements OnInit {
+export class HomeComponent implements OnInit, OnDestroy {
   movies: Array<MovieModel> = [];
 
   constructor(
@@ -36,5 +36,15 @@ export class HomeComponent implements OnInit {
         this.movies = movies;
       });
     });
+
+    this.activatedRoute.queryParams.subscribe(
+      params => {
+        this.filterService.filterForShowtimes = Object.assign(this.filterService.filterForShowtimes, params);
+      }
+    );
+  }
+
+  public ngOnDestroy(): void {
+    this.filterService.removeFilterChangeTracking();
   }
 }
