@@ -26,7 +26,7 @@ export class ShowtimeService {
 
     const options = {
       params: new HttpParams({
-        fromObject: { ...filter }
+        fromObject: { ...this.removeEmpty(filter) }
       })
     };
 
@@ -34,5 +34,9 @@ export class ShowtimeService {
       .pipe(
         catchError(errorHandler)
       );
+  }
+
+  private removeEmpty(filter: ShowtimesFilterModel): ShowtimesFilterModel {
+    return Object.fromEntries(Object.entries(filter).filter(([_, v]) => v != null)) as ShowtimesFilterModel;
   }
 }

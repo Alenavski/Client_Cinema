@@ -5,6 +5,7 @@ import { MovieModel } from '@models/movie.model';
 
 import { FilterService } from '@service/filter.service';
 import { ShowtimeService } from '@service/showtime.service';
+import { ShowtimesFilterModel } from '@models/showtimes-filter.model';
 
 @Component({
   selector: 'app-home',
@@ -32,19 +33,20 @@ export class HomeComponent implements OnInit, OnDestroy {
     });
 
     this.filterService.onFilterChange(filter => {
-      this.service.getShowtimes(filter).subscribe(movies => {
-        this.movies = movies;
-      });
+      this.setShowtimes(filter);
     });
 
-    this.activatedRoute.queryParams.subscribe(
-      params => {
-        this.filterService.filterForShowtimes = Object.assign(this.filterService.filterForShowtimes, params);
-      }
-    );
+    this.filterService.filterForShowtimes = Object.assign(this.filterService.filterForShowtimes, this.activatedRoute.snapshot.queryParams);
+    this.setShowtimes(this.filterService.filterForShowtimes);
   }
 
   public ngOnDestroy(): void {
     this.filterService.removeFilterChangeTracking();
+  }
+
+  private setShowtimes(filter: ShowtimesFilterModel): void {
+    this.service.getShowtimes(filter).subscribe(movies => {
+      this.movies = movies;
+    });
   }
 }

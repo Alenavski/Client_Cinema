@@ -16,17 +16,17 @@ export class SelectingPanelComponent implements OnInit {
   constructor(
     private readonly filterService: FilterService
   ) {
-
   }
 
   ngOnInit(): void {
-    if (this.filterService.filterForShowtimes) {
+    if (this.filterService.filterForShowtimes.startTime
+      || this.filterService.filterForShowtimes.endTime
+      || this.filterService.filterForShowtimes.numberOfFreeSeats
+    ) {
       this.filter = Object.assign(this.filter, this.filterService.filterForShowtimes);
-    }
-    else {
-      this.filter.startTime = moment().format('hh:mm');
+    } else {
+      this.filter.startTime = moment().format('HH:mm');
       this.filter.numberOfFreeSeats = 1;
-      this.filterService.updateFilter(this.filter);
     }
   }
 

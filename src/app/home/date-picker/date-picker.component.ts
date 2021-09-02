@@ -34,9 +34,6 @@ export class DatePickerComponent implements OnInit {
     for (let i = 0; i < dayCount; i++) {
       this.dates.push(this.getTomorrow(this.dates[this.dates.length - 1]));
     }
-    const filter: ShowtimesFilterModel = { date: this.selectedDay.toDateString() };
-
-    this.filterService.updateFilter(filter);
   }
 
   dateFilter = (d: Date | null): boolean => {

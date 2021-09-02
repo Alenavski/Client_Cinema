@@ -7,6 +7,7 @@ import { ShowtimeModel } from '@models/showtime.model';
 import { FilterService } from '@service/filter.service';
 
 const movieOuterWidth: number = 400;
+const countOfDisplayedCharacters: number = 100;
 
 @Component({
   selector: 'app-showtimes-slider',
@@ -28,6 +29,10 @@ export class ShowtimesSliderComponent {
 
   get City(): string {
     return this.filterService.filterForShowtimes.city ?? 'all cities';
+  }
+
+  makeMovieDescription(description: string): string {
+    return description.substring(0, countOfDisplayedCharacters) + '...';
   }
 
   calculateMovieIndent(movieList: HTMLElement): void {

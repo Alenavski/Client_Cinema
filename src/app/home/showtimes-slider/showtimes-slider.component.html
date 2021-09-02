@@ -23,7 +23,7 @@
           >
           <div class="movie-info" #info>
             <h1 class="movie-title">{{movie.title}}</h1>
-            <p class="description">{{movie.description}}</p>
+            <p class="description">{{makeMovieDescription(movie.description)}}</p>
             <p class="showtime-title">Showtimes:</p>
             <div class="showtime" *ngFor="let showtime of movie.showtimes">
               <p
