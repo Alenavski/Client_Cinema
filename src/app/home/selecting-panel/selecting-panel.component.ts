@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import * as moment from 'moment';
 
 import { FilterService } from '@service/filter.service';
 
@@ -11,40 +11,23 @@ import { ShowtimesFilterModel } from '@models/showtimes-filter.model';
   styleUrls: ['./selecting-panel.component.less']
 })
 export class SelectingPanelComponent implements OnInit {
-  readonly filter: ShowtimesFilterModel = {};
+  filter: ShowtimesFilterModel = {};
 
   constructor(
-    private readonly filterService: FilterService,
-    private readonly activatedRoute: ActivatedRoute
+    private readonly filterService: FilterService
   ) {
-    const from = new Date();
-    this.filter.startTime = from.getHours().toString() + ':00';
-    this.filter.numberOfFreeSeats = 1;
 
-    this.filterService.updateFilter(this.filter);
   }
 
   ngOnInit(): void {
-    this.activatedRoute.queryParams.subscribe(
-      params => {
-        let needToUpdate = false;
-        if (params.startTime) {
-          this.filter.startTime = params.startTime as string;
-          needToUpdate = true;
-        }
-        if (params.endTime) {
-          this.filter.endTime = params.endTime as string;
-          needToUpdate = true;
-        }
-        if (params.numberOfFreeSeats) {
-          this.filter.numberOfFreeSeats = params.numberOfFreeSeats as number;
-          needToUpdate = true;
-        }
-        if (needToUpdate) {
-          this.filterService.updateFilter(this.filter);
-        }
-      }
-    );
+    if (this.filterService.filterForShowtimes) {
+      this.filter = Object.assign(this.filter, this.filterService.filterForShowtimes);
+    }
+    else {
+      this.filter.startTime = moment().format('hh:mm');
+      this.filter.numberOfFreeSeats = 1;
+      this.filterService.updateFilter(this.filter);
+    }
   }
 
   onFilterChange(): void {
