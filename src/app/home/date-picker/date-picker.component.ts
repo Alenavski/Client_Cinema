@@ -1,7 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { MatDatepickerInputEvent } from '@angular/material/datepicker';
-import { DaysOfWeek } from '@models/days-of-week';
-import { Months } from '@models/months';
+
+import { ShowtimesFilterModel } from '@models/showtimes-filter.model';
+
+import { FilterService } from '@service/filter.service';
+import * as moment from 'moment';
 
 const dayCount: number = 30;
 const msecsInDay: number = 86400000;
@@ -16,13 +19,18 @@ export class DatePickerComponent implements OnInit {
   currentDay: Date;
   selectedDay: Date;
 
-  constructor() {
+  constructor(
+    private readonly filterService: FilterService
+  ) {
     this.currentDay = new Date();
     this.selectedDay = this.currentDay;
   }
 
   ngOnInit(): void {
-    this.dates.push(this.currentDay);
+    if (this.filterService.filterForShowtimes.date) {
+      this.selectedDay = new Date(this.filterService.filterForShowtimes.date);
+    }
+    this.dates.push(this.selectedDay);
     for (let i = 0; i < dayCount; i++) {
       this.dates.push(this.getTomorrow(this.dates[this.dates.length - 1]));
     }
@@ -33,12 +41,12 @@ export class DatePickerComponent implements OnInit {
     return day >= new Date(this.currentDay.getTime() - msecsInDay);
   };
 
-  public displayMonth(indexOfMonth: number): string {
-    return Months[indexOfMonth];
+  public displayMonth(date: Date): string {
+    return moment(date).format('MMMM');
   }
 
-  public displayDayOfWeek(indexOfDay: number): string {
-    return DaysOfWeek[indexOfDay];
+  public displayDayOfWeek(date: Date): string {
+    return moment(date).format('ddd');
   }
 
   public needToDisplayMonth(day: Date): boolean {
@@ -47,17 +55,24 @@ export class DatePickerComponent implements OnInit {
 
   public onDateClick(selectedDate: Date): void {
     this.selectedDay = selectedDate;
-    this.setDates(this.selectedDay);
+    this.updateDates(this.selectedDay);
   }
 
   public onBackArrowClick(): void {
     this.selectedDay = this.currentDay;
-    this.setDates(this.currentDay);
+    this.updateDates(this.currentDay);
   }
 
   public onDateChange(event: MatDatepickerInputEvent<Date>): void {
     this.selectedDay = event.value ?? this.currentDay;
-    this.setDates(this.selectedDay);
+    this.updateDates(this.selectedDay);
+  }
+
+  private updateDates(date: Date): void {
+    this.setDates(date);
+
+    const filter: ShowtimesFilterModel = { date: date.toDateString() };
+    this.filterService.updateFilter(filter);
   }
 
   private getTomorrow(today: Date): Date {

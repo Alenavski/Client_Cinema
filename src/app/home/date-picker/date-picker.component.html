@@ -9,7 +9,7 @@
         class="month"
         *ngIf="needToDisplayMonth(day)"
       >
-        {{displayMonth(day.getMonth())}}
+        {{displayMonth(day)}}
       </span>
       <button
         class="button"
@@ -17,7 +17,7 @@
         (click)="onDateClick(day)"
       >
         <p>{{day.getDate()}}</p>
-        <p>{{displayDayOfWeek(day.getDay())}}</p>
+        <p>{{displayDayOfWeek(day)}}</p>
       </button>
     </div>
     <div class="datepicker">

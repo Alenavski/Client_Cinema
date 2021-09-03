@@ -1,17 +1,36 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
+import * as moment from 'moment';
+
+import { FilterService } from '@service/filter.service';
+
+import { ShowtimesFilterModel } from '@models/showtimes-filter.model';
 
 @Component({
   selector: 'app-selecting-panel',
   templateUrl: './selecting-panel.component.html',
   styleUrls: ['./selecting-panel.component.less']
 })
-export class SelectingPanelComponent {
-  timeFrom: string;
-  timeTo: string = '';
-  numberOfFreeSeats: number = 1;
+export class SelectingPanelComponent implements OnInit {
+  filter: ShowtimesFilterModel = {};
 
-  constructor() {
-    const from = new Date();
-    this.timeFrom = from.getHours().toString() + ':00';
+  constructor(
+    private readonly filterService: FilterService
+  ) {
+  }
+
+  ngOnInit(): void {
+    if (this.filterService.filterForShowtimes.startTime
+      || this.filterService.filterForShowtimes.endTime
+      || this.filterService.filterForShowtimes.numberOfFreeSeats
+    ) {
+      this.filter = Object.assign(this.filter, this.filterService.filterForShowtimes);
+    } else {
+      this.filter.startTime = moment().format('HH:mm');
+      this.filter.numberOfFreeSeats = 1;
+    }
+  }
+
+  onFilterChange(): void {
+    this.filterService.updateFilter(this.filter);
   }
 }

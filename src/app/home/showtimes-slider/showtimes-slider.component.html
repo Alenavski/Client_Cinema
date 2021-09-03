@@ -1,0 +1,57 @@
+<div>
+  <div class="container">
+    <h1 class="title">Showtimes in {{City}}</h1>
+    <div class="slider">
+      <i
+        class="fas fa-chevron-left left icon"
+        *ngIf="sliderIndex !== 0"
+        (click)="moveLeft(movieList)"
+      ></i>
+      <div class="movie-list" #movieList>
+        <div
+          class="movie"
+          *ngFor="let movie of filteredMovies"
+          (mouseenter)="info.classList.add('focused')"
+          (mouseleave)="info.classList.remove('focused')"
+        >
+          <img
+            height="450"
+            width="300"
+            src="data:image/png;base64,{{movie.poster}}"
+            onerror="this.src='../../assets/poster.png';"
+            alt=""
+          >
+          <div class="movie-info" #info>
+            <h1 class="movie-title">{{movie.title}}</h1>
+            <p class="description">{{makeMovieDescription(movie.description)}}</p>
+            <p class="showtime-title">Showtimes:</p>
+            <div class="showtime" *ngFor="let showtime of movie.showtimes">
+              <p
+                class="time"
+                (mouseenter)="list.classList.add('focused')"
+                (mouseleave)="list.classList.remove('focused')"
+              >
+                {{showtime.time.hours}}:{{showtime.time.minutes < 10 ? '0':''}}{{showtime.time.minutes}}
+              </p>
+              <div class="cinema-list" #list>
+                Cinemas:
+                <div
+                  class="cinema"
+                  *ngFor="let cinema of getCinemasOfMovieAndTime(movie, showtime.time)"
+                >
+                  <hr>
+                  "{{cinema.name}}"
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <i
+        class="fas fa-chevron-right right icon"
+        *ngIf="sliderIndex <= filteredMovies.length - movieIndent"
+        (click)="moveRight(movieList)"
+      ></i>
+    </div>
+  </div>
+</div>
