@@ -1,12 +1,16 @@
+import jwt_decode from 'jwt-decode';
+
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import jwt_decode from 'jwt-decode';
 import { catchError } from 'rxjs/operators';
+
 import { environment } from '../environments/environment';
-import { AuthModel } from '@models/auth.model';
 import { GetRole } from '@models/roles';
+
+import { AuthModel } from '@models/auth.model';
 import { TokenModel } from '@models/token.model';
 import { UserModel } from '@models/user.model';
+
 import { ErrorHandlerFactory } from '@tools/serviceTools';
 import { SnackBarService } from './snack-bar.service';
 
@@ -63,10 +67,13 @@ export class UserService {
     return status;
   }
 
-  public getUserModel(): UserModel {
-    const decoded: TokenModel = jwt_decode(this.getToken());
+  public getUserModel(): UserModel | null {
+    if (!this.getToken()) {
+      return null;
+    }
+    const decoded: TokenModel = jwt_decode(this.getToken()!);
     return {
-      token: localStorage.getItem('token')!,
+      token: this.getToken()!,
       id: Number(decoded[Token.id]),
       role: GetRole(decoded[Token.role])
     };
@@ -76,7 +83,7 @@ export class UserService {
     localStorage.setItem('token', token);
   }
 
-  private getToken(): string {
-    return localStorage.getItem('token')!;
+  private getToken(): string | null {
+    return localStorage.getItem('token');
   }
 }

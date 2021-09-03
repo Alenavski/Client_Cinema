@@ -1,10 +1,11 @@
+import * as moment from 'moment';
+
 import { Component, OnInit } from '@angular/core';
 import { MatDatepickerInputEvent } from '@angular/material/datepicker';
 
 import { ShowtimesFilterModel } from '@models/showtimes-filter.model';
 
 import { FilterService } from '@service/filter.service';
-import * as moment from 'moment';
 
 const dayCount: number = 30;
 const msecsInDay: number = 86400000;
