@@ -1,14 +1,19 @@
+import jwt_decode from 'jwt-decode';
+
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import jwt_decode from 'jwt-decode';
 import { catchError } from 'rxjs/operators';
+
 import { environment } from '../environments/environment';
+
 import { AuthModel } from '@models/auth.model';
-import { GetRole } from '@models/roles';
 import { TokenModel } from '@models/token.model';
 import { UserModel } from '@models/user.model';
+
 import { ErrorHandlerFactory } from '@tools/serviceTools';
 import { SnackBarService } from './snack-bar.service';
+
+import { Nullable } from '@tools/utilityTypes';
 
 const enum Token {
   role = 'http://schemas.microsoft.com/ws/2008/06/identity/claims/role',
@@ -63,12 +68,18 @@ export class UserService {
     return status;
   }
 
-  public getUserModel(): UserModel {
-    const decoded: TokenModel = jwt_decode(this.getToken());
+  public getUserModel(): Nullable<UserModel> {
+    const token = this.getToken();
+
+    if (!token) {
+      return null;
+    }
+
+    const decoded: TokenModel = jwt_decode(token);
     return {
-      token: localStorage.getItem('token')!,
+      token: token,
       id: Number(decoded[Token.id]),
-      role: GetRole(decoded[Token.role])
+      role: decoded[Token.role]
     };
   }
 
@@ -76,7 +87,7 @@ export class UserService {
     localStorage.setItem('token', token);
   }
 
-  private getToken(): string {
-    return localStorage.getItem('token')!;
+  private getToken(): Nullable<string> {
+    return localStorage.getItem('token');
   }
 }

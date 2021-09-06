@@ -2,10 +2,12 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 
 import { MovieModel } from '@models/movie.model';
+import { Roles } from '@models/roles';
+import { ShowtimesFilterModel } from '@models/showtimes-filter.model';
 
 import { FilterService } from '@service/filter.service';
 import { ShowtimeService } from '@service/showtime.service';
-import { ShowtimesFilterModel } from '@models/showtimes-filter.model';
+import { UserService } from '@service/user.service';
 
 @Component({
   selector: 'app-home',
@@ -14,11 +16,16 @@ import { ShowtimesFilterModel } from '@models/showtimes-filter.model';
 export class HomeComponent implements OnInit, OnDestroy {
   movies: Array<MovieModel> = [];
 
+  public get needToDisplayAdminForm(): boolean {
+    return this.isAdmin();
+  }
+
   constructor(
     private readonly router: Router,
     private readonly activatedRoute: ActivatedRoute,
     private readonly filterService: FilterService,
-    private readonly service: ShowtimeService
+    private readonly showtimeService: ShowtimeService,
+    private readonly userService: UserService
   ) {
   }
 
@@ -44,8 +51,16 @@ export class HomeComponent implements OnInit, OnDestroy {
     this.filterService.removeFilterChangeTracking();
   }
 
+  private isAdmin(): boolean {
+    const user = this.userService.getUserModel();
+    if (user) {
+      return user.role === Roles.Admin;
+    }
+    return false;
+  }
+
   private setShowtimes(filter: ShowtimesFilterModel): void {
-    this.service.getShowtimes(filter).subscribe(movies => {
+    this.showtimeService.getShowtimes(filter).subscribe(movies => {
       this.movies = movies;
     });
   }

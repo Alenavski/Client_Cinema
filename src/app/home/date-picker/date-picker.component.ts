@@ -1,10 +1,13 @@
+import * as moment from 'moment';
+
 import { Component, OnInit } from '@angular/core';
 import { MatDatepickerInputEvent } from '@angular/material/datepicker';
 
 import { ShowtimesFilterModel } from '@models/showtimes-filter.model';
 
 import { FilterService } from '@service/filter.service';
-import * as moment from 'moment';
+
+import { Nullable } from '@tools/utilityTypes';
 
 const dayCount: number = 30;
 const msecsInDay: number = 86400000;
@@ -26,7 +29,7 @@ export class DatePickerComponent implements OnInit {
     this.selectedDay = this.currentDay;
   }
 
-  ngOnInit(): void {
+  public ngOnInit(): void {
     if (this.filterService.filterForShowtimes.date) {
       this.selectedDay = new Date(this.filterService.filterForShowtimes.date);
     }
@@ -36,7 +39,7 @@ export class DatePickerComponent implements OnInit {
     }
   }
 
-  dateFilter = (d: Date | null): boolean => {
+  public dateFilter = (d: Nullable<Date>): boolean => {
     const day = (d ?? new Date());
     return day >= new Date(this.currentDay.getTime() - msecsInDay);
   };
