@@ -68,12 +68,15 @@ export class UserService {
   }
 
   public getUserModel(): UserModel | null {
-    if (!this.getToken()) {
+    const token = this.getToken();
+
+    if (!token) {
       return null;
     }
-    const decoded: TokenModel = jwt_decode(this.getToken()!);
+
+    const decoded: TokenModel = jwt_decode(token);
     return {
-      token: this.getToken()!,
+      token: token,
       id: Number(decoded[Token.id]),
       role: GetRole(decoded[Token.role])
     };

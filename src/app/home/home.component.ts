@@ -47,7 +47,7 @@ export class HomeComponent implements OnInit, OnDestroy {
     this.filterService.removeFilterChangeTracking();
   }
 
-  public needToDisplayAdminForm(): boolean {
+  public get needToDisplayAdminForm(): boolean {
     return this.isAdmin();
   }
 
