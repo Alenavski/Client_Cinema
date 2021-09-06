@@ -7,7 +7,7 @@ export function  ErrorHandlerFactory(
   snackBarService: SnackBarService
 ) {
   return (httpErrorResponse: HttpErrorResponse) => {
-    const message: string | null = httpErrorResponse.error.message;
+    const message: Nullable<string> = httpErrorResponse.error.message;
     if (message) {
       snackBarService.showMessage(message);
     }
@@ -17,3 +17,6 @@ export function  ErrorHandlerFactory(
     return throwError(message);
   };
 }
+
+export type Nullable<T> = T | null;
+export type Optional<T> = T | undefined;

@@ -5,13 +5,12 @@ import { Injectable } from '@angular/core';
 import { catchError } from 'rxjs/operators';
 
 import { environment } from '../environments/environment';
-import { GetRole } from '@models/roles';
 
 import { AuthModel } from '@models/auth.model';
 import { TokenModel } from '@models/token.model';
 import { UserModel } from '@models/user.model';
 
-import { ErrorHandlerFactory } from '@tools/serviceTools';
+import { ErrorHandlerFactory, Nullable } from '@tools/serviceTools';
 import { SnackBarService } from './snack-bar.service';
 
 const enum Token {
@@ -67,7 +66,7 @@ export class UserService {
     return status;
   }
 
-  public getUserModel(): UserModel | null {
+  public getUserModel(): Nullable<UserModel> {
     const token = this.getToken();
 
     if (!token) {
@@ -78,7 +77,7 @@ export class UserService {
     return {
       token: token,
       id: Number(decoded[Token.id]),
-      role: GetRole(decoded[Token.role])
+      role: decoded[Token.role]
     };
   }
 
@@ -86,7 +85,7 @@ export class UserService {
     localStorage.setItem('token', token);
   }
 
-  private getToken(): string | null {
+  private getToken(): Nullable<string> {
     return localStorage.getItem('token');
   }
 }
