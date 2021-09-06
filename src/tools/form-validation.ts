@@ -1,5 +1,5 @@
 import { AbstractControl, ValidationErrors, ValidatorFn } from '@angular/forms';
-import { Nullable } from '@tools/serviceTools';
+import { Nullable } from '@tools/utilityTypes';
 
 export function confirmValidator(matchingForm: Nullable<AbstractControl>): ValidatorFn {
   return (control: AbstractControl): Nullable<ValidationErrors> => {

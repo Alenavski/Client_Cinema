@@ -2,6 +2,7 @@ import { HttpErrorResponse } from '@angular/common/http';
 import { throwError } from 'rxjs';
 import { environment } from '../environments/environment';
 import { SnackBarService } from '@service/snack-bar.service';
+import { Nullable } from '@tools/utilityTypes';
 
 export function  ErrorHandlerFactory(
   snackBarService: SnackBarService
@@ -17,6 +18,3 @@ export function  ErrorHandlerFactory(
     return throwError(message);
   };
 }
-
-export type Nullable<T> = T | null;
-export type Optional<T> = T | undefined;

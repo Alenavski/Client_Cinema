@@ -7,7 +7,7 @@ import { ShowtimesFilterModel } from '@models/showtimes-filter.model';
 
 import { FilterService } from '@service/filter.service';
 
-import { Nullable } from '@tools/serviceTools';
+import { Nullable } from '@tools/utilityTypes';
 
 const dayCount: number = 30;
 const msecsInDay: number = 86400000;

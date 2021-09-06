@@ -10,8 +10,10 @@ import { AuthModel } from '@models/auth.model';
 import { TokenModel } from '@models/token.model';
 import { UserModel } from '@models/user.model';
 
-import { ErrorHandlerFactory, Nullable } from '@tools/serviceTools';
+import { ErrorHandlerFactory } from '@tools/serviceTools';
 import { SnackBarService } from './snack-bar.service';
+
+import { Nullable } from '@tools/utilityTypes';
 
 const enum Token {
   role = 'http://schemas.microsoft.com/ws/2008/06/identity/claims/role',

@@ -1,6 +1,6 @@
 import { Component, Input, ViewChild } from '@angular/core';
 import { Time } from '@angular/common';
-import { Optional } from '@tools/serviceTools';
+import { Optional } from '@tools/utilityTypes';
 
 import { CinemaModel } from '@models/cinema.model';
 import { MovieModel } from '@models/movie.model';
@@ -19,7 +19,7 @@ const countOfDisplayedCharacters: number = 100;
 export class ShowtimesSliderComponent {
   @Input() filteredMovies: MovieModel[] = [];
 
-  @ViewChild('movieList') movieList: Optional<HTMLElement>;
+  @ViewChild('movieList') movieList?: HTMLElement;
 
   sliderIndex = 0;
   movieIndent = 1;
@@ -58,7 +58,8 @@ export class ShowtimesSliderComponent {
   }
 
   public getCinemasOfMovieAndTime(movie: MovieModel, time: Time): CinemaModel[] {
-    const cinemas: Optional<CinemaModel[]> = movie.showtimes?.filter((showtime: ShowtimeModel) => showtime.time == time).map((showtime: ShowtimeModel) => showtime.hall.cinema);
+    const cinemas: Optional<CinemaModel[]> = movie.showtimes?.filter((showtime: ShowtimeModel) => showtime.time == time)
+      .map((showtime: ShowtimeModel) => showtime.hall.cinema);
     return cinemas ? cinemas : [];
   }
 }
