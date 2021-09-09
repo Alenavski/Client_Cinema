@@ -4,6 +4,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { HttpClientModule } from '@angular/common/http';
 
 import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { CinemaModule } from '@app/cinema/cinema.module';
 
 import { AuthenticationModule } from './authentication/authentication.module';
 import { HomeModule } from './home/home.module';
@@ -26,10 +27,11 @@ import { AppRoutingModule } from './app-routing.module';
     BrowserModule,
     BrowserAnimationsModule,
     HttpClientModule,
+    MatSnackBarModule,
     AuthenticationModule,
     HomeModule,
     NavigationModule,
-    MatSnackBarModule
+    CinemaModule
   ],
   providers: [
     UserService,
