@@ -1,15 +1,138 @@
-.container {
-  padding-top: 100px;
-  width: 85%;
-  margin: 0 auto;
+@import "../../color-schema";
 
-  img {
-    float: left;
-    border-radius: 5%;
-    margin: 0 20px;
+.main-container {
+  padding-top: 100px;
+  display: flex;
+  width: 95%;
+  margin: 0 auto;
+}
+
+.list-container {
+  box-shadow: 0 .25rem .75rem rgba(0, 0, 0, .25);
+  margin-right: 75px;
+
+  .cinema-item {
+    padding: 10px 25px;
+    border: 1px solid lightgray;
+
+    .link {
+      padding: 20px;
+      font-size: 24px;
+      cursor: pointer;
+      display: flex;
+      color: @main-blue;
+
+      i {
+        font-size: 19px;
+        margin-left: 10px;
+      }
+    }
+
+    .halls {
+      margin: 0;
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height ease-in 1.5s;
+      cursor: pointer;
+      text-decoration: underline;
+
+      &.expanded {
+        max-height: 500px;
+      }
+    }
+
+    .hall {
+      font-size: 20px;
+    }
   }
 }
 
-.cinema-info {
-  margin: 10px 0;
+.cinema-container {
+  font-family: Verdana, fantasy;
+  font-size: 20px;
+  width: 60%;
+
+  .page {
+    box-shadow: 0 .25rem .75rem rgba(0, 0, 0, .25);
+    min-height: 300px;
+    display: flex;
+
+    .poster {
+      overflow: hidden;
+      border-radius: 15%;
+      margin: 25px;
+      width: 250px;
+      height: 250px;
+      position: relative;
+
+      .icon {
+        width: 250px;
+        height: 250px;
+        background: linear-gradient(to bottom, transparent, rgba(0,0,0, 0.2) 5%, rgba(0,0,0, 0.2));
+        position: absolute;
+        bottom: -250px;
+        left: 0;
+        transition: bottom 1s;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        i {
+          font-size: 100px;
+          color: rgba(255,255,255, 0.6);
+          text-align: center;
+        }
+
+        &.focused {
+          bottom: 0;
+        }
+      }
+    }
+  }
+}
+
+.input-field {
+  width: 100%;
+  border: 0;
+  border-bottom: 2px solid lightgray;
+  outline: none;
+  text-transform: uppercase;
+  margin-top: 30px;
+  display: block;
+
+  &:hover,
+  &:focus {
+    border-bottom: 2px solid @dark-blue;
+  }
+}
+
+.name-field {
+  font-size: 30px;
+}
+
+.address-field {
+  font-size: 24px;
+  text-transform: none;
+}
+
+.add-new {
+  text-align: center;
+  cursor: pointer;
+  color: @main-blue;
+  font-size: 20px;
+
+  i {
+    margin-left: 5px;
+  }
+}
+
+.button-apply {
+  font-size: 20px;
+  margin: 20px 0;
+  color: @dark-blue;
+}
+
+.error {
+  color: red;
+  font-size: 15px;
 }

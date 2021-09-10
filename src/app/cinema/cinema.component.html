@@ -1,14 +1,76 @@
-<div class="container">
-  <img
-    height="250"
-    width="250"
-    src="data:image/png;base64,{{Cinema.image}}"
-    onerror="this.src='../../assets/poster.png';"
-    alt=""
-  >
-  <div class="cinema-info">
-    <h1>{{Cinema.name}}</h1>
-    <h3>{{Cinema.city}}</h3>
-    <p>{{Cinema.address}}</p>
+<div class="main-container">
+  <div class="list-container">
+    <div class="cinema-item" *ngFor="let cinema of allCinemas">
+      <a class="link" (click)="toggle(halls)">
+        {{cinema.name}}
+        <i class="fas fa-pen"></i>
+        <i class="fas fa-trash"></i>
+      </a>
+      <ul class="halls" #halls>
+        <li class="hall" *ngFor="let hall of cinema.halls">
+          {{hall.name}}
+          <i class="fas fa-trash"></i>
+        </li>
+      </ul>
+    </div>
+    <div class="cinema-item add-new">
+      <span>Add new cinema</span>
+        <i class="fas fa-plus"></i>
+    </div>
+  </div>
+  <div class="cinema-container">
+    <div class="page">
+      <div
+        class="poster"
+        (mouseenter)="icon.classList.add('focused')"
+        (mouseleave)="icon.classList.remove('focused')"
+      >
+        <img
+          height="250"
+          width="250"
+          src="data:image/png;base64,{{cinema.image}}"
+          onerror="this.src='../../assets/poster.png';"
+          alt=""
+        >
+        <div class="icon" #icon>
+          <i class="fas fa-plus-circle"></i>
+        </div>
+      </div>
+      <div class="cinema-info" [formGroup]="cinemaForm">
+        <input
+          type="text"
+          class="input-field name-field"
+          formControlName="name"
+        >
+        <p class="error" *ngIf="!cinemaForm.get('name')?.valid">
+          Name is required.
+        </p>
+        <input
+          type="text"
+          class="input-field address-field"
+          formControlName="city"
+        >
+        <p class="error" *ngIf="!cinemaForm.get('city')?.valid">
+          City is required.
+        </p>
+        <input
+          type="text"
+          class="input-field address-field"
+          formControlName="address"
+        >
+        <p class="error" *ngIf="!cinemaForm.get('address')?.valid">
+          Address is too short.
+        </p>
+        <button
+          class="button-apply"
+          mat-button
+          [disabled]="!cinemaForm.valid"
+        >
+          Apply
+        </button>
+      </div>
+    </div>
   </div>
 </div>
+
+
