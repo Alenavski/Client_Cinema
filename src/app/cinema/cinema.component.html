@@ -1,0 +1,83 @@
+<div class="main-container">
+  <mat-accordion class="list-container">
+    <mat-expansion-panel
+      hideToggle
+      *ngFor="let cinema of allCinemas"
+    >
+      <mat-expansion-panel-header>
+        <mat-panel-title class="cinema-name">
+          {{cinema.name}}
+          <i class="fas fa-pen"></i>
+          <i class="fas fa-trash"></i>
+        </mat-panel-title>
+      </mat-expansion-panel-header>
+      <p *ngFor="let hall of cinema.halls">
+        {{hall.name}}
+        <i class="fas fa-trash"></i>
+      </p>
+    </mat-expansion-panel>
+    <button mat-raised-button class="add-new">
+      Add new cinema
+      <i class="fas fa-plus"></i>
+    </button>
+  </mat-accordion>
+
+  <div class="cinema-container">
+    <div class="page">
+      <div
+        class="poster"
+        (mouseenter)="icon.classList.add('focused')"
+        (mouseleave)="icon.classList.remove('focused')"
+      >
+        <img
+          height="250"
+          width="250"
+          src="data:image/png;base64,{{cinema.image}}"
+          onerror="this.src='../../assets/poster.png';"
+          alt=""
+        >
+        <div class="icon" #icon>
+          <i class="fas fa-plus-circle"></i>
+        </div>
+      </div>
+      <div class="cinema-info" [formGroup]="cinemaForm">
+        <input
+          type="text"
+          class="input-field name-field"
+          formControlName="name"
+        >
+        <p class="error" *ngIf="!cinemaForm.get('name')?.valid">
+          Name is required.
+        </p>
+        <input
+          type="text"
+          class="input-field address-field"
+          formControlName="city"
+        >
+        <p class="error" *ngIf="!cinemaForm.get('city')?.valid">
+          City is required.
+        </p>
+        <input
+          type="text"
+          class="input-field address-field"
+          formControlName="address"
+        >
+        <p class="error" *ngIf="!!cinemaForm.get('address')?.getError('minlength')">
+          Address is too short.
+        </p>
+        <p class="error" *ngIf="!!cinemaForm.get('address')?.getError('required')">
+          Address is required.
+        </p>
+        <button
+          class="button-apply"
+          mat-button
+          [disabled]="!cinemaForm.valid"
+        >
+          Apply
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
