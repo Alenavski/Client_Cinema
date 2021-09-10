@@ -51,13 +51,4 @@ export class CinemaComponent {
 
     this.allCinemas = [ this.cinema, this.cinema ];
   }
-
-  toggle(element: HTMLElement): void {
-    if (element.classList.contains('expanded')) {
-      element.classList.remove('expanded');
-    }
-    else {
-      element.classList.add('expanded');
-    }
-  }
 }

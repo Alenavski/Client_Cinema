@@ -1,23 +1,27 @@
 <div class="main-container">
-  <div class="list-container">
-    <div class="cinema-item" *ngFor="let cinema of allCinemas">
-      <a class="link" (click)="toggle(halls)">
-        {{cinema.name}}
-        <i class="fas fa-pen"></i>
-        <i class="fas fa-trash"></i>
-      </a>
-      <ul class="halls" #halls>
-        <li class="hall" *ngFor="let hall of cinema.halls">
-          {{hall.name}}
+  <mat-accordion class="list-container">
+    <mat-expansion-panel
+      hideToggle
+      *ngFor="let cinema of allCinemas"
+    >
+      <mat-expansion-panel-header>
+        <mat-panel-title class="cinema-name">
+          {{cinema.name}}
+          <i class="fas fa-pen"></i>
           <i class="fas fa-trash"></i>
-        </li>
-      </ul>
-    </div>
-    <div class="cinema-item add-new">
-      <span>Add new cinema</span>
-        <i class="fas fa-plus"></i>
-    </div>
-  </div>
+        </mat-panel-title>
+      </mat-expansion-panel-header>
+      <p *ngFor="let hall of cinema.halls">
+        {{hall.name}}
+        <i class="fas fa-trash"></i>
+      </p>
+    </mat-expansion-panel>
+    <button mat-raised-button class="add-new">
+      Add new cinema
+      <i class="fas fa-plus"></i>
+    </button>
+  </mat-accordion>
+
   <div class="cinema-container">
     <div class="page">
       <div
@@ -58,8 +62,11 @@
           class="input-field address-field"
           formControlName="address"
         >
-        <p class="error" *ngIf="!cinemaForm.get('address')?.valid">
+        <p class="error" *ngIf="!!cinemaForm.get('address')?.getError('minlength')">
           Address is too short.
+        </p>
+        <p class="error" *ngIf="!!cinemaForm.get('address')?.getError('required')">
+          Address is required.
         </p>
         <button
           class="button-apply"

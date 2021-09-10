@@ -11,40 +11,15 @@
   box-shadow: 0 .25rem .75rem rgba(0, 0, 0, .25);
   margin-right: 75px;
 
-  .cinema-item {
-    padding: 10px 25px;
-    border: 1px solid lightgray;
-
-    .link {
-      padding: 20px;
-      font-size: 24px;
-      cursor: pointer;
-      display: flex;
-      color: @main-blue;
-
-      i {
-        font-size: 19px;
-        margin-left: 10px;
-      }
-    }
-
-    .halls {
-      margin: 0;
-      max-height: 0;
-      overflow: hidden;
-      transition: max-height ease-in 1.5s;
-      cursor: pointer;
-      text-decoration: underline;
-
-      &.expanded {
-        max-height: 500px;
-      }
-    }
-
-    .hall {
-      font-size: 20px;
-    }
+  i {
+    font-size: 19px;
+    margin-left: 10px;
   }
+}
+
+.cinema-name {
+  color: @main-blue;
+  font-size: 25px;
 }
 
 .cinema-container {
@@ -117,9 +92,9 @@
 
 .add-new {
   text-align: center;
-  cursor: pointer;
   color: @main-blue;
-  font-size: 20px;
+  font-size: 18px;
+  width: 100%;
 
   i {
     margin-left: 5px;
@@ -129,7 +104,7 @@
 .button-apply {
   font-size: 20px;
   margin: 20px 0;
-  color: @dark-blue;
+  color: @main-blue;
 }
 
 .error {
