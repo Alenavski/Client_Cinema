@@ -1,0 +1,9 @@
+<div class="main-container">
+  <table>
+    <tr *ngFor="let i of range(size[0])">
+      <td *ngFor="let j of range(size[1])">
+        <button *ngIf="needToDisplay(i, j)">{{i}},{{j}}</button>
+      </td>
+    </tr>
+  </table>
+</div>

@@ -11,7 +11,10 @@
           <i class="fas fa-trash"></i>
         </mat-panel-title>
       </mat-expansion-panel-header>
-      <p *ngFor="let hall of cinema.halls">
+      <p
+        *ngFor="let hall of cinema.halls"
+        (click)="router.navigate(['/cinema/' + cinema.id + '/hall/' + hall.id])"
+      >
         {{hall.name}}
         <i class="fas fa-trash"></i>
       </p>
