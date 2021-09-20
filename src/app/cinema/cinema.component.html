@@ -7,7 +7,7 @@
       <mat-expansion-panel-header>
         <mat-panel-title class="cinema-name">
           {{cinema.name}}
-          <i class="fas fa-pen" (click)="navigateTo(cinema.id || 0)"></i>
+          <i class="fas fa-pen" (click)="navigateTo(cinema.id!)"></i>
           <i class="fas fa-trash" (click)="onDeleteCinemaClick(cinema.id)"></i>
         </mat-panel-title>
       </mat-expansion-panel-header>
@@ -19,7 +19,7 @@
     <button
       mat-raised-button
       class="add-new"
-      (click)="navigateTo(0)"
+      (click)="router.navigate(['cinema'])"
     >
       Add new cinema
       <i class="fas fa-plus"></i>
@@ -75,7 +75,7 @@
         <button
           class="button-apply"
           mat-button
-          [disabled]="!cinemaForm.valid || cinemaForm.valid && !cinemaForm.dirty"
+          [disabled]="!cinemaForm.valid || !cinemaForm.dirty"
           (click)="onApplyClick()"
         >
           Apply

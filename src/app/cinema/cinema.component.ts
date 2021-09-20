@@ -26,29 +26,28 @@ export class CinemaComponent implements OnInit {
 
   cinema: Nullable<CinemaModel> = null;
   allCinemas: CinemaModel[] = [];
-  currentId: number = 0;
+  currentId?: number;
 
   constructor(
     private readonly cinemaService: CinemaService,
     private readonly activatedRoute: ActivatedRoute,
-    public router: Router
+    public readonly router: Router
   ) {
   }
 
   public ngOnInit(): void {
-    this.activatedRoute.paramMap.subscribe(
-      (params: ParamMap) => {
-        this.currentId = Number(params.get('id'));
-        this.getCinema();
-      }
-    );
+    this.activatedRoute.paramMap
+      .subscribe(
+        (params: ParamMap) => {
+          this.currentId = Number(params.get('id'));
+          this.getCinema();
+        }
+      );
     this.getCinemaList();
   }
 
   public navigateTo(id: number): void {
-    this.currentId = id;
-    void this.router.navigate(['/cinema', id]);
-    this.getCinema();
+    void this.router.navigate(['/cinema/', id]);
   }
 
   public onApplyClick(): void {
@@ -58,49 +57,51 @@ export class CinemaComponent implements OnInit {
       address: this.cinemaForm.get('address')?.value
     };
     if (this.currentId) {
-      this.cinemaService.editCinema(Object.assign(this.cinema, newCinema)).subscribe(
-        () => {
-          this.getCinemaList();
-        }
-      );
-    }
-    else {
-      this.cinemaService.addCinema(newCinema).subscribe(
-        (id: number) => {
-          newCinema.id = id;
-          this.currentId = id;
-          this.allCinemas.push(newCinema);
-          this.navigateTo(id);
-        }
-      );
+      this.cinemaService.editCinema(Object.assign(this.cinema, newCinema))
+        .subscribe(
+          () => {
+            this.getCinemaList();
+          }
+        );
+    } else {
+      this.cinemaService.addCinema(newCinema)
+        .subscribe(
+          (id: number) => {
+            newCinema.id = id;
+            this.currentId = id;
+            this.allCinemas.push(newCinema);
+            this.navigateTo(id);
+          }
+        );
     }
   }
 
   public onDeleteCinemaClick(id?: number): void {
     if (id) {
-      this.cinemaService.deleteCinema(id).subscribe(
-        () => {
-          if (id === this.currentId) {
-            this.navigateTo(0);
+      this.cinemaService.deleteCinema(id)
+        .subscribe(
+          () => {
+            if (id === this.currentId) {
+              void this.router.navigate(['cinema']);
+            }
+            this.getCinemaList();
           }
-          this.getCinemaList();
-        }
-      );
+        );
     }
   }
 
   private getCinema(): void {
     if (this.currentId) {
-      this.cinemaService.getCinema(this.currentId).subscribe(
-        (cinema: CinemaModel) => {
-          this.cinema = cinema;
-          this.cinemaForm.get('name')?.setValue(cinema.name);
-          this.cinemaForm.get('city')?.setValue(cinema.city);
-          this.cinemaForm.get('address')?.setValue(cinema.address);
-        }
-      );
-    }
-    else {
+      this.cinemaService.getCinema(this.currentId)
+        .subscribe(
+          (cinema: CinemaModel) => {
+            this.cinema = cinema;
+            this.cinemaForm.get('name')?.setValue(cinema.name);
+            this.cinemaForm.get('city')?.setValue(cinema.city);
+            this.cinemaForm.get('address')?.setValue(cinema.address);
+          }
+        );
+    } else {
       this.cinema = null;
       this.cinemaForm.get('name')?.setValue('');
       this.cinemaForm.get('city')?.setValue('');
@@ -109,10 +110,11 @@ export class CinemaComponent implements OnInit {
   }
 
   private getCinemaList(): void {
-    this.cinemaService.getCinemas().subscribe(
-      (cinemas: CinemaModel[]) => {
-        this.allCinemas = cinemas;
-      }
-    );
+    this.cinemaService.getCinemas()
+      .subscribe(
+        (cinemas: CinemaModel[]) => {
+          this.allCinemas = cinemas;
+        }
+      );
   }
 }
