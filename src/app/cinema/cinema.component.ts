@@ -1,7 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, ParamMap, Router } from '@angular/router';
+
 import { CinemaModel } from '@models/cinema.model';
+
 import { CinemaService } from '@service/cinema.service';
 import { Nullable } from '@tools/utilityTypes';
 
@@ -12,16 +14,15 @@ import { Nullable } from '@tools/utilityTypes';
 })
 export class CinemaComponent implements OnInit {
   cinemaForm: FormGroup = new FormGroup({
-    name: new FormControl('', [
-      Validators.required
-    ]),
-    city: new FormControl('', [
-      Validators.required
-    ]),
-    address: new FormControl('', [
-      Validators.required,
-      Validators.minLength(3)
-    ])
+    name: new FormControl('', [Validators.required]),
+    city: new FormControl('', [Validators.required]),
+    address: new FormControl(
+      '',
+      [
+        Validators.required,
+        Validators.minLength(3)
+      ]
+    )
   });
 
   cinema: Nullable<CinemaModel> = null;
@@ -31,7 +32,7 @@ export class CinemaComponent implements OnInit {
   constructor(
     private readonly cinemaService: CinemaService,
     private readonly activatedRoute: ActivatedRoute,
-    public readonly router: Router
+    private readonly router: Router
   ) {
   }
 
@@ -40,14 +41,18 @@ export class CinemaComponent implements OnInit {
       .subscribe(
         (params: ParamMap) => {
           this.currentId = Number(params.get('id'));
-          this.getCinema();
+          this.fetchCinema();
         }
       );
-    this.getCinemaList();
+    this.fetchCinemaList();
   }
 
-  public navigateTo(id: number): void {
-    void this.router.navigate(['/cinema/', id]);
+  public navigateTo(id?: number): void {
+    if (id) {
+      void this.router.navigate(['/cinema/', id]);
+    } else {
+      void this.router.navigate(['/cinema']);
+    }
   }
 
   public onApplyClick(): void {
@@ -60,17 +65,15 @@ export class CinemaComponent implements OnInit {
       this.cinemaService.editCinema(Object.assign(this.cinema, newCinema))
         .subscribe(
           () => {
-            this.getCinemaList();
+            this.fetchCinemaList();
           }
         );
     } else {
       this.cinemaService.addCinema(newCinema)
         .subscribe(
           (id: number) => {
-            newCinema.id = id;
-            this.currentId = id;
-            this.allCinemas.push(newCinema);
             this.navigateTo(id);
+            this.fetchCinemaList();
           }
         );
     }
@@ -84,32 +87,40 @@ export class CinemaComponent implements OnInit {
             if (id === this.currentId) {
               void this.router.navigate(['cinema']);
             }
-            this.getCinemaList();
+            this.fetchCinemaList();
           }
         );
     }
   }
 
-  private getCinema(): void {
+  private fetchCinema(): void {
     if (this.currentId) {
       this.cinemaService.getCinema(this.currentId)
         .subscribe(
           (cinema: CinemaModel) => {
             this.cinema = cinema;
-            this.cinemaForm.get('name')?.setValue(cinema.name);
-            this.cinemaForm.get('city')?.setValue(cinema.city);
-            this.cinemaForm.get('address')?.setValue(cinema.address);
+            this.setCinemaForm(cinema);
           }
         );
     } else {
       this.cinema = null;
-      this.cinemaForm.get('name')?.setValue('');
-      this.cinemaForm.get('city')?.setValue('');
-      this.cinemaForm.get('address')?.setValue('');
+      this.setCinemaForm();
     }
   }
 
-  private getCinemaList(): void {
+  private setCinemaForm(cinema?: CinemaModel): void {
+    if (cinema) {
+      this.cinemaForm.get('name')?.setValue(cinema.name);
+      this.cinemaForm.get('city')?.setValue(cinema.city);
+      this.cinemaForm.get('address')?.setValue(cinema.address);
+    } else {
+      for (const control in this.cinemaForm.controls) {
+        this.cinemaForm.get(control)?.setValue('');
+      }
+    }
+  }
+
+  private fetchCinemaList(): void {
     this.cinemaService.getCinemas()
       .subscribe(
         (cinemas: CinemaModel[]) => {

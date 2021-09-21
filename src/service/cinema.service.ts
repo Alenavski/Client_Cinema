@@ -14,54 +14,47 @@ import { environment } from '../environments/environment';
   providedIn: 'root'
 })
 export class CinemaService {
+  errorHandler;
+
   constructor(
     private readonly httpClient: HttpClient,
     private readonly snackBarService: SnackBarService
   ) {
+    this.errorHandler = ErrorHandlerFactory(this.snackBarService);
   }
 
   public getCinemas(): Observable<CinemaModel[]> {
-    const errorHandler = ErrorHandlerFactory(this.snackBarService);
-
     return this.httpClient.get<CinemaModel[]>(`${environment.hostURL}cinemas`)
       .pipe(
-        catchError(errorHandler)
+        catchError(this.errorHandler)
       );
   }
 
   public getCinema(id: number): Observable<CinemaModel> {
-    const errorHandler = ErrorHandlerFactory(this.snackBarService);
-
     return this.httpClient.get<CinemaModel>(`${environment.hostURL}cinemas/${id}`)
       .pipe(
-        catchError(errorHandler)
+        catchError(this.errorHandler)
       );
   }
 
   public addCinema(cinema: CinemaModel): Observable<number> {
-    const errorHandler = ErrorHandlerFactory(this.snackBarService);
-
     return this.httpClient.post<number>(`${environment.hostURL}cinemas`, cinema)
       .pipe(
-        catchError(errorHandler)
+        catchError(this.errorHandler)
       );
   }
 
   public editCinema(cinema: CinemaModel): Observable<void> {
-    const errorHandler = ErrorHandlerFactory(this.snackBarService);
-
     return this.httpClient.put<void>(`${environment.hostURL}cinemas/${cinema.id}`, cinema)
       .pipe(
-        catchError(errorHandler)
+        catchError(this.errorHandler)
       );
   }
 
   public deleteCinema(id: number): Observable<void> {
-    const errorHandler = ErrorHandlerFactory(this.snackBarService);
-
     return this.httpClient.delete<void>(`${environment.hostURL}cinemas/${id}`)
       .pipe(
-        catchError(errorHandler)
+        catchError(this.errorHandler)
       );
   }
 }
