@@ -1,5 +1,8 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { MatButtonModule } from '@angular/material/button';
+import { MatMenuModule } from '@angular/material/menu';
+import { MatSelectModule } from '@angular/material/select';
 import { HallComponent } from './hall.component';
 
 const components = [
@@ -11,7 +14,10 @@ const components = [
     ...components
   ],
   imports: [
-    CommonModule
+    CommonModule,
+    MatButtonModule,
+    MatMenuModule,
+    MatSelectModule
   ],
   exports: [
     ...components

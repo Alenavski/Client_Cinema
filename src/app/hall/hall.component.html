@@ -1,5 +1,7 @@
 <div class="main-container">
   <div class="list-container">
+    <button mat-button>Cinema: {{cinema.name}}</button>
+    <p>Number of seats: {{numberOfSeats}}</p>
 
   </div>
   <div class="hall-container">
@@ -7,7 +9,23 @@
       <table>
         <tr *ngFor="let row of seatsLayout">
           <td *ngFor="let seat of row">
-            <button *ngIf="seat">{{seat.numberInRow}}</button>
+            <div class="seat" [class]="seat.type.name" *ngIf="seat" [matMenuTriggerFor]="seatSettings">
+              <div class="number">{{seat.numberInRow}}</div>
+              <mat-menu #seatSettings>
+                <button mat-menu-item>
+                  <mat-form-field>
+                    <mat-label>Seat Type</mat-label>
+                    <mat-select>
+                      <mat-option>Standard</mat-option>
+                      <mat-option>Comfort</mat-option>
+                      <mat-option>Sofa</mat-option>
+                    </mat-select>
+                  </mat-form-field>
+                </button>
+                <button mat-menu-item>test</button>
+                <button mat-menu-item>test</button>
+              </mat-menu>
+            </div>
           </td>
         </tr>
       </table>
