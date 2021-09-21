@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { CinemaModel } from '@models/cinema.model';
 import { HallModel } from '@models/hall.model';
 import { SeatModel } from '@models/seat.model';
@@ -8,7 +8,7 @@ import { SeatModel } from '@models/seat.model';
   templateUrl: './hall.component.html',
   styleUrls: ['./hall.component.less']
 })
-export class HallComponent {
+export class HallComponent implements OnInit {
   seats: SeatModel[] = [
     { id: 1, index: 3, row: 1, numberInRow: 1 },
     { id: 2, index: 4, row: 1, numberInRow: 2 },
@@ -41,12 +41,16 @@ export class HallComponent {
   };
   size: number [] = this.calcSizeOfHall();
 
-  public range(length: number): number[] {
-    const array = [];
-    for (let i = 0; i < length; i++) {
-      array[i] = i + 1;
+  seatsLayout: SeatModel[][] = [];
+
+  ngOnInit(): void {
+    const [x] = this.calcSizeOfHall();
+    for (let i = 0; i <= x; i++) {
+      this.seatsLayout[i] = [];
     }
-    return array;
+    for (const seat of this.hall.seats) {
+      this.seatsLayout[seat.row][seat.index] = seat;
+    }
   }
 
   public calcSizeOfHall(): number[] {
@@ -57,14 +61,5 @@ export class HallComponent {
       maxRows = Math.max(maxRows, seat.row);
     }
     return [ maxRows, maxSeats ];
-  }
-
-  public needToDisplay(row: number, column: number): boolean {
-    for (const seat of this.hall.seats) {
-      if (seat.row === row && seat.index === column) {
-        return true;
-      }
-    }
-    return false;
   }
 }

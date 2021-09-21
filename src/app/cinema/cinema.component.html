@@ -12,6 +12,7 @@
         </mat-panel-title>
       </mat-expansion-panel-header>
       <p
+        class="hall"
         *ngFor="let hall of cinema.halls"
         (click)="router.navigate(['/cinema/' + cinema.id + '/hall/' + hall.id])"
       >

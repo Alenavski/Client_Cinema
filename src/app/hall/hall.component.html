@@ -1,9 +1,16 @@
 <div class="main-container">
-  <table>
-    <tr *ngFor="let i of range(size[0])">
-      <td *ngFor="let j of range(size[1])">
-        <button *ngIf="needToDisplay(i, j)">{{i}},{{j}}</button>
-      </td>
-    </tr>
-  </table>
+  <div class="list-container">
+
+  </div>
+  <div class="hall-container">
+    <div class="page">
+      <table>
+        <tr *ngFor="let row of seatsLayout">
+          <td *ngFor="let seat of row">
+            <button *ngIf="seat">{{seat.numberInRow}}</button>
+          </td>
+        </tr>
+      </table>
+    </div>
+  </div>
 </div>
