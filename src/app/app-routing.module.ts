@@ -6,6 +6,7 @@ import { CinemaComponent } from '@app/cinema/cinema.component';
 
 const routes: Routes = [
   { path: '', component: HomeComponent, pathMatch: 'full' },
+  { path: 'cinema', redirectTo: 'cinema/', pathMatch: 'full' },
   { path: 'cinema/:id', component: CinemaComponent }
 ];
 

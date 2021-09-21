@@ -1,7 +1,7 @@
 import { HallModel } from '@models/hall.model';
 
 export interface CinemaModel {
-  id: number,
+  id?: number,
   name: string,
   city: string,
   address: string,
