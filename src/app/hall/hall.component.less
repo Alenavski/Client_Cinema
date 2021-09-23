@@ -3,33 +3,37 @@
 .main-container {
   padding-top: 100px;
   display: flex;
-  width: 95%;
+  flex-wrap: nowrap;
+  justify-content: space-between;
   margin: 0 auto;
+  font-family: "Segoe UI Semilight", serif;
 }
 
 .list-container {
   box-shadow: 0 .25rem .75rem rgba(0, 0, 0, .25);
-  margin-right: 75px;
+  margin: 0 40px 0 20px;
+  padding: 10px;
+  font-size: 16px;
 
   button {
     display: block;
     width: 100%;
   }
 
-  p {
-    padding: 10px;
+  input {
+    width: 30px;
+    border: none;
+    border-bottom: 1px solid black;
+    text-align: center;
   }
 }
 
-
 .hall-container {
-  width: 60%;
 
   .page {
     box-shadow: 0 .25rem .75rem rgba(0, 0, 0, .25);
     padding: 20px;
     min-height: 300px;
-    display: flex;
 
     table {
       margin: 0 auto;
@@ -37,31 +41,41 @@
   }
 }
 
-
-
-
-
 td {
   width: 50px;
   max-width: 50px;
   height: 50px;
   max-height: 50px;
+  text-align: center;
+
+  &.sofa {
+    display: flex;
+  }
+}
+
+.screen {
+  content: '';
+  margin: 0 auto 20px auto;
+  width: 250px;
+  min-height: 5px;
+  background: black;
 }
 
 .seat {
-
-  border: solid 1px @main-blue;
+  border: solid 1px black;
   border-radius: 25%;
   background-color: white;
   color: black;
   padding: 15px;
+  font-size: 16px;
+  font-family: Verdana, fantasy;
 
   .number {
     margin: 0;
   }
 
-  .standard {
-
+  &.standard {
+    border-color: @main-blue;
   }
 
   &.comfort {
@@ -75,6 +89,8 @@ td {
   &.sofa {
     padding: 15px 50px;
     border-color: red;
+    z-index: 1;
+    background-color: white;
 
     &:hover {
       background-color: red;
@@ -84,5 +100,39 @@ td {
   &:hover {
     background-color: @main-blue;
     color: white;
+  }
+}
+
+.seat-container {
+  box-shadow: 0 .25rem .75rem rgba(0, 0, 0, .25);
+  margin: 0 20px 0 40px;
+  padding: 20px 30px;
+
+  .header {
+    font-size: 20px;
+  }
+
+  .legend {
+    display: inline-block;
+    margin: 0 auto;
+    width: 10px;
+    height: 10px;
+
+    &.standard-legend {
+      background: @main-blue;
+    }
+
+    &.comfort-legend {
+      background: @yellow;
+    }
+
+    &.sofa-legend {
+      background: red;
+    }
+  }
+
+  .legend-text {
+    font-size: 17px;
+    padding: 10px;
   }
 }
