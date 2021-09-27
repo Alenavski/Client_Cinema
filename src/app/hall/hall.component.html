@@ -29,13 +29,13 @@
         <tr *ngFor="let row of seatsLayout">
           <td
             *ngFor="let seat of row"
-            [class.sofa]="seat && seat.type === seatTypes[2]"
+            [class.sofa]="isSofa(seat)"
           >
             <div
-              class="seat"
               [class]="seat.type.name"
               *ngIf="seat; else addSeat"
               [matMenuTriggerFor]="seatSettings"
+              class="seat"
             >
               <div class="number">{{seat.numberInRow}}</div>
               <mat-menu #seatSettings>

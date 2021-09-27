@@ -66,6 +66,10 @@ export class HallComponent implements OnInit {
     }
   }
 
+  public isSofa(seat?: SeatModel): boolean {
+    return !!(seat && seat.type.name === 'sofa');
+  }
+
   public calcSizeOfHall(): number[] {
     let maxSeats = 0;
     let maxRows = 0;
@@ -73,7 +77,7 @@ export class HallComponent implements OnInit {
       maxSeats = Math.max(maxSeats, seat.numberInRow);
       maxRows = Math.max(maxRows, seat.row);
     }
-    return [ maxRows, maxSeats ];
+    return [maxRows, maxSeats];
   }
 
   public onNumberOfRowsChange(event: any): void {
