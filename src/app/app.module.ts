@@ -5,6 +5,8 @@ import { HttpClientModule } from '@angular/common/http';
 
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 
+import { CinemaService } from '@service/cinema.service';
+
 import { AuthenticationModule } from './authentication/authentication.module';
 import { HomeModule } from './home/home.module';
 import { NavigationModule } from './navigation/navigation.module';
@@ -38,6 +40,7 @@ import { AppRoutingModule } from './app-routing.module';
   providers: [
     UserService,
     ShowtimeService,
+    CinemaService,
     SnackBarService,
     FilterService
   ],
