@@ -32,10 +32,10 @@
             [class.sofa]="isSofa(seat)"
           >
             <div
-              [class]="seat.type.name"
               *ngIf="seat; else addSeat"
-              [matMenuTriggerFor]="seatSettings"
               class="seat"
+              [class]="seat.type.name"
+              [matMenuTriggerFor]="seatSettings"
             >
               <div class="number">{{seat.numberInRow}}</div>
               <mat-menu #seatSettings>
