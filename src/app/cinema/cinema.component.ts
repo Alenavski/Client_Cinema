@@ -3,6 +3,9 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, ParamMap, Router } from '@angular/router';
 
 import { CinemaModel } from '@models/cinema.model';
+import { HallModel } from '@models/hall.model';
+import { SeatTypeModel } from '@models/seat-type.model';
+import { SeatModel } from '@models/seat.model';
 
 import { CinemaService } from '@service/cinema.service';
 import { Nullable } from '@tools/utilityTypes';

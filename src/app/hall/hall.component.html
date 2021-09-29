@@ -1,0 +1,100 @@
+<div class="main-container">
+  <div class="list-container">
+    <button mat-button>Cinema: {{cinema.name}}</button>
+    <p>Number of seats: {{numberOfSeats}}</p>
+    <p>Number of rows:
+      <input
+        type="number"
+        min="1"
+        value="{{seatsLayout.length}}"
+        (change)="onNumberOfRowsChange($event)"
+      >
+    </p>
+    <p>Number of columns:
+      <input
+        type="number"
+        min="1"
+        value="{{seatsLayout[0].length}}"
+        (change)="onNumberOfColumnsChange($event)"
+      >
+    </p>
+    <mat-checkbox [(ngModel)]="needToFill">Fill seats</mat-checkbox>
+    <button mat-button>Save</button>
+  </div>
+
+  <div class="hall-container">
+    <div class="page">
+      <div class="screen"></div>
+      <table>
+        <tr *ngFor="let row of seatsLayout">
+          <td
+            *ngFor="let seat of row"
+            [class.sofa]="isSofa(seat)"
+          >
+            <div
+              *ngIf="seat; else addSeat"
+              class="seat"
+              [class]="seat.type.name"
+              [matMenuTriggerFor]="seatSettings"
+            >
+              <div class="number">{{seat.numberInRow}}</div>
+              <mat-menu #seatSettings>
+                <button mat-menu-item (click)="$event.stopPropagation()">
+                  <mat-form-field>
+                    <mat-label>Seat Type</mat-label>
+                    <mat-select [value]="seat.type.id">
+                      <mat-option
+                        *ngFor="let seatType of seatTypes"
+                        [value]="seatType.id"
+                      >
+                        {{seatType.name}}
+                      </mat-option>
+                    </mat-select>
+                  </mat-form-field>
+                </button>
+                <button mat-menu-item>Delete</button>
+              </mat-menu>
+            </div>
+            <ng-template #addSeat>
+              <div [matMenuTriggerFor]="addSeatSettings">
+                <i class="fas fa-plus-square"></i>
+                <mat-menu #addSeatSettings>
+                  <ul mat-menu-item (click)="$event.stopPropagation()">
+                    <mat-form-field>
+                      <mat-label>Seat Type</mat-label>
+                      <mat-select>
+                        <mat-option
+                          *ngFor="let seatType of seatTypes"
+                          [value]="seatType.id"
+                        >
+                          {{seatType.name}}
+                        </mat-option>
+                      </mat-select>
+                    </mat-form-field>
+                  </ul>
+                  <ul mat-menu-item (click)="$event.stopPropagation()">
+                    <mat-form-field>
+                      <mat-label>Seat Number</mat-label>
+                      <input matInput type="number">
+                    </mat-form-field>
+                  </ul>
+                </mat-menu>
+              </div>
+            </ng-template>
+          </td>
+        </tr>
+      </table>
+    </div>
+  </div>
+
+  <div class="seat-container">
+    <p class="header">Seats:</p>
+    <div *ngFor="let seatType of seatTypes" >
+      <div
+        class="legend"
+        [class]="seatType.name + '-legend'"
+      ></div>
+      <span class="legend-text">{{seatType.name}}</span>
+    </div>
+  </div>
+</div>
