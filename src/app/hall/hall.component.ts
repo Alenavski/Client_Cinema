@@ -1,9 +1,15 @@
 import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute, ParamMap, Router } from '@angular/router';
 
 import { CinemaModel } from '@models/cinema.model';
 import { HallModel } from '@models/hall.model';
 import { SeatTypeModel } from '@models/seat-type.model';
 import { SeatModel } from '@models/seat.model';
+
+import { CinemaService } from '@service/cinema.service';
+import { HallService } from '@service/hall.service';
+
+import { SEAT_TYPES } from '@models/constants/seat-types';
 
 @Component({
   selector: 'app-hall',
@@ -11,76 +17,103 @@ import { SeatModel } from '@models/seat.model';
   styleUrls: ['./hall.component.less']
 })
 export class HallComponent implements OnInit {
-  seatTypes: SeatTypeModel[] = [
-    { id: 1, name: 'standard' },
-    { id: 2, name: 'comfort' },
-    { id: 3, name: 'sofa' }
-  ];
-
-  seats: SeatModel[] = [
-    { id: 1, index: 3, row: 1, numberInRow: 1, type: this.seatTypes[0] },
-    { id: 2, index: 4, row: 1, numberInRow: 2, type: this.seatTypes[0] },
-    { id: 3, index: 2, row: 2, numberInRow: 1, type: this.seatTypes[0] },
-    { id: 4, index: 3, row: 2, numberInRow: 2, type: this.seatTypes[0] },
-    { id: 5, index: 4, row: 2, numberInRow: 3, type: this.seatTypes[0] },
-    { id: 6, index: 5, row: 2, numberInRow: 4, type: this.seatTypes[0] },
-    { id: 7, index: 1, row: 3, numberInRow: 1, type: this.seatTypes[1] },
-    { id: 8, index: 2, row: 3, numberInRow: 2, type: this.seatTypes[1] },
-    { id: 9, index: 3, row: 3, numberInRow: 3, type: this.seatTypes[1] },
-    { id: 10, index: 4, row: 3, numberInRow: 4, type: this.seatTypes[1] },
-    { id: 11, index: 5, row: 3, numberInRow: 5, type: this.seatTypes[1] },
-    { id: 12, index: 6, row: 3, numberInRow: 6, type: this.seatTypes[1] },
-    { id: 13, index: 1, row: 5, numberInRow: 1, type: this.seatTypes[2] },
-    { id: 15, index: 5, row: 5, numberInRow: 2, type: this.seatTypes[2] },
-  ];
-  cinema: CinemaModel = {
-    id: 1,
-    name: 'Mir',
-    city: 'Minsk',
-    address: 'Kozlova 28'
-  };
+  isDirty: boolean = false;
+  cinemaId: number = 0;
+  cinemaName: string = '';
+  seatTypes = SEAT_TYPES;
   hall: HallModel = {
-    id: 1,
-    name: 'Blue',
-    cinema: this.cinema,
-    seats: this.seats
+    id: 0,
+    name: ''
   };
-  numberOfSeats: number;
-
+  numberOfSeats: number = 0;
   seatsLayout: SeatModel[][] = [];
-
   needToFill: boolean = false;
 
-  constructor() {
-    this.numberOfSeats = this.hall.seats.length;
+  constructor(
+    private readonly activatedRoute: ActivatedRoute,
+    private readonly router: Router,
+    private readonly hallService: HallService,
+    private readonly cinemaService: CinemaService
+  ) {
   }
 
   ngOnInit(): void {
-    const [x, y] = this.calcSizeOfHall();
-    for (let i = 0; i <= x; i++) {
-      this.seatsLayout[i] = [];
-      this.seatsLayout[i].length = y + 2;
+    this.activatedRoute.paramMap
+      .subscribe(
+        (params: ParamMap) => {
+          this.cinemaId = Number(params.get('idCinema'));
+          this.fetchCinemaName();
+          const hallId = Number(params.get('idHall'));
+          if (hallId) {
+            this.fetchHall(hallId);
+          }
+        }
+      );
+  }
+
+  public navigateToCinema(): void {
+    void this.router.navigate([`cinema/${this.cinemaId}`]);
+  }
+
+  public onSaveChangesClick(): void {
+    if (this.hall.id === 0) {
+      this.hallService.addHall(this.cinemaId, this.hall)
+        .subscribe(
+          (idHall: number) => {
+            void this.router.navigate([`/cinema/${this.cinemaId}/hall/${idHall}`]);
+          }
+        );
+    } else {
+      this.hallService.editHall(this.cinemaId, this.hall)
+        .subscribe(
+          () => {
+            this.fetchHall(this.hall.id);
+          }
+        );
     }
-    for (const seat of this.hall.seats) {
-      this.seatsLayout[seat.row][seat.index] = seat;
-    }
+    this.isDirty = false;
   }
 
   public isSofa(seat?: SeatModel): boolean {
-    return !!(seat && seat.type.name === 'sofa');
+    return !!(seat && seat.seatType.name === this.seatTypes['Sofa'].name);
   }
 
   public calcSizeOfHall(): number[] {
     let maxSeats = 0;
     let maxRows = 0;
-    for (const seat of this.hall.seats) {
-      maxSeats = Math.max(maxSeats, seat.numberInRow);
-      maxRows = Math.max(maxRows, seat.row);
+    if (this.hall.seats) {
+      for (const seat of this.hall.seats) {
+        maxSeats = Math.max(maxSeats, seat.place);
+        maxRows = Math.max(maxRows, seat.row);
+      }
     }
     return [maxRows, maxSeats];
   }
 
+  public pushSeat(index: number, row: number, seatType: SeatTypeModel): void {
+   this.isDirty = true;
+    let place = 1;
+    for (let i = index - 1; i >= 0; i--){
+      if (this.seatsLayout[row][i]){
+        place = this.seatsLayout[row][i].place + 1;
+        break;
+      }
+    }
+    const seat: SeatModel = {
+      index: index,
+      row: row,
+      place: place,
+      seatType: seatType
+    };
+    this.seatsLayout[row][index] = seat;
+    if (!this.hall.seats) {
+      this.hall.seats = [];
+    }
+    this.hall.seats.push(seat);
+  }
+
   public onNumberOfRowsChange(event: any): void {
+    this.isDirty = this.needToFill;
     const oldRows = this.seatsLayout.length;
     const newValue = Number(event.target.value);
     this.seatsLayout.length = newValue;
@@ -92,9 +125,12 @@ export class HallComponent implements OnInit {
           const newSeat = {
             index: j,
             row: i,
-            numberInRow: j + 1,
-            type: this.seatTypes[0]
+            place: j + 1,
+            seatType: this.seatTypes.Standard
           };
+          if (!this.hall.seats) {
+            this.hall.seats = [];
+          }
           this.hall.seats.push(newSeat);
           this.seatsLayout[i][j] = newSeat;
         }
@@ -103,6 +139,7 @@ export class HallComponent implements OnInit {
   }
 
   public onNumberOfColumnsChange(event: any): void {
+    this.isDirty = this.needToFill;
     const newValue = Number(event.target.value);
     const oldValue = this.seatsLayout[0].length;
     for (let i = 0; i < this.seatsLayout.length; i++) {
@@ -111,20 +148,56 @@ export class HallComponent implements OnInit {
         let maxNumberInRow: number = 0;
         this.seatsLayout[i].map(
           value => {
-            maxNumberInRow = Math.max(value.numberInRow, maxNumberInRow);
+            maxNumberInRow = Math.max(value.place, maxNumberInRow);
           }
         );
         for (let j = oldValue; j < this.seatsLayout[0].length; j++) {
           const newSeat = {
             index: j,
             row: i,
-            numberInRow: maxNumberInRow + j - oldValue + 1,
-            type: this.seatTypes[0]
+            place: maxNumberInRow + j - oldValue + 1,
+            seatType: this.seatTypes.Standard
           };
+          if (!this.hall.seats) {
+            this.hall.seats = [];
+          }
           this.hall.seats.push(newSeat);
           this.seatsLayout[i][j] = newSeat;
         }
       }
     }
+  }
+
+  private fetchHall(id: number): void {
+    this.hallService.getHall(this.cinemaId, id)
+      .subscribe(
+        (hall: HallModel) => {
+          this.hall = hall;
+          this.fetchSeatsLayout();
+        }
+      );
+  }
+
+  private fetchSeatsLayout(): void {
+    const [x, y] = this.calcSizeOfHall();
+    if (this.hall.seats) {
+      this.numberOfSeats = this.hall.seats.length;
+      for (let i = 0; i <= x; i++) {
+        this.seatsLayout[i] = [];
+        this.seatsLayout[i].length = y;
+      }
+      for (const seat of this.hall.seats) {
+        this.seatsLayout[seat.row][seat.index] = seat;
+      }
+    }
+  }
+
+  private fetchCinemaName(): void {
+    this.cinemaService.getCinema(this.cinemaId)
+      .subscribe(
+        (cinema: CinemaModel) => {
+          this.cinemaName = cinema.name;
+        }
+      );
   }
 }

@@ -1,4 +1,4 @@
-import { Roles } from './roles';
+import { Roles } from './constants/roles';
 
 export interface UserModel {
   token: string,
