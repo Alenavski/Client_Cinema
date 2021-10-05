@@ -1,11 +1,17 @@
 <div class="main-container">
   <div class="list-container">
-    <button mat-button>Cinema: {{cinema.name}}</button>
-    <p>Number of seats: {{numberOfSeats}}</p>
+    <button mat-button (click)="navigateToCinema()">Cinema: {{cinemaName}}</button>
+    <p>
+      Name:
+      <input
+        type="text"
+        [(ngModel)]="hall.name"
+      >
+    </p>
     <p>Number of rows:
       <input
         type="number"
-        min="1"
+        min="0"
         value="{{seatsLayout.length}}"
         (change)="onNumberOfRowsChange($event)"
       >
@@ -13,41 +19,47 @@
     <p>Number of columns:
       <input
         type="number"
-        min="1"
-        value="{{seatsLayout[0].length}}"
+        min="0"
+        value="{{seatsLayout.length > 0 ? seatsLayout[0].length : 0}}"
         (change)="onNumberOfColumnsChange($event)"
+        [disabled]="seatsLayout.length === 0"
       >
     </p>
+    <p>Number of seats: {{numberOfSeats}}</p>
+    <p *ngIf="isDirty" class="warning">Changes will be applied after saving</p>
     <mat-checkbox [(ngModel)]="needToFill">Fill seats</mat-checkbox>
-    <button mat-button>Save</button>
+    <button mat-button (click)="onSaveChangesClick()">Save</button>
   </div>
 
   <div class="hall-container">
     <div class="page">
       <div class="screen"></div>
       <table>
-        <tr *ngFor="let row of seatsLayout">
+        <tr *ngFor="let row of seatsLayout; let rowIndex = index">
           <td
-            *ngFor="let seat of row"
+            *ngFor="let seat of row; let columnIndex = index"
             [class.sofa]="isSofa(seat)"
           >
             <div
               *ngIf="seat; else addSeat"
               class="seat"
-              [class]="seat.type.name"
+              [class]="seat.seatType.name.toLowerCase()"
               [matMenuTriggerFor]="seatSettings"
             >
-              <div class="number">{{seat.numberInRow}}</div>
+              <div class="number">{{seat.place}}</div>
               <mat-menu #seatSettings>
                 <button mat-menu-item (click)="$event.stopPropagation()">
                   <mat-form-field>
                     <mat-label>Seat Type</mat-label>
-                    <mat-select [value]="seat.type.id">
-                      <mat-option
-                        *ngFor="let seatType of seatTypes"
-                        [value]="seatType.id"
-                      >
-                        {{seatType.name}}
+                    <mat-select [value]="seat.seatType.id">
+                      <mat-option [value]="seatTypes.Standard.id">
+                        {{seatTypes.Standard.name}}
+                      </mat-option>
+                      <mat-option [value]="seatTypes.Comfort.id">
+                        {{seatTypes.Comfort.name}}
+                      </mat-option>
+                      <mat-option [value]="seatTypes.Sofa.id">
+                        {{seatTypes.Sofa.name}}
                       </mat-option>
                     </mat-select>
                   </mat-form-field>
@@ -62,21 +74,21 @@
                   <ul mat-menu-item (click)="$event.stopPropagation()">
                     <mat-form-field>
                       <mat-label>Seat Type</mat-label>
-                      <mat-select>
-                        <mat-option
-                          *ngFor="let seatType of seatTypes"
-                          [value]="seatType.id"
-                        >
-                          {{seatType.name}}
+                      <mat-select #selectedType>
+                        <mat-option [value]="seatTypes.Standard">
+                          {{seatTypes.Standard.name}}
+                        </mat-option>
+                        <mat-option [value]="seatTypes.Comfort">
+                          {{seatTypes.Comfort.name}}
+                        </mat-option>
+                        <mat-option [value]="seatTypes.Sofa">
+                          {{seatTypes.Sofa.name}}
                         </mat-option>
                       </mat-select>
                     </mat-form-field>
                   </ul>
-                  <ul mat-menu-item (click)="$event.stopPropagation()">
-                    <mat-form-field>
-                      <mat-label>Seat Number</mat-label>
-                      <input matInput type="number">
-                    </mat-form-field>
+                  <ul mat-menu-item (click)="pushSeat(columnIndex, rowIndex, selectedType.value)">
+                    Create
                   </ul>
                 </mat-menu>
               </div>
@@ -89,12 +101,26 @@
 
   <div class="seat-container">
     <p class="header">Seats:</p>
-    <div *ngFor="let seatType of seatTypes" >
+    <div>
       <div
         class="legend"
-        [class]="seatType.name + '-legend'"
+        [class]="'standard-legend'"
       ></div>
-      <span class="legend-text">{{seatType.name}}</span>
+      <span class="legend-text">Standard</span>
+    </div>
+    <div>
+      <div
+        class="legend"
+        [class]="'comfort-legend'"
+      ></div>
+      <span class="legend-text">Comfort</span>
+    </div>
+    <div>
+      <div
+        class="legend"
+        [class]="'sofa-legend'"
+      ></div>
+      <span class="legend-text">Sofa</span>
     </div>
   </div>
 </div>

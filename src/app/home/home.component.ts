@@ -2,7 +2,7 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 
 import { MovieModel } from '@models/movie.model';
-import { Roles } from '@models/roles';
+import { Roles } from '@models/constants/roles';
 import { ShowtimesFilterModel } from '@models/showtimes-filter.model';
 
 import { FilterService } from '@service/filter.service';

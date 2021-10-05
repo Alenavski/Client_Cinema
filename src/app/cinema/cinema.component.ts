@@ -3,11 +3,9 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, ParamMap, Router } from '@angular/router';
 
 import { CinemaModel } from '@models/cinema.model';
-import { HallModel } from '@models/hall.model';
-import { SeatTypeModel } from '@models/seat-type.model';
-import { SeatModel } from '@models/seat.model';
 
 import { CinemaService } from '@service/cinema.service';
+import { HallService } from '@service/hall.service';
 import { Nullable } from '@tools/utilityTypes';
 
 @Component({
@@ -34,6 +32,7 @@ export class CinemaComponent implements OnInit {
 
   constructor(
     private readonly cinemaService: CinemaService,
+    private readonly hallService: HallService,
     private readonly activatedRoute: ActivatedRoute,
     private readonly router: Router
   ) {
@@ -50,13 +49,31 @@ export class CinemaComponent implements OnInit {
     this.fetchCinemaList();
   }
 
-  public navigateTo(id?: number): void {
+  public navigateToHall(idCinema: number, idHall?: number): void {
+    if (idHall) {
+      void this.router.navigate([`/cinema/${idCinema}/hall/${idHall}`]);
+    } else {
+      void this.router.navigate([`/cinema/${idCinema}/hall`]);
+    }
+  }
+
+  public navigateToCinema(id?: number): void {
     if (id) {
       void this.router.navigate(['/cinema/', id]);
     } else {
       void this.router.navigate(['/cinema']);
     }
   }
+
+  public deleteHall(idCinema: number, idHall: number): void {
+    this.hallService.deleteHall(idCinema, idHall)
+      .subscribe(
+        () => {
+          this.fetchCinemaList();
+        }
+      );
+  }
+
 
   public onApplyClick(): void {
     const newCinema: CinemaModel = {
@@ -75,7 +92,7 @@ export class CinemaComponent implements OnInit {
       this.cinemaService.addCinema(newCinema)
         .subscribe(
           (id: number) => {
-            this.navigateTo(id);
+            this.navigateToCinema(id);
             this.fetchCinemaList();
           }
         );

@@ -7,23 +7,30 @@
       <mat-expansion-panel-header>
         <mat-panel-title class="cinema-name">
           {{cinema.name}}
-          <i class="fas fa-pen" (click)="navigateTo(cinema.id)"></i>
+          <i class="fas fa-pen" (click)="navigateToCinema(cinema.id)"></i>
           <i class="fas fa-trash" (click)="onDeleteCinemaClick(cinema.id)"></i>
         </mat-panel-title>
       </mat-expansion-panel-header>
       <p
         class="hall"
         *ngFor="let hall of cinema.halls"
-        (click)="router.navigate(['/cinema/' + cinema.id + '/hall/' + hall.id])"
       >
-        {{hall.name}}
-        <i class="fas fa-trash"></i>
+        <span (click)="navigateToHall(cinema.id!, hall.id)">
+          {{hall.name}}
+        </span>
+        <i class="fas fa-trash" (click)="deleteHall(cinema.id!, hall.id)"></i>
+      </p>
+      <p
+        class="hall"
+        (click)="navigateToHall(cinema.id!)"
+      >
+        Add hall
       </p>
     </mat-expansion-panel>
     <button
       mat-raised-button
       class="add-new"
-      (click)="navigateTo()"
+      (click)="navigateToCinema()"
     >
       Add new cinema
       <i class="fas fa-plus"></i>
