@@ -23,7 +23,8 @@ export class HallComponent implements OnInit {
   seatTypes = SEAT_TYPES;
   hall: HallModel = {
     id: 0,
-    name: ''
+    name: '',
+    seats: []
   };
   numberOfSeats: number = 0;
   seatsLayout: SeatModel[][] = [];
@@ -75,17 +76,19 @@ export class HallComponent implements OnInit {
   }
 
   public isSofa(seat?: SeatModel): boolean {
-    return !!(seat && seat.seatType.name === this.seatTypes['Sofa'].name);
+    if (seat) {
+      return seat.seatType.name === 'sofa';
+    } else {
+      return false;
+    }
   }
 
   public calcSizeOfHall(): number[] {
     let maxSeats = 0;
     let maxRows = 0;
-    if (this.hall.seats) {
-      for (const seat of this.hall.seats) {
-        maxSeats = Math.max(maxSeats, seat.place);
-        maxRows = Math.max(maxRows, seat.row);
-      }
+    for (const seat of this.hall.seats) {
+      maxSeats = Math.max(maxSeats, seat.place);
+      maxRows = Math.max(maxRows, seat.row);
     }
     return [maxRows, maxSeats];
   }
@@ -106,9 +109,6 @@ export class HallComponent implements OnInit {
       seatType: seatType
     };
     this.seatsLayout[row][index] = seat;
-    if (!this.hall.seats) {
-      this.hall.seats = [];
-    }
     this.hall.seats.push(seat);
   }
 
@@ -128,9 +128,6 @@ export class HallComponent implements OnInit {
             place: j + 1,
             seatType: this.seatTypes.Standard
           };
-          if (!this.hall.seats) {
-            this.hall.seats = [];
-          }
           this.hall.seats.push(newSeat);
           this.seatsLayout[i][j] = newSeat;
         }
@@ -158,9 +155,6 @@ export class HallComponent implements OnInit {
             place: maxNumberInRow + j - oldValue + 1,
             seatType: this.seatTypes.Standard
           };
-          if (!this.hall.seats) {
-            this.hall.seats = [];
-          }
           this.hall.seats.push(newSeat);
           this.seatsLayout[i][j] = newSeat;
         }
@@ -180,15 +174,13 @@ export class HallComponent implements OnInit {
 
   private fetchSeatsLayout(): void {
     const [x, y] = this.calcSizeOfHall();
-    if (this.hall.seats) {
-      this.numberOfSeats = this.hall.seats.length;
-      for (let i = 0; i <= x; i++) {
-        this.seatsLayout[i] = [];
-        this.seatsLayout[i].length = y;
-      }
-      for (const seat of this.hall.seats) {
-        this.seatsLayout[seat.row][seat.index] = seat;
-      }
+    this.numberOfSeats = this.hall.seats.length;
+    for (let i = 0; i <= x; i++) {
+      this.seatsLayout[i] = [];
+      this.seatsLayout[i].length = y;
+    }
+    for (const seat of this.hall.seats) {
+      this.seatsLayout[seat.row][seat.index] = seat;
     }
   }
 

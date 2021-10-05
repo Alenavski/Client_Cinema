@@ -43,7 +43,7 @@
             <div
               *ngIf="seat; else addSeat"
               class="seat"
-              [class]="seat.seatType.name"
+              [class]="seat.seatType.name.toLowerCase()"
               [matMenuTriggerFor]="seatSettings"
             >
               <div class="number">{{seat.place}}</div>
