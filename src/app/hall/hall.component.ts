@@ -77,7 +77,7 @@ export class HallComponent implements OnInit {
 
   public isSofa(seat?: SeatModel): boolean {
     if (seat) {
-      return seat.seatType.name === 'sofa';
+      return seat.seatType.name === this.seatTypes.Sofa.name;
     } else {
       return false;
     }
