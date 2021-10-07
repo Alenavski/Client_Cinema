@@ -1,6 +1,8 @@
 <div class="main-container">
   <div class="list-container">
-    <button mat-button (click)="navigateToCinema()">Cinema: {{cinemaName}}</button>
+    <button mat-button (click)="navigateToCinema()">
+      Cinema: {{cinemaName}}
+    </button>
     <p>
       Name:
       <input
@@ -26,9 +28,15 @@
       >
     </p>
     <p>Number of seats: {{numberOfSeats}}</p>
-    <p *ngIf="isDirty" class="warning">Changes will be applied after saving</p>
-    <mat-checkbox [(ngModel)]="needToFill">Fill seats</mat-checkbox>
-    <button mat-button (click)="onSaveChangesClick()">Save</button>
+    <p *ngIf="isDirty" class="warning">
+      Changes will be applied after saving
+    </p>
+    <mat-checkbox [(ngModel)]="needToFill">
+      Fill seats
+    </mat-checkbox>
+    <button mat-button (click)="onSaveChangesClick()">
+      Save
+    </button>
   </div>
 
   <div class="hall-container">
@@ -51,20 +59,28 @@
                 <button mat-menu-item (click)="$event.stopPropagation()">
                   <mat-form-field>
                     <mat-label>Seat Type</mat-label>
-                    <mat-select [value]="seat.seatType.id">
-                      <mat-option [value]="seatTypes.Standard.id">
+                    <mat-select
+                      [value]="seat.seatType.id"
+                      (selectionChange)="onSeatTypeChange(seat, $event)"
+                    >
+                      <mat-option [value]="seatTypes.Standard">
                         {{seatTypes.Standard.name}}
                       </mat-option>
-                      <mat-option [value]="seatTypes.Comfort.id">
+                      <mat-option [value]="seatTypes.Comfort">
                         {{seatTypes.Comfort.name}}
                       </mat-option>
-                      <mat-option [value]="seatTypes.Sofa.id">
+                      <mat-option
+                        [disabled]="!canCreateSofa(seat.index, seat.row)"
+                        [value]="seatTypes.Sofa"
+                      >
                         {{seatTypes.Sofa.name}}
                       </mat-option>
                     </mat-select>
                   </mat-form-field>
                 </button>
-                <button mat-menu-item>Delete</button>
+                <button mat-menu-item (click)="onDeleteSeatClick(seat)">
+                  Delete
+                </button>
               </mat-menu>
             </div>
             <ng-template #addSeat>
@@ -81,13 +97,19 @@
                         <mat-option [value]="seatTypes.Comfort">
                           {{seatTypes.Comfort.name}}
                         </mat-option>
-                        <mat-option [value]="seatTypes.Sofa">
+                        <mat-option
+                          [disabled]="!canCreateSofa(columnIndex, rowIndex)"
+                          [value]="seatTypes.Sofa"
+                        >
                           {{seatTypes.Sofa.name}}
                         </mat-option>
                       </mat-select>
                     </mat-form-field>
                   </ul>
-                  <ul mat-menu-item (click)="pushSeat(columnIndex, rowIndex, selectedType.value)">
+                  <ul
+                    mat-menu-item
+                    (click)="pushSeat(columnIndex, rowIndex, selectedType.value)"
+                  >
                     Create
                   </ul>
                 </mat-menu>
@@ -103,22 +125,19 @@
     <p class="header">Seats:</p>
     <div>
       <div
-        class="legend"
-        [class]="'standard-legend'"
+        class="legend standard-legend"
       ></div>
       <span class="legend-text">Standard</span>
     </div>
     <div>
       <div
-        class="legend"
-        [class]="'comfort-legend'"
+        class="legend comfort-legend"
       ></div>
       <span class="legend-text">Comfort</span>
     </div>
     <div>
       <div
-        class="legend"
-        [class]="'sofa-legend'"
+        class="legend sofa-legend"
       ></div>
       <span class="legend-text">Sofa</span>
     </div>
