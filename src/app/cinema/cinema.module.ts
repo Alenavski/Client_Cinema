@@ -16,14 +16,14 @@ const components = [
   declarations: [
     ...components
   ],
-    imports: [
-        CommonModule,
-        MatFormFieldModule,
-        MatInputModule,
-        MatButtonModule,
-        ReactiveFormsModule,
-        MatExpansionModule
-    ],
+  imports: [
+    CommonModule,
+    MatFormFieldModule,
+    MatInputModule,
+    MatButtonModule,
+    ReactiveFormsModule,
+    MatExpansionModule
+  ],
   exports: [
     ...components
   ]

@@ -6,6 +6,9 @@ import { HttpClientModule } from '@angular/common/http';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 
 import { CinemaService } from '@service/cinema.service';
+import { HallService } from '@service/hall.service';
+import { MovieService } from '@service/movie.service';
+import { SeatService } from '@service/seat.service';
 
 import { AuthenticationModule } from './authentication/authentication.module';
 import { HomeModule } from './home/home.module';
@@ -41,6 +44,9 @@ import { AppRoutingModule } from './app-routing.module';
     UserService,
     ShowtimeService,
     CinemaService,
+    HallService,
+    MovieService,
+    SeatService,
     SnackBarService,
     FilterService
   ],

@@ -24,7 +24,7 @@ export class SeatService {
   }
 
   public editSeats(idCinema: number, idHall: number, seats: SeatModel[]): Observable<void> {
-    return this.httpClient.put<void>(`${environment.hostURL}cinemas/${idCinema}/halls/${idHall}/seats`, seats)
+    return this.httpClient.put<void>(`${environment.hostURL}seats`, seats)
       .pipe(
         catchError(this.errorHandler)
       );
@@ -34,7 +34,7 @@ export class SeatService {
     const options = {
       body: deletedSeats
     };
-    return this.httpClient.delete<void>(`${environment.hostURL}cinemas/${idCinema}/halls/${idHall}/seats`, options)
+    return this.httpClient.delete<void>(`${environment.hostURL}seats`, options)
       .pipe(
         catchError(this.errorHandler)
       );
