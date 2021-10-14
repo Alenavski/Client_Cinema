@@ -1,0 +1,136 @@
+@import "../../color-schema";
+
+.main-container {
+  padding-top: 100px;
+  display: flex;
+  width: 95%;
+  margin: 0 auto;
+}
+
+.movies-table {
+  .add-movie {
+    margin-bottom: 10px;
+    box-shadow: 0 .25rem .75rem rgba(0, 0, 0, .25);
+    margin-right: 75px;
+    padding: 10px;
+
+    button {
+      width: 100%;
+    }
+  }
+
+  .movie-list {
+    margin-bottom: 10px;
+    box-shadow: 0 .25rem .75rem rgba(0, 0, 0, .25);
+    margin-right: 75px;
+    padding: 10px 30px;
+
+    .movie {
+      margin: 5px 0;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+    }
+  }
+
+  i {
+    font-size: 19px;
+    cursor: pointer;
+    position: relative;
+    top: 10px;
+  }
+}
+
+.movie-container {
+  font-family: Verdana, fantasy;
+  font-size: 20px;
+  width: 60%;
+
+  .page {
+    box-shadow: 0 .25rem .75rem rgba(0, 0, 0, .25);
+    min-height: 300px;
+    display: flex;
+
+    .poster {
+      overflow: hidden;
+      border-radius: 15%;
+      margin: 25px;
+      width: 300px;
+      min-width: 300px;
+      height: 450px;
+      position: relative;
+
+      .icon {
+        width: 300px;
+        height: 450px;
+        background: linear-gradient(to bottom, transparent, rgba(0,0,0, 0.2) 5%, rgba(0,0,0, 0.2));
+        position: absolute;
+        bottom: -300px;
+        left: 0;
+        transition: bottom 1s;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        i {
+          font-size: 100px;
+          color: rgba(255,255,255, 0.6);
+          text-align: center;
+        }
+
+        &.focused {
+          bottom: 0;
+        }
+      }
+    }
+
+    .movie-form {
+      padding:0 20px;
+      width: 100%;
+    }
+
+  }
+}
+
+.dates {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.date {
+  display: inline-block;
+  width: unset;
+  margin-right: 20px;
+}
+
+.input-field {
+  width: 100%;
+  border: 0;
+  border-bottom: 2px solid lightgray;
+  outline: none;
+  text-transform: uppercase;
+  margin: 30px 0;
+  display: block;
+
+  &:hover,
+  &:focus {
+    border-bottom: 2px solid @dark-blue;
+  }
+}
+
+.title-field {
+  font-size: 30px;
+}
+
+.error {
+  color: red;
+  font-size: 15px;
+}
+
+.button-apply {
+  display: block;
+  font-size: 20px;
+  margin: 20px 0;
+  color: @main-blue;
+}

@@ -1,0 +1,98 @@
+<div class="main-container">
+  <div class="movies-table">
+    <div class="add-movie">
+      <button mat-button (click)="navigateToMovie()">
+        Add movie
+      </button>
+    </div>
+    <div class="movie-list">
+      <h3>Current movies:</h3>
+      <div *ngFor="let curMovie of currentMovies" class="movie">
+        <button mat-button (click)="navigateToMovie(curMovie.id!)">
+          {{curMovie.title}}
+        </button>
+        <i class="fas fa-trash" (click)="deleteMovie(curMovie.id!)"></i>
+      </div>
+    </div>
+    <div class="movie-list">
+      <h3>Ended movies:</h3>
+      <div *ngFor="let endMovie of endedMovies" class="movie">
+        <button mat-button (click)="navigateToMovie(endMovie.id!)">
+          {{endMovie.title}}
+        </button>
+        <i class="fas fa-trash" (click)="deleteMovie(endMovie.id!)"></i>
+      </div>
+    </div>
+  </div>
+  <div class="movie-container">
+    <div class="page">
+      <div
+        class="poster"
+        (mouseenter)="icon.classList.add('focused')"
+        (mouseleave)="icon.classList.remove('focused')"
+      >
+        <img
+          width="300"
+          height="450"
+          src="data:image/png;base64,{{movie?.poster}}"
+          onerror="this.src='../../assets/poster.png';"
+          alt=""
+        >
+        <div class="icon" #icon>
+          <i class="fas fa-plus-circle"></i>
+        </div>
+      </div>
+
+      <div [formGroup]="movieForm" class="movie-form">
+        <input
+          type="text"
+          class="input-field title-field"
+          formControlName="title"
+        >
+        <p class="error" *ngIf="!movieForm.get('title')?.valid">
+          Title is required
+        </p>
+        <textarea
+          matInput
+          cdkTextareaAutosize
+          class="input-field"
+          formControlName="description"
+        ></textarea>
+        <p class="error" *ngIf="!movieForm.get('description')?.valid">
+          Description is required
+        </p>
+        <div class="dates">
+          <mat-form-field class="date">
+            <input
+              matInput
+            type="date"
+            class="date"
+            formControlName="startDate"
+            >
+            <mat-error class="error" *ngIf="!movieForm.get('startDate')?.valid">
+              Start date is required
+            </mat-error>
+          </mat-form-field>
+          <mat-form-field class="date">
+            <input
+              matInput
+              type="date"
+              formControlName="endDate"
+            >
+            <mat-error class="error" *ngIf="!movieForm.get('endDate')?.valid">
+              End date is required
+            </mat-error>
+          </mat-form-field>
+        </div>
+        <button
+          class="button-apply"
+          mat-button
+          [disabled]="!movieForm.valid || !movieForm.dirty"
+          (click)="onApplyClick()"
+        >
+          Apply
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
