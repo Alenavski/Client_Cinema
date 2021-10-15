@@ -1,7 +1,7 @@
 import { ShowtimeModel } from '@models/showtime.model';
 
 export interface MovieModel {
-  id: number,
+  id?: number,
   title: string,
   description: string,
   startDate: Date,

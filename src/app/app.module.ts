@@ -15,6 +15,7 @@ import { HomeModule } from './home/home.module';
 import { NavigationModule } from './navigation/navigation.module';
 import { CinemaModule } from '@app/cinema/cinema.module';
 import { HallModule } from '@app/hall/hall.module';
+import { MovieModule } from '@app/movie/movie.module';
 
 import { SnackBarService } from '@service/snack-bar.service';
 import { UserService } from '@service/user.service';
@@ -38,7 +39,8 @@ import { AppRoutingModule } from './app-routing.module';
     HomeModule,
     NavigationModule,
     CinemaModule,
-    HallModule
+    HallModule,
+    MovieModule
   ],
   providers: [
     UserService,

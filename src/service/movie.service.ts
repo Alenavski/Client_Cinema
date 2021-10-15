@@ -23,12 +23,15 @@ export class MovieService {
     this.errorHandler = ErrorHandlerFactory(this.snackBarService);
   }
 
-  public getMovies(date: string): Observable<MovieModel[]> {
-    const options = {
-      params: new HttpParams({
-        fromObject: { date: date }
-      })
-    };
+  public getMovies(date?: string): Observable<MovieModel[]> {
+    let options;
+      if (date) {
+        options = {
+          params: new HttpParams({
+            fromObject: { date: date }
+          })
+        };
+      }
 
     return this.httpClient.get<MovieModel[]>(`${environment.hostURL}movies`, options)
       .pipe(
