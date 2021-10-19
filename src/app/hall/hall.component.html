@@ -1,42 +1,47 @@
 <div class="main-container">
-  <div class="list-container">
-    <button mat-button (click)="navigateToCinema()">
-      Cinema: {{cinemaName}}
-    </button>
-    <p>
-      Name:
-      <input
-        type="text"
-        [(ngModel)]="hall.name"
-      >
-    </p>
-    <p>Number of rows:
-      <input
-        type="number"
-        min="0"
-        value="{{seatsLayout.length}}"
-        (change)="onNumberOfRowsChange($event)"
-      >
-    </p>
-    <p>Number of columns:
-      <input
-        type="number"
-        min="0"
-        value="{{seatsLayout.length > 0 ? seatsLayout[0].length : 0}}"
-        (change)="onNumberOfColumnsChange($event)"
-        [disabled]="seatsLayout.length === 0"
-      >
-    </p>
-    <p>Number of seats: {{numberOfSeats}}</p>
-    <p *ngIf="isDirty" class="warning">
-      Changes will be applied after saving
-    </p>
-    <mat-checkbox [(ngModel)]="needToFill">
-      Fill seats
-    </mat-checkbox>
-    <button mat-button (click)="onSaveChangesClick()">
-      Save
-    </button>
+  <div>
+    <div class="info-container">
+      <button mat-button (click)="navigateToCinema()">
+        Cinema: {{cinemaName}}
+      </button>
+      <p>
+        Name:
+        <input
+          type="text"
+          [(ngModel)]="hall.name"
+        >
+      </p>
+      <p>Number of rows:
+        <input
+          type="number"
+          min="0"
+          value="{{seatsLayout.length}}"
+          (change)="onNumberOfRowsChange($event)"
+        >
+      </p>
+      <p>Number of columns:
+        <input
+          type="number"
+          min="0"
+          value="{{seatsLayout.length > 0 ? seatsLayout[0].length : 0}}"
+          (change)="onNumberOfColumnsChange($event)"
+          [disabled]="seatsLayout.length === 0"
+        >
+      </p>
+      <p>Number of seats: {{numberOfSeats}}</p>
+      <p *ngIf="isDirty" class="warning">
+        Changes will be applied after saving
+      </p>
+      <mat-checkbox [(ngModel)]="needToFill">
+        Fill seats
+      </mat-checkbox>
+      <button mat-button (click)="onSaveChangesClick()">
+        Save
+      </button>
+    </div>
+    <div class="info-container">
+      <app-addition></app-addition>
+    </div>
   </div>
 
   <div class="hall-container">
