@@ -1,0 +1,57 @@
+<h3 class="title">Additional services</h3>
+<div
+  *ngFor="let hallAddition of hallAdditions"
+  class="additions-list"
+>
+  <span>
+    {{hallAddition.addition.name}} {{hallAddition.price}} $
+  </span>
+  <i
+    class="fas fa-trash"
+    (click)="deleteHallAddition(hallAddition.addition.id)"
+  ></i>
+</div>
+<button mat-button (click)="needAdditions = !needAdditions">
+  {{needAdditions ? "Hide" : "Add additional service"}}
+</button>
+<div *ngIf="needAdditions">
+  <mat-form-field appearance="standard">
+    <mat-label>Choose addition</mat-label>
+    <mat-select [(ngModel)]="newHallAddition.addition">
+      <mat-option
+        *ngFor="let addition of allAdditions"
+        [value]="addition"
+      >
+        {{addition.name}}
+        <i
+          class="fas fa-trash"
+          (click)="deleteAddition(addition.id)"
+        ></i>
+      </mat-option>
+      <mat-option>
+        <input
+          (click)="$event.stopPropagation()"
+          type="text"
+          [(ngModel)]="newAddition.name"
+        >
+        <i
+          class="fas fa-plus"
+          (click)="addAddition()"
+        ></i>
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
+  <input
+    class="price new-price"
+    type="number"
+    min="0"
+    [(ngModel)]="newHallAddition.price"
+  >
+  <button
+    mat-button
+    [disabled]="newHallAddition.price <= 0 || newHallAddition.addition.id === 0"
+    (click)="addHallAddition()"
+  >
+    Add
+  </button>
+</div>

@@ -1,0 +1,54 @@
+.title {
+  text-align: center;
+}
+
+.additions-list {
+  padding: 10px;
+  font-size: 20px;
+
+  i {
+    float: right;
+  }
+
+  &:after {
+    content: '';
+    display: block;
+    margin-top: 10px;
+    width: 100%;
+    height: 2px;
+    background-color: black;
+  }
+}
+
+input {
+  max-width: 150px;
+  border: none;
+  border-bottom: 1px solid black;
+  text-align: center;
+  font-size: 18px;
+
+  &.price {
+    max-width: 50px;
+    margin-left: 20px;
+  }
+
+  &.new-price {
+    padding: 6px;
+  }
+}
+
+button {
+  display: block;
+  width: 100%;
+}
+
+i {
+  padding: 5px;
+  margin-left: 25px;
+  cursor: pointer;
+
+  &:hover {
+    border: 1px solid black;
+    border-radius: 5px;
+  }
+}
