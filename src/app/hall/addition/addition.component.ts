@@ -76,7 +76,12 @@ export class AdditionComponent implements OnInit {
   public addAddition(): void {
     this.additionService.addAddition(this.newAddition).subscribe(
       (id: number) => {
-        this.allAdditions.push({ id: id, name: this.newAddition.name });
+        const added = {
+          id: id,
+          name: this.newAddition.name
+        };
+        this.allAdditions.push(added);
+        this.newHallAddition.addition = added;
         this.newAddition = {
           id: 0,
           name: ''
@@ -88,6 +93,7 @@ export class AdditionComponent implements OnInit {
   public deleteAddition(id: number): void {
     this.additionService.deleteAddition(id).subscribe(
       () => {
+        this.fetchHallAdditions();
         this.fetchAllAdditions();
       }
     );

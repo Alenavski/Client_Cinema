@@ -59,7 +59,7 @@ export class HallComponent implements OnInit {
 
   public canCreateSofa(columnIndex: number, rowIndex: number): boolean {
     return (columnIndex !== this.seatsLayout[rowIndex].length - 1)
-      || !this.seatsLayout[rowIndex][columnIndex + 1];
+      && !this.seatsLayout[rowIndex][columnIndex + 1];
   }
 
   public navigateToCinema(): void {
@@ -124,10 +124,16 @@ export class HallComponent implements OnInit {
   public pushSeat(index: number, row: number, seatType: SeatTypeModel): void {
    this.isDirty = true;
     let place = 1;
-    for (let i = index - 1; i >= 0; i--){
+    for (let i = index - 1; i >= 0; i--) {
       if (this.seatsLayout[row][i]){
         place = this.seatsLayout[row][i].place + 1;
         break;
+      }
+    }
+    for (let i = index + 1; i < this.seatsLayout[row].length; i++) {
+      if (this.seatsLayout[row][i]) {
+        this.seatsLayout[row][i].place++;
+        this.editSeat(this.seatsLayout[row][i]);
       }
     }
     const seat: SeatModel = {
