@@ -5,6 +5,7 @@ import { MovieModel } from '@models/movie.model';
 import { MovieService } from '@service/movie.service';
 import { Nullable } from '@tools/utilityTypes';
 import * as moment from 'moment';
+import { ShowtimeService } from '@service/showtime.service';
 
 @Component({
   selector: 'app-movie',
@@ -20,11 +21,13 @@ export class MovieComponent implements OnInit {
   });
 
   movie: Nullable<MovieModel> = null;
+  needShowtime: boolean = false;
   currentMovies: MovieModel[] = [];
   endedMovies: MovieModel[] = [];
 
   constructor(
     private readonly movieService: MovieService,
+    private readonly showtimeService: ShowtimeService,
     private readonly activatedRoute: ActivatedRoute,
     private readonly router: Router
   ) { }
@@ -63,6 +66,16 @@ export class MovieComponent implements OnInit {
         }
       }
     );
+  }
+
+  public deleteShowtime(id: number): void {
+    if (this.movie?.id) {
+      this.showtimeService.deleteShowtime(this.movie.id, id).subscribe(
+        () => {
+          this.fetchMovie(this.movie?.id!);
+        }
+      );
+    }
   }
 
   public onApplyClick(): void {

@@ -1,12 +1,17 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { ReactiveFormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+
 import { MatButtonModule } from '@angular/material/button';
 import { MatInputModule } from '@angular/material/input';
+
 import { MovieComponent } from './movie.component';
+import { ShowtimeComponent } from './showtime/showtime.component';
+import { MatSelectModule } from '@angular/material/select';
 
 const components = [
-  MovieComponent
+  MovieComponent,
+  ShowtimeComponent
 ];
 
 @NgModule({
@@ -17,7 +22,9 @@ const components = [
     CommonModule,
     MatButtonModule,
     ReactiveFormsModule,
-    MatInputModule
+    MatInputModule,
+    MatSelectModule,
+    FormsModule
   ],
   exports: [
     ...components

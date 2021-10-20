@@ -1,0 +1,78 @@
+<mat-form-field class="select">
+  <mat-label>Choose cinema</mat-label>
+  <mat-select [(ngModel)]="chosenCinema">
+    <mat-option *ngFor="let cinema of cinemas" [value]="cinema">
+      {{cinema.name}}
+    </mat-option>
+  </mat-select>
+</mat-form-field>
+
+<mat-form-field *ngIf="chosenCinema !== null" class="select">
+  <mat-label>Choose hall</mat-label>
+  <mat-select [(ngModel)]="chosenHall">
+    <mat-option *ngFor="let hall of chosenCinema.halls" [value]="hall">
+      {{hall.name}}
+    </mat-option>
+  </mat-select>
+</mat-form-field>
+
+<mat-form-field class="time">
+  <input
+    matInput
+    type="time"
+    [(ngModel)]="time"
+  >
+</mat-form-field>
+
+<h2 class="title">Prices for seats:</h2>
+<div>
+  <h3 class="seat-type">{{seatTypes.Standard.name}}</h3>
+  <input
+    class="price new-price prices-input"
+    type="number"
+    min="0"
+    [(ngModel)]="standardPrice"
+  >
+</div>
+<div>
+  <h3 class="seat-type">{{seatTypes.Comfort.name}}</h3>
+  <input
+    class="price new-price prices-input"
+    type="number"
+    min="0"
+    [(ngModel)]="comfortPrice"
+  >
+</div>
+<div>
+  <h3 class="seat-type">{{seatTypes.Sofa.name}}</h3>
+  <input
+    class="price new-price prices-input"
+    type="number"
+    min="0"
+    [(ngModel)]="sofaPrice"
+  >
+</div>
+
+<div *ngIf="chosenHall">
+  <h2 class="title">Additional services:</h2>
+  <div *ngIf="chosenHall.additions!.length === 0; else availableAdditions">
+    <p class="available-additions-info">There are no additional services in {{chosenHall.name}} hall!</p>
+  </div>
+  <ng-template #availableAdditions>
+    <div *ngFor="let addition of additions">
+      <mat-form-field class="select">
+        <mat-label>Choose addition</mat-label>
+        <mat-select>
+          <mat-option
+            *ngFor="let hallAddition of chosenHall.additions"
+            [value]="hallAddition"
+          >
+            {{hallAddition.addition.name}} - {{hallAddition.price}}$
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
+    <button mat-button (click)="needAddition()">Add service</button>
+  </ng-template>
+</div>
+<button mat-button (click)="addShowtime()">Add</button>
