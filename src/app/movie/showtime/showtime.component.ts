@@ -7,7 +7,6 @@ import { HallModel } from '@models/hall.model';
 import { HallAdditionModel } from '@models/hall-addition.model';
 import { ShowtimeService } from '@service/showtime.service';
 import { ShowtimeModel } from '@models/showtime.model';
-import { Time } from '@angular/common';
 import { MovieModel } from '@models/movie.model';
 import { MovieService } from '@service/movie.service';
 import { ActivatedRoute, ParamMap } from '@angular/router';
@@ -70,7 +69,7 @@ export class ShowtimeComponent implements OnInit {
     if (this.chosenHall) {
       showtime = {
         id: 0,
-        time: this.getTime(this.time),
+        time: this.time,
         numberOfFreeSeats: 0,
         hall: this.chosenHall
       };
@@ -93,13 +92,6 @@ export class ShowtimeComponent implements OnInit {
         this.currentMovie = movie;
       }
     );
-  }
-
-  private getTime(time: string): Time {
-    return {
-      hours: Number(time.substring(0, time.indexOf(':'))),
-      minutes: Number(time.substring(time.indexOf(':') + 1))
-    };
   }
 
   private fetchCinemas(): void {

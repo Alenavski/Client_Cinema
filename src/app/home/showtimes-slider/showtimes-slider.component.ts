@@ -1,5 +1,4 @@
 import { Component, Input, ViewChild } from '@angular/core';
-import { Time } from '@angular/common';
 import { HallModel } from '@models/hall.model';
 import { Optional } from '@tools/utilityTypes';
 
@@ -57,8 +56,8 @@ export class ShowtimesSliderComponent {
     this.calculateMovieIndent(movieList);
   }
 
-  public getCinemasOfMovieAndTime(movie: MovieModel, time: Time): HallModel[] {
-    const cinemas: Optional<HallModel[]> = movie.showtimes?.filter((showtime: ShowtimeModel) => showtime.time == time)
+  public getCinemasOfMovieAndTime(movie: MovieModel, time: string): HallModel[] {
+    const cinemas: Optional<HallModel[]> = movie.showtimes?.filter((showtime: ShowtimeModel) => showtime.time === time)
       .map((showtime: ShowtimeModel) => showtime.hall);
     return cinemas ? cinemas : [];
   }

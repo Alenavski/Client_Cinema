@@ -26,7 +26,6 @@ export class ShowtimeService {
   }
 
   public addShowtime(movieId: number, showtime: ShowtimeModel): Observable<number> {
-    console.log(showtime);
     return this.httpClient.post<number>(`${environment.hostURL}movies/${movieId}/showtimes`, showtime)
       .pipe(
         catchError(this.errorHandler)
