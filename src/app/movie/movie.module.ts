@@ -4,10 +4,11 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 import { MatButtonModule } from '@angular/material/button';
 import { MatInputModule } from '@angular/material/input';
+import { MatSelectModule } from '@angular/material/select';
+import { MatExpansionModule } from '@angular/material/expansion';
 
 import { MovieComponent } from './movie.component';
 import { ShowtimeComponent } from './showtime/showtime.component';
-import { MatSelectModule } from '@angular/material/select';
 
 const components = [
   MovieComponent,
@@ -18,14 +19,15 @@ const components = [
   declarations: [
     ...components
   ],
-  imports: [
-    CommonModule,
-    MatButtonModule,
-    ReactiveFormsModule,
-    MatInputModule,
-    MatSelectModule,
-    FormsModule
-  ],
+    imports: [
+        CommonModule,
+        MatButtonModule,
+        ReactiveFormsModule,
+        MatInputModule,
+        MatSelectModule,
+        FormsModule,
+        MatExpansionModule
+    ],
   exports: [
     ...components
   ]

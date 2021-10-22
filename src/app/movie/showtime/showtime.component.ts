@@ -18,6 +18,7 @@ import { ActivatedRoute, ParamMap } from '@angular/router';
 })
 export class ShowtimeComponent implements OnInit {
   needShowtime: boolean = false;
+  cinemasWithMovieShowtimes: CinemaModel[] = [];
 
   cinemas: CinemaModel[] = [];
   seatTypes = SEAT_TYPES;
@@ -46,6 +47,7 @@ export class ShowtimeComponent implements OnInit {
           const id = Number(params.get('id'));
           if (id) {
             this.fetchMovie(id);
+            this.fetchCinemasByMovieShowtimes(id);
             this.fetchCinemas();
           }
         }
@@ -103,6 +105,7 @@ export class ShowtimeComponent implements OnInit {
       this.showtimeService.addShowtime(this.currentMovie.id, showtime).subscribe(
         () => {
           this.fetchMovie(this.currentMovie?.id!);
+          this.fetchCinemasByMovieShowtimes(this.currentMovie?.id!);
         }
       );
     }
@@ -113,6 +116,7 @@ export class ShowtimeComponent implements OnInit {
       this.showtimeService.deleteShowtime(this.currentMovie.id, id).subscribe(
         () => {
           this.fetchMovie(this.currentMovie?.id!);
+          this.fetchCinemasByMovieShowtimes(this.currentMovie?.id!);
         }
       );
     }
@@ -122,6 +126,14 @@ export class ShowtimeComponent implements OnInit {
     this.movieService.getMovie(id).subscribe(
       (movie: MovieModel) => {
         this.currentMovie = movie;
+      }
+    );
+  }
+
+  private fetchCinemasByMovieShowtimes(movieId: number): void {
+    this.showtimeService.getCinemasByMovieShowtimes(movieId).subscribe(
+      (cinemas: CinemaModel[]) => {
+        this.cinemasWithMovieShowtimes = cinemas;
       }
     );
   }

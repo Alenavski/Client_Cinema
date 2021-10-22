@@ -11,6 +11,7 @@ import { ShowtimesFilterModel } from '@models/showtimes-filter.model';
 
 import { SnackBarService } from '@service/snack-bar.service';
 import { ShowtimeModel } from '@models/showtime.model';
+import { CinemaModel } from '@models/cinema.model';
 
 @Injectable({
   providedIn: 'root'
@@ -23,6 +24,13 @@ export class ShowtimeService {
     private readonly snackBarService: SnackBarService
   ) {
     this.errorHandler = ErrorHandlerFactory(this.snackBarService);
+  }
+
+  public getCinemasByMovieShowtimes(movieId: number): Observable<CinemaModel[]> {
+    return this.httpClient.get<CinemaModel[]>(`${environment.hostURL}movies/${movieId}/showtimes/cinemas`)
+      .pipe(
+        catchError(this.errorHandler)
+      );
   }
 
   public addShowtime(movieId: number, showtime: ShowtimeModel): Observable<void> {
