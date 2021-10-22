@@ -84,6 +84,15 @@
             </mat-error>
           </mat-form-field>
         </div>
+        <div class="length">
+          <span>Length:</span>
+          <input
+            matInput
+            type="number"
+            class="input-field minutes-length"
+            formControlName="minutesLength"
+          >
+        </div>
         <button
           class="button-apply"
           mat-button
@@ -97,20 +106,6 @@
   </div>
 
   <div class="showtimes-container">
-    <div class="add-showtime">
-      <button mat-button (click)="needShowtime = !needShowtime">
-        {{needShowtime ? "Hide" : "Add showtime"}}
-      </button>
-      <app-showtime *ngIf="needShowtime"></app-showtime>
-    </div>
-    <div class="showtime-list">
-      <div *ngIf="movie !== null">
-        <h3>Showtimes:</h3>
-        <div *ngFor="let showtime of movie.showtimes" class="showtime">
-          <span>{{showtime.time}}</span>
-          <i class="fas fa-trash" (click)="deleteShowtime(showtime.id)"></i>
-        </div>
-      </div>
-    </div>
+    <app-showtime></app-showtime>
   </div>
 </div>

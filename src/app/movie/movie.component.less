@@ -113,6 +113,12 @@
   margin: 30px 0;
   display: block;
 
+  &.minutes-length {
+    width: 20%;
+    display: inline;
+    margin: 0 0 0 20px;
+  }
+
   &:hover,
   &:focus {
     border-bottom: 2px solid @dark-blue;
@@ -138,42 +144,4 @@
 .showtimes-container {
   margin-left: 75px;
   width: 20%;
-
-  .add-showtime {
-    margin-bottom: 10px;
-    box-shadow: 0 .25rem .75rem rgba(0, 0, 0, .25);
-    padding: 10px;
-
-    button {
-      width: 100%;
-    }
-  }
-
-  .showtime-list {
-    margin-bottom: 10px;
-    box-shadow: 0 .25rem .75rem rgba(0, 0, 0, .25);
-    padding: 10px;
-
-    div {
-      h3 {
-        text-align: center;
-      }
-    }
-
-    .showtime {
-      margin: 10px;
-      display: flex;
-      flex-wrap: wrap;
-      justify-content: space-between;
-
-      span {
-        font-size: 18px;
-      }
-
-      i {
-        font-size: 19px;
-        cursor: pointer;
-      }
-    }
-  }
 }

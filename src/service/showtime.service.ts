@@ -25,8 +25,8 @@ export class ShowtimeService {
     this.errorHandler = ErrorHandlerFactory(this.snackBarService);
   }
 
-  public addShowtime(movieId: number, showtime: ShowtimeModel): Observable<number> {
-    return this.httpClient.post<number>(`${environment.hostURL}movies/${movieId}/showtimes`, showtime)
+  public addShowtime(movieId: number, showtime: ShowtimeModel): Observable<void> {
+    return this.httpClient.post<void>(`${environment.hostURL}movies/${movieId}/showtimes`, showtime)
       .pipe(
         catchError(this.errorHandler)
       );

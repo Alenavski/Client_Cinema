@@ -17,11 +17,11 @@ export class MovieComponent implements OnInit {
     title: new FormControl('', [Validators.required]),
     description: new FormControl('', [Validators.required]),
     startDate: new FormControl('', [Validators.required]),
-    endDate: new FormControl('', [Validators.required])
+    endDate: new FormControl('', [Validators.required]),
+    minutesLength: new FormControl('', [Validators.required])
   });
 
   movie: Nullable<MovieModel> = null;
-  needShowtime: boolean = false;
   currentMovies: MovieModel[] = [];
   endedMovies: MovieModel[] = [];
 
@@ -68,22 +68,13 @@ export class MovieComponent implements OnInit {
     );
   }
 
-  public deleteShowtime(id: number): void {
-    if (this.movie?.id) {
-      this.showtimeService.deleteShowtime(this.movie.id, id).subscribe(
-        () => {
-          this.fetchMovie(this.movie?.id!);
-        }
-      );
-    }
-  }
-
   public onApplyClick(): void {
     const newMovie: MovieModel = {
       title: this.movieForm.get('title')?.value,
       description: this.movieForm.get('description')?.value,
       startDate: this.movieForm.get('startDate')?.value,
       endDate: this.movieForm.get('endDate')?.value,
+      minutesLength: this.movieForm.get('minutesLength')?.value
     };
     if (this.movie?.id) {
       this.movieService.editMovie(Object.assign(this.movie, newMovie))
@@ -107,6 +98,7 @@ export class MovieComponent implements OnInit {
       this.movieForm.get('description')?.setValue(movie.description);
       this.movieForm.get('startDate')?.setValue(moment(movie.startDate).format('yyyy-MM-DD'));
       this.movieForm.get('endDate')?.setValue(moment(movie.endDate).format('yyyy-MM-DD'));
+      this.movieForm.get('minutesLength')?.setValue(movie.minutesLength);
     } else {
       for (const control in this.movieForm.controls) {
         this.movieForm.get(control)?.setValue('');

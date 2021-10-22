@@ -6,6 +6,7 @@ export interface MovieModel {
   description: string,
   startDate: Date,
   endDate: Date,
+  minutesLength: number,
   poster?: Uint8Array,
   showtimes?: ShowtimeModel[]
 }

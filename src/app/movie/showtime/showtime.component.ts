@@ -17,6 +17,8 @@ import { ActivatedRoute, ParamMap } from '@angular/router';
   styleUrls: ['./showtime.component.less']
 })
 export class ShowtimeComponent implements OnInit {
+  needShowtime: boolean = false;
+
   cinemas: CinemaModel[] = [];
   seatTypes = SEAT_TYPES;
   additions: HallAdditionModel[] = [];
@@ -64,6 +66,10 @@ export class ShowtimeComponent implements OnInit {
     }
   }
 
+  public changeAddition(hallAddition: HallAdditionModel, index: number): void {
+    this.additions[index] = hallAddition;
+  }
+
   public addShowtime(): void {
     let showtime: Nullable<ShowtimeModel> = null;
     if (this.chosenHall) {
@@ -71,16 +77,42 @@ export class ShowtimeComponent implements OnInit {
         id: 0,
         time: this.time,
         numberOfFreeSeats: 0,
-        hall: this.chosenHall
+        hall: this.chosenHall,
+        prices: [
+          {
+            seatType: this.seatTypes.Standard,
+            price: this.standardPrice
+          },
+          {
+            seatType: this.seatTypes.Comfort,
+            price: this.comfortPrice
+          },
+          {
+            seatType: this.seatTypes.Sofa,
+            price: this.sofaPrice
+          },
+        ],
+        additions: []
       };
+      for (const addition of this.additions) {
+        showtime.additions?.push({ hall: showtime.hall, addition: addition.addition });
+      }
     }
 
     if (this.currentMovie?.id && showtime) {
       this.showtimeService.addShowtime(this.currentMovie.id, showtime).subscribe(
-        (id: number) => {
-          //add ticket
-          // // add additions to ticket
-          //refresh moviePage
+        () => {
+          this.fetchMovie(this.currentMovie?.id!);
+        }
+      );
+    }
+  }
+
+  public deleteShowtime(id: number): void {
+    if (this.currentMovie?.id) {
+      this.showtimeService.deleteShowtime(this.currentMovie.id, id).subscribe(
+        () => {
+          this.fetchMovie(this.currentMovie?.id!);
         }
       );
     }
