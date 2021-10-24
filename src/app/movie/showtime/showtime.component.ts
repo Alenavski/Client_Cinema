@@ -102,47 +102,52 @@ export class ShowtimeComponent implements OnInit {
     }
 
     if (this.currentMovie?.id && showtime) {
-      this.showtimeService.addShowtime(this.currentMovie.id, showtime).subscribe(
-        () => {
-          this.fetchMovie(this.currentMovie?.id!);
-          this.fetchCinemasByMovieShowtimes(this.currentMovie?.id!);
-        }
-      );
+      this.showtimeService.addShowtime(this.currentMovie.id, showtime)
+        .subscribe(
+          () => {
+            this.fetchMovie(this.currentMovie?.id!);
+            this.fetchCinemasByMovieShowtimes(this.currentMovie?.id!);
+          }
+        );
     }
   }
 
   public deleteShowtime(id: number): void {
     if (this.currentMovie?.id) {
-      this.showtimeService.deleteShowtime(this.currentMovie.id, id).subscribe(
-        () => {
-          this.fetchMovie(this.currentMovie?.id!);
-          this.fetchCinemasByMovieShowtimes(this.currentMovie?.id!);
-        }
-      );
+      this.showtimeService.deleteShowtime(this.currentMovie.id, id)
+        .subscribe(
+          () => {
+            this.fetchMovie(this.currentMovie?.id!);
+            this.fetchCinemasByMovieShowtimes(this.currentMovie?.id!);
+          }
+        );
     }
   }
 
   private fetchMovie(id: number): void {
-    this.movieService.getMovie(id).subscribe(
-      (movie: MovieModel) => {
-        this.currentMovie = movie;
-      }
-    );
+    this.movieService.getMovie(id)
+      .subscribe(
+        (movie: MovieModel) => {
+          this.currentMovie = movie;
+        }
+      );
   }
 
   private fetchCinemasByMovieShowtimes(movieId: number): void {
-    this.showtimeService.getCinemasByMovieShowtimes(movieId).subscribe(
-      (cinemas: CinemaModel[]) => {
-        this.cinemasWithMovieShowtimes = cinemas;
-      }
-    );
+    this.showtimeService.getCinemasByMovieShowtimes(movieId)
+      .subscribe(
+        (cinemas: CinemaModel[]) => {
+          this.cinemasWithMovieShowtimes = cinemas;
+        }
+      );
   }
 
   private fetchCinemas(): void {
-    this.cinemaService.getCinemas().subscribe(
-      (cinemas: CinemaModel[]) => {
-        this.cinemas = cinemas;
-      }
-    );
+    this.cinemaService.getCinemas()
+      .subscribe(
+        (cinemas: CinemaModel[]) => {
+          this.cinemas = cinemas;
+        }
+      );
   }
 }

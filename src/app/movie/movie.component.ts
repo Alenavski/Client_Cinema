@@ -57,15 +57,16 @@ export class MovieComponent implements OnInit {
   }
 
   public deleteMovie(id: number): void {
-    this.movieService.deleteMovie(id).subscribe(
-      () => {
-        if (this.movie) {
-          if (this.movie.id === id) {
-            this.navigateToMovie();
+    this.movieService.deleteMovie(id)
+      .subscribe(
+        () => {
+          if (this.movie) {
+            if (this.movie.id === id) {
+              this.navigateToMovie();
+            }
           }
         }
-      }
-    );
+      );
   }
 
   public onApplyClick(): void {
@@ -84,11 +85,12 @@ export class MovieComponent implements OnInit {
           }
         );
     } else {
-      this.movieService.addMovie(newMovie).subscribe(
-        (id: number) => {
-          this.navigateToMovie(id);
-        }
-      );
+      this.movieService.addMovie(newMovie)
+        .subscribe(
+          (id: number) => {
+            this.navigateToMovie(id);
+          }
+        );
     }
   }
 
@@ -107,34 +109,37 @@ export class MovieComponent implements OnInit {
   }
 
   private fetchMovie(id: number): void {
-    this.movieService.getMovie(id).subscribe(
-      (movie: MovieModel) => {
-        this.movie = movie;
-        this.setMovieForm(this.movie);
-      }
-    );
+    this.movieService.getMovie(id)
+      .subscribe(
+        (movie: MovieModel) => {
+          this.movie = movie;
+          this.setMovieForm(this.movie);
+        }
+      );
   }
 
   private fetchCurrentMovies(): void {
     const currentDate = new Date();
-    this.movieService.getMovies(currentDate.toDateString()).subscribe(
-      (movies: MovieModel[]) => {
-        this.currentMovies = movies;
-        this.fetchEndedMovies();
-      }
-    );
+    this.movieService.getMovies(currentDate.toDateString())
+      .subscribe(
+        (movies: MovieModel[]) => {
+          this.currentMovies = movies;
+          this.fetchEndedMovies();
+        }
+      );
   }
 
   private fetchEndedMovies(): void {
-    this.movieService.getMovies().subscribe(
-      (movies: MovieModel[]) => {
-        this.endedMovies = [];
-        for (const movie of movies) {
-          if (!this.currentMovies.find(m => m.id == movie.id)) {
-            this.endedMovies.push(movie);
+    this.movieService.getMovies()
+      .subscribe(
+        (movies: MovieModel[]) => {
+          this.endedMovies = [];
+          for (const movie of movies) {
+            if (!this.currentMovies.find(m => m.id == movie.id)) {
+              this.endedMovies.push(movie);
+            }
           }
         }
-      }
-    );
+      );
   }
 }
