@@ -48,71 +48,76 @@ export class AdditionComponent implements OnInit {
 
   public deleteHallAddition(additionId: number): void {
     if (this.hallId !== 0) {
-      this.additionService.deleteHallAddition(this.hallId, additionId).subscribe(
-        () => {
-          this.fetchHallAdditions();
-        }
-      );
+      this.additionService.deleteHallAddition(this.hallId, additionId)
+        .subscribe(
+          () => {
+            this.fetchHallAdditions();
+          }
+        );
     }
   }
 
   public addHallAddition(): void {
     if (this.hallId !== 0) {
-      this.additionService.addHallAddition(this.hallId, this.newHallAddition).subscribe(
-        () => {
-          this.hallAdditions.push(this.newHallAddition);
-          this.newHallAddition = {
-            price: 0,
-            addition: {
-              id: 0,
-              name: ''
-            }
-          };
-        }
-      );
+      this.additionService.addHallAddition(this.hallId, this.newHallAddition)
+        .subscribe(
+          () => {
+            this.hallAdditions.push(this.newHallAddition);
+            this.newHallAddition = {
+              price: 0,
+              addition: {
+                id: 0,
+                name: ''
+              }
+            };
+          }
+        );
     }
   }
 
   public addAddition(): void {
-    this.additionService.addAddition(this.newAddition).subscribe(
-      (id: number) => {
-        const added = {
-          id: id,
-          name: this.newAddition.name
-        };
-        this.allAdditions.push(added);
-        this.newHallAddition.addition = added;
-        this.newAddition = {
-          id: 0,
-          name: ''
-        };
-      }
-    );
+    this.additionService.addAddition(this.newAddition)
+      .subscribe(
+        (id: number) => {
+          const added = {
+            id: id,
+            name: this.newAddition.name
+          };
+          this.allAdditions.push(added);
+          this.newHallAddition.addition = added;
+          this.newAddition = {
+            id: 0,
+            name: ''
+          };
+        }
+      );
   }
 
   public deleteAddition(id: number): void {
-    this.additionService.deleteAddition(id).subscribe(
-      () => {
-        this.fetchHallAdditions();
-        this.fetchAllAdditions();
-      }
-    );
+    this.additionService.deleteAddition(id)
+      .subscribe(
+        () => {
+          this.fetchHallAdditions();
+          this.fetchAllAdditions();
+        }
+      );
   }
 
   private fetchAllAdditions(): void {
-    this.additionService.getAdditions().subscribe(
-      (additions: AdditionModel[]) => {
-        this.allAdditions = additions;
-      }
-    );
+    this.additionService.getAdditions()
+      .subscribe(
+        (additions: AdditionModel[]) => {
+          this.allAdditions = additions;
+        }
+      );
   }
 
   private fetchHallAdditions(): void {
-    this.additionService.getHallAdditions(this.hallId).subscribe(
-      (additions: HallAdditionModel[]) => {
-        this.hallAdditions = additions;
-      }
-    );
+    this.additionService.getHallAdditions(this.hallId)
+      .subscribe(
+        (additions: HallAdditionModel[]) => {
+          this.hallAdditions = additions;
+        }
+      );
   }
-
 }

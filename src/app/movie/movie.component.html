@@ -84,6 +84,15 @@
             </mat-error>
           </mat-form-field>
         </div>
+        <div class="length">
+          <span>Length:</span>
+          <input
+            matInput
+            type="number"
+            class="input-field minutes-length"
+            formControlName="minutesLength"
+          >
+        </div>
         <button
           class="button-apply"
           mat-button
@@ -94,5 +103,9 @@
         </button>
       </div>
     </div>
+  </div>
+
+  <div class="showtimes-container">
+    <app-showtime></app-showtime>
   </div>
 </div>
