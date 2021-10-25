@@ -6,7 +6,6 @@ import { ShowtimesFilterModel } from '@models/showtimes-filter.model';
 
 import { FilterService } from '@service/filter.service';
 import { ShowtimeService } from '@service/showtime.service';
-import { UserService } from '@service/user.service';
 
 @Component({
   selector: 'app-home',
