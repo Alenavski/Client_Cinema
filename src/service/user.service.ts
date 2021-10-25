@@ -2,6 +2,7 @@ import jwt_decode from 'jwt-decode';
 
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { Observable } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 
 import { environment } from '../environments/environment';
@@ -32,43 +33,7 @@ export class UserService {
   ) {
   }
 
-  public register(email: string, password: string): boolean {
-    const errorHandler = ErrorHandlerFactory(this.snackBarService);
-    let status: boolean = false;
-
-    this.httpClient.post<AuthModel>(environment.hostURL + 'user/register', { Email: email, Password: password })
-      .pipe(
-        catchError(errorHandler)
-      )
-      .subscribe(
-        (authModel: AuthModel) => {
-          status = true;
-          this.saveToken(authModel.token);
-        }
-      );
-
-    return status;
-  }
-
-  public login(email: string, password: string): boolean {
-    const errorHandler = ErrorHandlerFactory(this.snackBarService);
-    let status: boolean = false;
-
-    this.httpClient.post<AuthModel>(environment.hostURL + 'user/login', { Email: email, Password: password })
-      .pipe(
-        catchError(errorHandler)
-      )
-      .subscribe(
-        (authModel: AuthModel) => {
-          this.saveToken(authModel.token);
-          status = true;
-        }
-      );
-
-    return status;
-  }
-
-  public getUserModel(): Nullable<UserModel> {
+  public static getUserModel(): Nullable<UserModel> {
     const token = this.getToken();
 
     if (!token) {
@@ -83,11 +48,53 @@ export class UserService {
     };
   }
 
-  private saveToken(token: string): void {
+  private static saveToken(token: string): void {
     localStorage.setItem('token', token);
   }
 
-  private getToken(): Nullable<string> {
+  private static getToken(): Nullable<string> {
     return localStorage.getItem('token');
+  }
+
+  private static deleteToken(): void {
+    localStorage.removeItem('token');
+  }
+
+  public register(email: string, password: string): Observable<AuthModel> {
+    const errorHandler = ErrorHandlerFactory(this.snackBarService);
+
+    const observable = this.httpClient.post<AuthModel>(environment.hostURL + 'user/register', { Email: email, Password: password })
+      .pipe(
+        catchError(errorHandler)
+      );
+
+      observable.subscribe(
+        (authModel: AuthModel) => {
+          UserService.saveToken(authModel.token);
+        }
+      );
+
+    return observable;
+  }
+
+  public login(email: string, password: string): Observable<AuthModel> {
+    const errorHandler = ErrorHandlerFactory(this.snackBarService);
+
+    const observable = this.httpClient.post<AuthModel>(environment.hostURL + 'user/login', { Email: email, Password: password })
+      .pipe(
+        catchError(errorHandler)
+      );
+
+      observable.subscribe(
+        (authModel: AuthModel) => {
+          UserService.saveToken(authModel.token);
+        }
+      );
+
+    return observable;
+  }
+
+  public logout(): void {
+    UserService.deleteToken();
   }
 }

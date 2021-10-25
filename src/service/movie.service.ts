@@ -7,7 +7,7 @@ import { MovieModel } from '@models/movie.model';
 
 import { SnackBarService } from '@service/snack-bar.service';
 
-import { ErrorHandlerFactory } from '@tools/serviceTools';
+import { ErrorHandlerFactory, getHttpOptionsWithAuthorizationHeader } from '@tools/serviceTools';
 import { environment } from '../environments/environment';
 
 @Injectable({
@@ -25,13 +25,13 @@ export class MovieService {
 
   public getMovies(date?: string): Observable<MovieModel[]> {
     let options;
-      if (date) {
-        options = {
-          params: new HttpParams({
+    if (date) {
+      options = {
+        params: new HttpParams({
             fromObject: { date: date }
-          })
-        };
-      }
+        })
+      };
+    }
 
     return this.httpClient.get<MovieModel[]>(`${environment.hostURL}movies`, options)
       .pipe(
@@ -47,21 +47,32 @@ export class MovieService {
   }
 
   public addMovie(movie: MovieModel): Observable<number> {
-    return this.httpClient.post<number>(`${environment.hostURL}movies`, movie)
+    return this.httpClient.post<number>(
+      `${environment.hostURL}movies`,
+      movie,
+      getHttpOptionsWithAuthorizationHeader()
+    )
       .pipe(
         catchError(this.errorHandler)
       );
   }
 
   public editMovie(movie: MovieModel): Observable<void> {
-    return this.httpClient.put<void>(`${environment.hostURL}movies/${movie.id}`, movie)
+    return this.httpClient.put<void>(
+      `${environment.hostURL}movies/${movie.id}`,
+      movie,
+      getHttpOptionsWithAuthorizationHeader()
+    )
       .pipe(
         catchError(this.errorHandler)
       );
   }
 
   public deleteMovie(id: number): Observable<void> {
-    return this.httpClient.delete<void>(`${environment.hostURL}movies/${id}`)
+    return this.httpClient.delete<void>(
+      `${environment.hostURL}movies/${id}`,
+      getHttpOptionsWithAuthorizationHeader()
+    )
       .pipe(
         catchError(this.errorHandler)
       );

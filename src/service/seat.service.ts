@@ -6,7 +6,7 @@ import { catchError } from 'rxjs/operators';
 import { SeatModel } from '@models/seat.model';
 
 import { SnackBarService } from '@service/snack-bar.service';
-import { ErrorHandlerFactory } from '@tools/serviceTools';
+import { ErrorHandlerFactory, getHttpOptionsWithAuthorizationHeader } from '@tools/serviceTools';
 
 import { environment } from '../environments/environment';
 
@@ -23,17 +23,23 @@ export class SeatService {
     this.errorHandler = ErrorHandlerFactory(this.snackBarService);
   }
 
-  public editSeats(idCinema: number, idHall: number, seats: SeatModel[]): Observable<void> {
-    return this.httpClient.put<void>(`${environment.hostURL}seats`, seats)
+  public editSeats(seats: SeatModel[]): Observable<void> {
+    return this.httpClient.put<void>(
+      `${environment.hostURL}seats`,
+      seats,
+      getHttpOptionsWithAuthorizationHeader()
+    )
       .pipe(
         catchError(this.errorHandler)
       );
   }
 
-  public removeDeletedSeats(idCinema: number, idHall: number, deletedSeats: SeatModel[]): Observable<void> {
-    const options = {
-      body: deletedSeats
-    };
+  public removeDeletedSeats(deletedSeats: SeatModel[]): Observable<void> {
+    const options = getHttpOptionsWithAuthorizationHeader(
+      undefined,
+      deletedSeats
+    );
+
     return this.httpClient.delete<void>(`${environment.hostURL}seats`, options)
       .pipe(
         catchError(this.errorHandler)

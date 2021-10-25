@@ -97,7 +97,7 @@ export class ShowtimeComponent implements OnInit {
         additions: []
       };
       for (const addition of this.additions) {
-        showtime.additions?.push({ hall: showtime.hall, addition: addition.addition });
+        showtime.additions?.push(addition.addition);
       }
     }
 

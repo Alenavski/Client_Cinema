@@ -7,7 +7,7 @@ import { HallModel } from '@models/hall.model';
 
 import { SnackBarService } from '@service/snack-bar.service';
 
-import { ErrorHandlerFactory } from '@tools/serviceTools';
+import { ErrorHandlerFactory, getHttpOptionsWithAuthorizationHeader } from '@tools/serviceTools';
 import { environment } from '../environments/environment';
 
 @Injectable({
@@ -31,21 +31,32 @@ export class HallService {
   }
 
   public addHall(idCinema: number, hall: HallModel): Observable<number> {
-    return this.httpClient.post<number>(`${environment.hostURL}cinemas/${idCinema}/halls`, hall)
+    return this.httpClient.post<number>(
+      `${environment.hostURL}cinemas/${idCinema}/halls`,
+      hall,
+      getHttpOptionsWithAuthorizationHeader()
+    )
       .pipe(
         catchError(this.errorHandler)
       );
   }
 
   public editHall(idCinema: number, hall: HallModel): Observable<void> {
-    return this.httpClient.put<void>(`${environment.hostURL}cinemas/${idCinema}/halls/${hall.id}`, hall)
+    return this.httpClient.put<void>(
+      `${environment.hostURL}cinemas/${idCinema}/halls/${hall.id}`,
+      hall,
+      getHttpOptionsWithAuthorizationHeader()
+    )
       .pipe(
         catchError(this.errorHandler)
       );
   }
 
   public deleteHall(idCinema: number, idHall: number): Observable<void> {
-    return this.httpClient.delete<void>(`${environment.hostURL}cinemas/${idCinema}/halls/${idHall}`)
+    return this.httpClient.delete<void>(
+      `${environment.hostURL}cinemas/${idCinema}/halls/${idHall}`,
+      getHttpOptionsWithAuthorizationHeader()
+    )
       .pipe(
         catchError(this.errorHandler)
       );

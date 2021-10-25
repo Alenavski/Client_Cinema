@@ -82,7 +82,7 @@ export class HallComponent implements OnInit {
           }
         );
       if (this.editedSeats.length > 0) {
-        this.seatService.editSeats(this.cinemaId, this.hall.id, this.editedSeats)
+        this.seatService.editSeats(this.editedSeats)
           .subscribe(
             () => {
               this.fetchHall(this.hall.id);
@@ -91,7 +91,7 @@ export class HallComponent implements OnInit {
           );
       }
       if (this.deletedSeats.length > 0) {
-        this.seatService.removeDeletedSeats(this.cinemaId, this.hall.id, this.deletedSeats)
+        this.seatService.removeDeletedSeats(this.deletedSeats)
           .subscribe(
             () => {
               this.fetchHall(this.hall.id);

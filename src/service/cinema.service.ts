@@ -7,7 +7,7 @@ import { CinemaModel } from '@models/cinema.model';
 
 import { SnackBarService } from '@service/snack-bar.service';
 
-import { ErrorHandlerFactory } from '@tools/serviceTools';
+import { ErrorHandlerFactory, getHttpOptionsWithAuthorizationHeader } from '@tools/serviceTools';
 import { environment } from '../environments/environment';
 
 @Injectable({
@@ -38,21 +38,32 @@ export class CinemaService {
   }
 
   public addCinema(cinema: CinemaModel): Observable<number> {
-    return this.httpClient.post<number>(`${environment.hostURL}cinemas`, cinema)
+    return this.httpClient.post<number>(
+      `${environment.hostURL}cinemas`,
+      cinema,
+      getHttpOptionsWithAuthorizationHeader()
+    )
       .pipe(
         catchError(this.errorHandler)
       );
   }
 
   public editCinema(cinema: CinemaModel): Observable<void> {
-    return this.httpClient.put<void>(`${environment.hostURL}cinemas/${cinema.id}`, cinema)
+    return this.httpClient.put<void>(
+      `${environment.hostURL}cinemas/${cinema.id}`,
+      cinema,
+      getHttpOptionsWithAuthorizationHeader()
+    )
       .pipe(
         catchError(this.errorHandler)
       );
   }
 
   public deleteCinema(id: number): Observable<void> {
-    return this.httpClient.delete<void>(`${environment.hostURL}cinemas/${id}`)
+    return this.httpClient.delete<void>(
+      `${environment.hostURL}cinemas/${id}`,
+      getHttpOptionsWithAuthorizationHeader()
+    )
       .pipe(
         catchError(this.errorHandler)
       );
