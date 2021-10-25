@@ -1,11 +1,12 @@
-import { Time } from '@angular/common';
 import { HallModel } from '@models/hall.model';
-import { MovieModel } from '@models/movie.model';
+import { TicketPriceModel } from '@models/ticket-price.model';
+import { ShowtimeAdditionModel } from '@models/showtime-addition.model';
 
 export interface ShowtimeModel {
   id: number,
-  time: Time,
+  time: string,
   numberOfFreeSeats: number,
   hall: HallModel,
-  movie: MovieModel
+  additions?: ShowtimeAdditionModel[],
+  prices: TicketPriceModel[]
 }

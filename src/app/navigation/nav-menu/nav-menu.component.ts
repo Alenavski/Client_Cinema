@@ -35,20 +35,26 @@ export class NavMenuComponent {
       width: '250px',
       data: this.location
     });
-    dialogRef.afterClosed().subscribe((result: string) => {
-      this.location = result;
-      const filter: ShowtimesFilterModel = { city: this.location };
-      this.filterService.updateFilter(filter);
-    });
+    dialogRef.afterClosed()
+      .subscribe(
+        (result: string) => {
+          this.location = result;
+          const filter: ShowtimesFilterModel = { city: this.location };
+          this.filterService.updateFilter(filter);
+        }
+      );
   }
 
   openDialogAuth(): void {
     const dialogRef = this.dialogAuth.open(AuthModalComponent, {
       width: '450px'
     });
-    dialogRef.afterClosed().subscribe((result: boolean) => {
-      this.isAuthed = result;
-    });
+    dialogRef.afterClosed()
+      .subscribe(
+        (result: boolean) => {
+          this.isAuthed = result;
+        }
+      );
   }
 
   get isAdmin(): boolean {

@@ -1,9 +1,9 @@
 import { SeatModel } from '@models/seat.model';
-import { AdditionModel } from '@models/addition.model';
+import { HallAdditionModel } from '@models/hall-addition.model';
 
 export interface HallModel {
   id: number,
   name: string,
   seats: SeatModel[],
-  additions?: AdditionModel[]
+  additions?: HallAdditionModel[]
 }
