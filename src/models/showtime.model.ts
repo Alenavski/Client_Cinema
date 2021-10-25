@@ -1,12 +1,12 @@
 import { HallModel } from '@models/hall.model';
 import { TicketPriceModel } from '@models/ticket-price.model';
-import { ShowtimeAdditionModel } from '@models/showtime-addition.model';
+import { AdditionModel } from '@models/addition.model';
 
 export interface ShowtimeModel {
   id: number,
   time: string,
   numberOfFreeSeats: number,
   hall: HallModel,
-  additions?: ShowtimeAdditionModel[],
+  additions?: AdditionModel[],
   prices: TicketPriceModel[]
 }

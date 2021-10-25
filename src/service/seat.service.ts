@@ -1,13 +1,12 @@
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { UserService } from '@service/user.service';
 import { Observable } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 
 import { SeatModel } from '@models/seat.model';
 
 import { SnackBarService } from '@service/snack-bar.service';
-import { ErrorHandlerFactory } from '@tools/serviceTools';
+import { ErrorHandlerFactory, getHttpOptionsWithAuthorizationHeader } from '@tools/serviceTools';
 
 import { environment } from '../environments/environment';
 
@@ -24,30 +23,22 @@ export class SeatService {
     this.errorHandler = ErrorHandlerFactory(this.snackBarService);
   }
 
-  public editSeats(idCinema: number, idHall: number, seats: SeatModel[]): Observable<void> {
-    const userModel = UserService.getUserModel();
-
-    const options = {
-      headers: new HttpHeaders({
-        Authorization: 'Bearer ' + userModel?.token
-      })
-    };
-
-    return this.httpClient.put<void>(`${environment.hostURL}seats`, seats, options)
+  public editSeats(seats: SeatModel[]): Observable<void> {
+    return this.httpClient.put<void>(
+      `${environment.hostURL}seats`,
+      seats,
+      getHttpOptionsWithAuthorizationHeader()
+    )
       .pipe(
         catchError(this.errorHandler)
       );
   }
 
-  public removeDeletedSeats(idCinema: number, idHall: number, deletedSeats: SeatModel[]): Observable<void> {
-    const userModel = UserService.getUserModel();
-
-    const options = {
-      headers: new HttpHeaders({
-        Authorization: 'Bearer ' + userModel?.token
-      }),
-      body: deletedSeats
-    };
+  public removeDeletedSeats(deletedSeats: SeatModel[]): Observable<void> {
+    const options = getHttpOptionsWithAuthorizationHeader(
+      undefined,
+      deletedSeats
+    );
 
     return this.httpClient.delete<void>(`${environment.hostURL}seats`, options)
       .pipe(

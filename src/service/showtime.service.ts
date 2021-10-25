@@ -1,11 +1,10 @@
-import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { UserService } from '@service/user.service';
 import { Observable } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 
 import { environment } from '../environments/environment';
-import { ErrorHandlerFactory } from '@tools/serviceTools';
+import { ErrorHandlerFactory, getHttpOptionsWithAuthorizationHeader } from '@tools/serviceTools';
 
 import { MovieModel } from '@models/movie.model';
 import { ShowtimesFilterModel } from '@models/showtimes-filter.model';
@@ -35,29 +34,34 @@ export class ShowtimeService {
   }
 
   public addShowtime(movieId: number, showtime: ShowtimeModel): Observable<void> {
-    return this.httpClient.post<void>(`${environment.hostURL}movies/${movieId}/showtimes`, showtime)
+    return this.httpClient.post<void>(
+      `${environment.hostURL}movies/${movieId}/showtimes`,
+      showtime,
+      getHttpOptionsWithAuthorizationHeader()
+    )
       .pipe(
         catchError(this.errorHandler)
       );
   }
 
   public deleteShowtime(movieId: number, id: number): Observable<void> {
-    return this.httpClient.delete<void>(`${environment.hostURL}movies/${movieId}/showtimes/${id}`)
+    return this.httpClient.delete<void>(
+      `${environment.hostURL}movies/${movieId}/showtimes/${id}`,
+      getHttpOptionsWithAuthorizationHeader()
+    )
       .pipe(
         catchError(this.errorHandler)
       );
   }
 
   public getShowtimes(filter: ShowtimesFilterModel): Observable<MovieModel[]> {
-    const userModel = UserService.getUserModel();
-    const options = {
-      headers: new HttpHeaders({
-        Authorization: 'Bearer ' + userModel?.token
-      }),
-      params: new HttpParams({
-        fromObject: { ...this.removeEmpty(filter) }
-      })
-    };
+    const options = getHttpOptionsWithAuthorizationHeader(
+      new HttpParams(
+        {
+          fromObject: { ...this.removeEmpty(filter) }
+        }
+      )
+    );
 
     return this.httpClient.get<MovieModel[]>(`${environment.hostURL}movies`, options)
       .pipe(

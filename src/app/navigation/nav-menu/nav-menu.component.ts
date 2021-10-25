@@ -20,7 +20,8 @@ export class NavMenuComponent {
   constructor(
     public dialogCity: MatDialog,
     public dialogAuth: MatDialog,
-    private readonly filterService: FilterService
+    private readonly filterService: FilterService,
+    private readonly userService: UserService
   ) {
     const userModel = UserService.getUserModel();
     if (userModel) {
@@ -69,7 +70,7 @@ export class NavMenuComponent {
   }
 
   logout(): void {
-    UserService.logout();
+    this.userService.logout();
     this.isAuthed = false;
   }
 }

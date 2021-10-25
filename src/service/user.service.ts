@@ -48,10 +48,6 @@ export class UserService {
     };
   }
 
-  public static logout(): void {
-    this.deleteToken();
-  }
-
   private static saveToken(token: string): void {
     localStorage.setItem('token', token);
   }
@@ -96,5 +92,9 @@ export class UserService {
       );
 
     return observable;
+  }
+
+  public logout(): void {
+    UserService.deleteToken();
   }
 }

@@ -1,6 +1,5 @@
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { UserService } from '@service/user.service';
 import { Observable } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 
@@ -9,7 +8,7 @@ import { HallAdditionModel } from '@models/hall-addition.model';
 
 import { SnackBarService } from '@service/snack-bar.service';
 
-import { ErrorHandlerFactory } from '@tools/serviceTools';
+import { ErrorHandlerFactory, getHttpOptionsWithAuthorizationHeader } from '@tools/serviceTools';
 import { environment } from '../environments/environment';
 
 @Injectable({
@@ -26,90 +25,56 @@ export class AdditionService {
   }
 
   public getAdditions(): Observable<AdditionModel[]> {
-    const userModel = UserService.getUserModel();
-
-    const options = {
-      headers: new HttpHeaders({
-        Authorization: 'Bearer ' + userModel?.token
-      })
-    };
-
-    return this.httpClient.get<AdditionModel[]>(`${environment.hostURL}additions`, options)
+    return this.httpClient.get<AdditionModel[]>(`${environment.hostURL}additions`)
       .pipe(
         catchError(this.errorHandler)
       );
   }
 
   public getHallAdditions(hallId: number): Observable<HallAdditionModel[]> {
-    const userModel = UserService.getUserModel();
-
-    const options = {
-      headers: new HttpHeaders({
-        Authorization: 'Bearer ' + userModel?.token
-      })
-    };
-
-    return this.httpClient.get<HallAdditionModel[]>(`${environment.hostURL}halls/${hallId}/additions`, options)
+    return this.httpClient.get<HallAdditionModel[]>(`${environment.hostURL}halls/${hallId}/additions`)
       .pipe(
         catchError(this.errorHandler)
       );
   }
 
   public addAddition(addition: AdditionModel): Observable<number> {
-    const userModel = UserService.getUserModel();
-
-    const options = {
-      headers: new HttpHeaders({
-        Authorization: 'Bearer ' + userModel?.token
-      })
-    };
-
-    return this.httpClient.post<number>(`${environment.hostURL}additions`, addition, options)
+    return this.httpClient.post<number>(
+      `${environment.hostURL}additions`,
+      addition,
+      getHttpOptionsWithAuthorizationHeader()
+    )
       .pipe(
         catchError(this.errorHandler)
       );
   }
 
   public addHallAddition(hallId: number, addition: HallAdditionModel): Observable<void> {
-    const userModel = UserService.getUserModel();
-
-    const options = {
-      headers: new HttpHeaders({
-        Authorization: 'Bearer ' + userModel?.token
-      })
-    };
-
-    return this.httpClient.post<void>(`${environment.hostURL}halls/${hallId}/additions/${addition.addition.id}`, addition, options)
+    return this.httpClient.post<void>(
+      `${environment.hostURL}halls/${hallId}/additions/${addition.addition.id}`,
+      addition,
+      getHttpOptionsWithAuthorizationHeader()
+    )
       .pipe(
         catchError(this.errorHandler)
       );
   }
 
   public deleteAddition(id: number): Observable<void> {
-    const userModel = UserService.getUserModel();
-
-    const options = {
-      headers: new HttpHeaders({
-        Authorization: 'Bearer ' + userModel?.token
-      })
-    };
-
-    return this.httpClient.delete<void>(`${environment.hostURL}additions/${id}`, options)
+    return this.httpClient.delete<void>(
+      `${environment.hostURL}additions/${id}`,
+      getHttpOptionsWithAuthorizationHeader()
+    )
       .pipe(
         catchError(this.errorHandler)
       );
   }
 
   public deleteHallAddition(hallId: number, additionId: number): Observable<void> {
-    const userModel = UserService.getUserModel();
-
-    const options = {
-      headers: new HttpHeaders({
-        Authorization: 'Bearer ' + userModel?.token
-      })
-    };
-
-    return this.httpClient.delete<void>(`${environment.hostURL}halls/${hallId}/additions/${additionId}`, options)
+    return this.httpClient.delete<void>(
+      `${environment.hostURL}halls/${hallId}/additions/${additionId}`,
+      getHttpOptionsWithAuthorizationHeader()
+    )
       .pipe(
         catchError(this.errorHandler)
       );
