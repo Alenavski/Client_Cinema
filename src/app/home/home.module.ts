@@ -15,15 +15,13 @@ import { IntroHomeComponent } from './intro-home/intro-home.component';
 import { DatePickerComponent } from './date-picker/date-picker.component';
 import { SelectingPanelComponent } from './selecting-panel/selecting-panel.component';
 import { ShowtimesSliderComponent } from './showtimes-slider/showtimes-slider.component';
-import { FormForAdminComponent } from './form-for-admin/form-for-admin.component';
 
 const components = [
   HomeComponent,
   IntroHomeComponent,
   DatePickerComponent,
   SelectingPanelComponent,
-  ShowtimesSliderComponent,
-  FormForAdminComponent
+  ShowtimesSliderComponent
 ];
 
 @NgModule({

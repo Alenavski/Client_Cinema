@@ -1,5 +1,6 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { UserService } from '@service/user.service';
 import { Observable } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 
@@ -24,21 +25,45 @@ export class HallService {
   }
 
   public getHall(idCinema: number, idHall: number): Observable<HallModel> {
-    return this.httpClient.get<HallModel>(`${environment.hostURL}cinemas/${idCinema}/halls/${idHall}`)
+    const userModel = UserService.getUserModel();
+
+    const options = {
+      headers: new HttpHeaders({
+        Authorization: 'Bearer ' + userModel?.token
+      })
+    };
+
+    return this.httpClient.get<HallModel>(`${environment.hostURL}cinemas/${idCinema}/halls/${idHall}`, options)
       .pipe(
         catchError(this.errorHandler)
       );
   }
 
   public addHall(idCinema: number, hall: HallModel): Observable<number> {
-    return this.httpClient.post<number>(`${environment.hostURL}cinemas/${idCinema}/halls`, hall)
+    const userModel = UserService.getUserModel();
+
+    const options = {
+      headers: new HttpHeaders({
+        Authorization: 'Bearer ' + userModel?.token
+      })
+    };
+
+    return this.httpClient.post<number>(`${environment.hostURL}cinemas/${idCinema}/halls`, hall, options)
       .pipe(
         catchError(this.errorHandler)
       );
   }
 
   public editHall(idCinema: number, hall: HallModel): Observable<void> {
-    return this.httpClient.put<void>(`${environment.hostURL}cinemas/${idCinema}/halls/${hall.id}`, hall)
+    const userModel = UserService.getUserModel();
+
+    const options = {
+      headers: new HttpHeaders({
+        Authorization: 'Bearer ' + userModel?.token
+      })
+    };
+
+    return this.httpClient.put<void>(`${environment.hostURL}cinemas/${idCinema}/halls/${hall.id}`, hall, options)
       .pipe(
         catchError(this.errorHandler)
       );

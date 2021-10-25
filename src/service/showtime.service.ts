@@ -1,5 +1,6 @@
-import { HttpClient, HttpParams } from '@angular/common/http';
+import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { UserService } from '@service/user.service';
 import { Observable } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 
@@ -24,7 +25,12 @@ export class ShowtimeService {
   public getShowtimes(filter: ShowtimesFilterModel): Observable<MovieModel[]> {
     const errorHandler = ErrorHandlerFactory(this.snackBarService);
 
+    const userModel = UserService.getUserModel();
+
     const options = {
+      headers: new HttpHeaders({
+        Authorization: 'Bearer ' + userModel?.token
+      }),
       params: new HttpParams({
         fromObject: { ...this.removeEmpty(filter) }
       })

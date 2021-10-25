@@ -13,11 +13,13 @@ import { MatToolbarModule } from '@angular/material/toolbar';
 import { NavMenuComponent } from './nav-menu/nav-menu.component';
 import { SearchFilmComponent } from './search-film/search-film.component';
 import { SelectCityComponent } from './select-city/select-city.component';
+import { AdminWindowComponent } from './admin-window/admin-window.component';
 
 const components = [
   NavMenuComponent,
   SelectCityComponent,
-  SearchFilmComponent
+  SearchFilmComponent,
+  AdminWindowComponent
 ];
 
 @NgModule({

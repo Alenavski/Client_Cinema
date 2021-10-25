@@ -34,9 +34,11 @@ export class SignUpComponent {
   }
 
   onSignUpClick(): void {
-    const isSignedUp = this.userService.register(this.regForm.get('email')?.value, this.regForm.get('password')?.value);
-    if (isSignedUp) {
-      this.closeRequest.emit(true);
-    }
+    this.userService.register(this.regForm.get('email')?.value, this.regForm.get('password')?.value)
+      .subscribe(
+        () => {
+          this.closeRequest.emit(true);
+        }
+      );
   }
 }

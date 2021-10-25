@@ -2,7 +2,6 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 
 import { MovieModel } from '@models/movie.model';
-import { Roles } from '@models/constants/roles';
 import { ShowtimesFilterModel } from '@models/showtimes-filter.model';
 
 import { FilterService } from '@service/filter.service';
@@ -16,16 +15,11 @@ import { UserService } from '@service/user.service';
 export class HomeComponent implements OnInit, OnDestroy {
   movies: Array<MovieModel> = [];
 
-  public get needToDisplayAdminForm(): boolean {
-    return this.isAdmin();
-  }
-
   constructor(
     private readonly router: Router,
     private readonly activatedRoute: ActivatedRoute,
     private readonly filterService: FilterService,
-    private readonly showtimeService: ShowtimeService,
-    private readonly userService: UserService
+    private readonly showtimeService: ShowtimeService
   ) {
   }
 
@@ -49,14 +43,6 @@ export class HomeComponent implements OnInit, OnDestroy {
 
   public ngOnDestroy(): void {
     this.filterService.removeFilterChangeTracking();
-  }
-
-  private isAdmin(): boolean {
-    const user = this.userService.getUserModel();
-    if (user) {
-      return user.role === Roles.Admin;
-    }
-    return false;
   }
 
   private setShowtimes(filter: ShowtimesFilterModel): void {

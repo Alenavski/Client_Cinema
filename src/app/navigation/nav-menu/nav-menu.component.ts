@@ -1,9 +1,12 @@
 import { Component } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
+import { AuthModalComponent } from '@app/authentication/auth-modal/auth-modal.component';
+import { AdminWindowComponent } from '@app/navigation/admin-window/admin-window.component';
+import { Roles } from '@models/constants/roles';
 import { ShowtimesFilterModel } from '@models/showtimes-filter.model';
 import { FilterService } from '@service/filter.service';
+import { UserService } from '@service/user.service';
 import { SelectCityComponent } from '../select-city/select-city.component';
-import { AuthModalComponent } from '@app/authentication/auth-modal/auth-modal.component';
 
 @Component({
   selector: 'app-nav-menu',
@@ -19,6 +22,10 @@ export class NavMenuComponent {
     public dialogAuth: MatDialog,
     private readonly filterService: FilterService
   ) {
+    const userModel = UserService.getUserModel();
+    if (userModel) {
+      this.isAuthed = true;
+    }
     const filter: ShowtimesFilterModel = { city: this.location };
     this.filterService.updateFilter(filter);
   }
@@ -42,5 +49,21 @@ export class NavMenuComponent {
     dialogRef.afterClosed().subscribe((result: boolean) => {
       this.isAuthed = result;
     });
+  }
+
+  get isAdmin(): boolean {
+    const userModel = UserService.getUserModel();
+    return userModel?.role === Roles.Admin;
+  }
+
+  openDialogAdmin(): void {
+    this.dialogAuth.open(AdminWindowComponent, {
+      width: '500px',
+    });
+  }
+
+  logout(): void {
+    UserService.logout();
+    this.isAuthed = false;
   }
 }

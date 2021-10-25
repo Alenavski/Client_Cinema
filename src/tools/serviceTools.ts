@@ -4,7 +4,7 @@ import { environment } from '../environments/environment';
 import { SnackBarService } from '@service/snack-bar.service';
 import { Nullable } from '@tools/utilityTypes';
 
-export function  ErrorHandlerFactory(
+export function ErrorHandlerFactory(
   snackBarService: SnackBarService
 ) {
   return (httpErrorResponse: HttpErrorResponse) => {

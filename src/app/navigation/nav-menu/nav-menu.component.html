@@ -7,7 +7,10 @@
       <span>{{location}}</span>
     </a>
     <ng-container *ngIf="isAuthed; else authBtn">
-      <a class="fas fa-house-user user-icon container-item" href="/"></a>
+      <ng-container *ngIf="isAdmin">
+        <a class="fas fa-cog user-icon container-item" (click)="openDialogAdmin()"></a>
+      </ng-container>
+      <i class="fas fa-user-slash user-icon container-item" (click)="logout()"></i>
     </ng-container>
     <ng-template #authBtn>
       <a class="fas fa-user sign-icon container-item" (click)="openDialogAuth()"></a>

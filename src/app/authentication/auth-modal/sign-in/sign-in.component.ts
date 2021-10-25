@@ -30,9 +30,11 @@ export class SignInComponent {
   }
 
   onSignInClick(): void {
-    const isSignedIn = this.userService.login(this.authForm.get('email')?.value, this.authForm.get('password')?.value);
-    if (isSignedIn) {
-      this.closeRequest.emit(true);
-    }
+    this.userService.login(this.authForm.get('email')?.value, this.authForm.get('password')?.value)
+      .subscribe(
+        () => {
+          this.closeRequest.emit(true);
+        }
+      );
   }
 }

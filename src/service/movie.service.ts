@@ -1,5 +1,6 @@
-import { HttpClient, HttpParams } from '@angular/common/http';
+import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { UserService } from '@service/user.service';
 import { Observable } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 
@@ -24,14 +25,20 @@ export class MovieService {
   }
 
   public getMovies(date?: string): Observable<MovieModel[]> {
-    let options;
-      if (date) {
-        options = {
-          params: new HttpParams({
-            fromObject: { date: date }
-          })
-        };
-      }
+    const userModel = UserService.getUserModel();
+
+    const options = {
+      headers: new HttpHeaders({
+        Authorization: 'Bearer ' + userModel?.token
+      }),
+      params: new HttpParams()
+    };
+
+    if (date) {
+      options.params = new HttpParams({
+          fromObject: { date: date }
+      });
+    }
 
     return this.httpClient.get<MovieModel[]>(`${environment.hostURL}movies`, options)
       .pipe(
@@ -40,28 +47,60 @@ export class MovieService {
   }
 
   public getMovie(id: number): Observable<MovieModel> {
-    return this.httpClient.get<MovieModel>(`${environment.hostURL}movies/${id}`)
+    const userModel = UserService.getUserModel();
+
+    const options = {
+      headers: new HttpHeaders({
+        Authorization: 'Bearer ' + userModel?.token
+      })
+    };
+
+    return this.httpClient.get<MovieModel>(`${environment.hostURL}movies/${id}`, options)
       .pipe(
         catchError(this.errorHandler)
       );
   }
 
   public addMovie(movie: MovieModel): Observable<number> {
-    return this.httpClient.post<number>(`${environment.hostURL}movies`, movie)
+    const userModel = UserService.getUserModel();
+
+    const options = {
+      headers: new HttpHeaders({
+        Authorization: 'Bearer ' + userModel?.token
+      })
+    };
+
+    return this.httpClient.post<number>(`${environment.hostURL}movies`, movie, options)
       .pipe(
         catchError(this.errorHandler)
       );
   }
 
   public editMovie(movie: MovieModel): Observable<void> {
-    return this.httpClient.put<void>(`${environment.hostURL}movies/${movie.id}`, movie)
+    const userModel = UserService.getUserModel();
+
+    const options = {
+      headers: new HttpHeaders({
+        Authorization: 'Bearer ' + userModel?.token
+      })
+    };
+
+    return this.httpClient.put<void>(`${environment.hostURL}movies/${movie.id}`, movie, options)
       .pipe(
         catchError(this.errorHandler)
       );
   }
 
   public deleteMovie(id: number): Observable<void> {
-    return this.httpClient.delete<void>(`${environment.hostURL}movies/${id}`)
+    const userModel = UserService.getUserModel();
+
+    const options = {
+      headers: new HttpHeaders({
+        Authorization: 'Bearer ' + userModel?.token
+      })
+    };
+
+    return this.httpClient.delete<void>(`${environment.hostURL}movies/${id}`, options)
       .pipe(
         catchError(this.errorHandler)
       );
