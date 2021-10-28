@@ -4,10 +4,12 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { HttpClientModule } from '@angular/common/http';
 
 import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { OrderModule } from '@app/order/order.module';
 
 import { CinemaService } from '@service/cinema.service';
 import { HallService } from '@service/hall.service';
 import { MovieService } from '@service/movie.service';
+import { OrderServiceFake } from '@service/order.service.fake';
 import { SeatService } from '@service/seat.service';
 
 import { AuthenticationModule } from './authentication/authentication.module';
@@ -40,7 +42,8 @@ import { AppRoutingModule } from './app-routing.module';
     NavigationModule,
     CinemaModule,
     HallModule,
-    MovieModule
+    MovieModule,
+    OrderModule
   ],
   providers: [
     UserService,
@@ -50,7 +53,8 @@ import { AppRoutingModule } from './app-routing.module';
     MovieService,
     SeatService,
     SnackBarService,
-    FilterService
+    FilterService,
+    OrderServiceFake
   ],
   bootstrap: [AppComponent]
 })

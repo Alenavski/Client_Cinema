@@ -1,0 +1,124 @@
+@import "../../color-schema";
+
+.main-container {
+  padding-top: 100px;
+  width: 95%;
+  margin: 0 auto;
+
+  .movie-container {
+    margin-bottom: 10px;
+    box-shadow: 0 .25rem .75rem rgba(0, 0, 0, .25);
+    padding: 15px;
+    display: flex;
+
+    .poster {
+      border-radius: 15%;
+      margin-right: 20px;
+    }
+
+    .movie-info{
+      display: block;
+      font-size: 20px;
+
+      h1 {
+        font-size: 35px;
+      }
+    }
+  }
+}
+
+.stepper {
+  width: 100%;
+}
+
+table {
+  margin: 0 auto;
+
+  td {
+    width: 50px;
+    max-width: 50px;
+    height: 50px;
+    max-height: 50px;
+    text-align: center;
+
+    &.sofa {
+      display: flex;
+    }
+  }
+}
+
+.screen {
+  content: '';
+  margin: 0 auto 20px auto;
+  width: 250px;
+  min-height: 5px;
+  background: black;
+}
+
+.seat {
+  border: solid 1px black;
+  border-radius: 25%;
+  background-color: white;
+  color: black;
+  padding: 15px;
+  font-size: 16px;
+  font-family: Verdana, fantasy;
+
+  &.reserved {
+    filter: grayscale(60%);
+    color: white;
+
+    &.standard {
+      background-color: @main-blue;
+    }
+
+    &.comfort {
+      background-color: @yellow;
+    }
+
+    &.sofa {
+      background-color: red;
+    }
+
+  }
+
+  .number {
+    margin: 0;
+  }
+
+  &.standard {
+    border-color: @main-blue;
+
+    &:hover {
+      background-color: @main-blue;
+    }
+  }
+
+  &.comfort {
+    border-color: @yellow;
+
+    &:hover {
+      background-color: @yellow;
+    }
+  }
+
+  &.sofa {
+    padding: 15px 45px;
+    border-color: red;
+    z-index: 1;
+    background-color: white;
+
+    &:hover {
+      background-color: red;
+    }
+  }
+
+  &:hover {
+    color: white;
+  }
+}
+
+.hall-layout {
+  background-color: rgba(0,0,0,0.05);
+  margin: 0 auto;
+}

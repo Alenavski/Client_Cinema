@@ -1,11 +1,13 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
+
 import { AdminGuard } from '../guards/admin.guard';
 
 import { HomeComponent } from './home/home.component';
 import { CinemaComponent } from '@app/cinema/cinema.component';
 import { HallComponent } from '@app/hall/hall.component';
 import { MovieComponent } from '@app/movie/movie.component';
+import { OrderComponent } from '@app/order/order.component';
 
 const routes: Routes = [
   { path: '', component: HomeComponent, pathMatch: 'full' },
@@ -15,6 +17,7 @@ const routes: Routes = [
   { path: 'cinema/:idCinema/hall/:idHall', component: HallComponent, canActivate: [AdminGuard] },
   { path: 'movie', redirectTo: 'movie/', pathMatch: 'full' },
   { path: 'movie/:id', component: MovieComponent, canActivate: [AdminGuard] },
+  { path: 'movie/:id/order', component: OrderComponent }
 ];
 
 @NgModule({

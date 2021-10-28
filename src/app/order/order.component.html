@@ -1,0 +1,96 @@
+<div class="main-container">
+  <div class="movie-container">
+    <img
+      width="200"
+      height="300"
+      class="poster"
+      src="data:image/png;base64,{{movie?.poster}}"
+      onerror="this.src='../../assets/poster.png';"
+      alt=""
+    >
+    <div class="movie-info">
+      <h1>{{movie?.title}}</h1>
+      <p>{{movie?.description}}</p>
+      <p>Duration: {{movie?.minutesLength}}</p>
+    </div>
+  </div>
+
+  <div class="movie-container">
+    <mat-stepper linear orientation="vertical" #stepper class="stepper">
+      <mat-step [stepControl]="timeAndPlaceFormGroup">
+
+        <form [formGroup]="timeAndPlaceFormGroup">
+          <ng-template matStepLabel>Pick time and place</ng-template>
+
+          <mat-form-field appearance="outline">
+            <mat-label>Cinema</mat-label>
+            <mat-select formControlName="cinema">
+              <mat-option *ngFor="let cinema of cinemasWithShowtime" [value]="cinema" (click)="chosenCinema = cinema">
+                {{cinema.name}}, {{cinema.address}}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+
+          <mat-form-field *ngIf="chosenCinema !== null" appearance="outline">
+            <mat-label>Hall</mat-label>
+            <mat-select formControlName="hall">
+              <mat-option *ngFor="let hall of chosenCinema?.halls" [value]="hall" (click)="chosenHall = hall">
+                {{hall.name}}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+
+          <mat-form-field *ngIf="chosenHall !== null" appearance="outline">
+            <mat-label>Showtime</mat-label>
+            <mat-select formControlName="showtime">
+              <mat-option *ngFor="let showtime of filterShowtimes ()" [value]="showtime" (click)="chosenShowtime = showtime">
+                {{showtime.time}}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+
+          <div>
+            <button mat-button matStepperNext [disabled]="!timeAndPlaceFormGroup.valid" (click)="fetchSeatsLayout()">Next</button>
+          </div>
+        </form>
+
+      </mat-step>
+
+      <mat-step>
+        <ng-template matStepLabel>Pick a seat</ng-template>
+
+        <div class="hall-layout">
+          <div class="screen"></div>
+          <table>
+            <tr *ngFor="let row of seatsLayout; let rowIndex = index">
+              <td
+                *ngFor="let seat of row; let columnIndex = index"
+                [class.sofa]="isSofa(seat)"
+              >
+                <div
+                  *ngIf="seat"
+                  class="seat"
+                  [class]="seat.seatType.name.toLowerCase()"
+                  [class.reserved]="isReserved(seat)"
+                >
+                  <div class="number">{{seat.place}}</div>
+                </div>
+              </td>
+            </tr>
+          </table>
+        </div>
+
+        <div>
+          <h1>Chosen seats:</h1>
+          <span *ngFor="let seat of chosenSeats">
+            {{seat.row}}, {{seat.place}};
+          </span>
+        </div>
+
+        <button mat-button matStepperNext [disabled]="chosenSeats.length <= 0">Next</button>
+
+      </mat-step>
+
+    </mat-stepper>
+  </div>
+</div>
