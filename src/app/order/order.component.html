@@ -25,7 +25,11 @@
           <mat-form-field appearance="outline">
             <mat-label>Cinema</mat-label>
             <mat-select formControlName="cinema">
-              <mat-option *ngFor="let cinema of cinemasWithShowtime" [value]="cinema" (click)="chosenCinema = cinema">
+              <mat-option
+                *ngFor="let cinema of cinemasWithShowtime"
+                [value]="cinema"
+                (click)="chosenCinema = cinema"
+              >
                 {{cinema.name}}, {{cinema.address}}
               </mat-option>
             </mat-select>
@@ -34,7 +38,11 @@
           <mat-form-field *ngIf="chosenCinema !== null" appearance="outline">
             <mat-label>Hall</mat-label>
             <mat-select formControlName="hall">
-              <mat-option *ngFor="let hall of chosenCinema?.halls" [value]="hall" (click)="chosenHall = hall">
+              <mat-option
+                *ngFor="let hall of chosenCinema?.halls"
+                [value]="hall"
+                (click)="chosenHall = hall"
+              >
                 {{hall.name}}
               </mat-option>
             </mat-select>
@@ -43,14 +51,25 @@
           <mat-form-field *ngIf="chosenHall !== null" appearance="outline">
             <mat-label>Showtime</mat-label>
             <mat-select formControlName="showtime">
-              <mat-option *ngFor="let showtime of filterShowtimes ()" [value]="showtime" (click)="chosenShowtime = showtime">
-                {{showtime.time}}
+              <mat-option
+                *ngFor="let showtime of filterShowtimes()"
+                [value]="showtime"
+                (click)="chosenShowtime = showtime"
+              >
+                {{showtime.time}} ({{showtime.numberOfFreeSeats}} seats)
               </mat-option>
             </mat-select>
           </mat-form-field>
 
           <div>
-            <button mat-button matStepperNext [disabled]="!timeAndPlaceFormGroup.valid" (click)="fetchSeatsLayout()">Next</button>
+            <button
+              mat-button
+              matStepperNext
+              [disabled]="!timeAndPlaceFormGroup.valid"
+              (click)="fetchSeatsLayout()"
+            >
+              Next
+            </button>
           </div>
         </form>
 
@@ -62,9 +81,9 @@
         <div class="hall-layout">
           <div class="screen"></div>
           <table>
-            <tr *ngFor="let row of seatsLayout; let rowIndex = index">
+            <tr *ngFor="let row of seatsLayout">
               <td
-                *ngFor="let seat of row; let columnIndex = index"
+                *ngFor="let seat of row"
                 [class.sofa]="isSofa(seat)"
               >
                 <div
@@ -72,6 +91,8 @@
                   class="seat"
                   [class]="seat.seatType.name.toLowerCase()"
                   [class.reserved]="isReserved(seat)"
+                  [class.chosen]="isChosen(seat)"
+                  (click)="onSeatClick(seat)"
                 >
                   <div class="number">{{seat.place}}</div>
                 </div>
@@ -82,12 +103,29 @@
 
         <div>
           <h1>Chosen seats:</h1>
-          <span *ngFor="let seat of chosenSeats">
-            {{seat.row}}, {{seat.place}};
-          </span>
+          <p *ngFor="let seat of chosenSeats">
+            {{seat.seatType.name}}: Row: {{seat.row + 1}}, Place: {{seat.place}}, Price: {{getPrice(seat.seatType)}}$;
+          </p>
         </div>
 
-        <button mat-button matStepperNext [disabled]="chosenSeats.length <= 0">Next</button>
+        <button
+          mat-button
+          matStepperNext
+          [disabled]="chosenSeats.length <= 0"
+        >
+          Next
+        </button>
+      </mat-step>
+
+      <mat-step>
+        <ng-template matStepLabel>Choose additional services</ng-template>
+
+        <div *ngIf="chosenShowtime">
+          <div *ngFor="let addition of chosenShowtime.additions">
+            {{}}
+          </div>
+
+        </div>
 
       </mat-step>
 

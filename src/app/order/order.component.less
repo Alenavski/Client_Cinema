@@ -64,6 +64,23 @@ table {
   font-size: 16px;
   font-family: Verdana, fantasy;
 
+  &.chosen {
+    filter: opacity(50%);
+    color: white;
+
+    &.standard {
+      background-color: @main-blue;
+    }
+
+    &.comfort {
+      background-color: @yellow;
+    }
+
+    &.sofa {
+      background-color: red;
+    }
+  }
+
   &.reserved {
     filter: grayscale(60%);
     color: white;

@@ -1,17 +1,22 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, ParamMap } from '@angular/router';
+
 import { CinemaModel } from '@models/cinema.model';
 import { SEAT_TYPES } from '@models/constants/seat-types';
 import { HallModel } from '@models/hall.model';
 import { MovieModel } from '@models/movie.model';
 import { SeatModel } from '@models/seat.model';
 import { ShowtimeModel } from '@models/showtime.model';
+import { SeatTypeModel } from '@models/seat-type.model';
+
 import { HallService } from '@service/hall.service';
 import { MovieService } from '@service/movie.service';
 import { OrderServiceFake } from '@service/order.service.fake';
 import { ShowtimeService } from '@service/showtime.service';
+
 import { Nullable } from '@tools/utilityTypes';
+import { AdditionModel } from '@models/addition.model';
 
 @Component({
   selector: 'app-order',
@@ -58,6 +63,32 @@ export class OrderComponent implements OnInit {
           }
         }
       );
+  }
+
+  public onSeatClick(seat: SeatModel): void {
+    const index = this.chosenSeats.indexOf(seat);
+    if (index !== -1) {
+      this.chosenSeats.splice(index, 1);
+    } else {
+      this.chosenSeats.push(seat);
+    }
+  }
+
+  public getPrice(seatType: SeatTypeModel): number {
+    if (this.chosenShowtime) {
+      const ticketPrice = this.chosenShowtime.prices.find(seatPrice => seatPrice.seatType.id === seatType.id);
+      if (ticketPrice) {
+        return ticketPrice.price;
+      }
+    }
+    return 0;
+  }
+
+  public getAdditionPrice(addition: AdditionModel): number {
+    if (this.chosenShowtime) {
+      const ha = this.chosenShowtime.hall.additions?.find(hallAddition => hallAddition.addition.id === addition.id);
+    }
+
   }
 
   public filterShowtimes(): ShowtimeModel[] | undefined {
@@ -108,8 +139,11 @@ export class OrderComponent implements OnInit {
   }
 
   public isReserved(seat: SeatModel): boolean {
-    console.log(seat, this.reservedSeats.includes(seat));
     return this.reservedSeats.includes(seat);
+  }
+
+  public isChosen(seat: SeatModel): boolean {
+    return this.chosenSeats.includes(seat);
   }
 
   private fetchMovie(id: number): void {
