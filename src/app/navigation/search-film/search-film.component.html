@@ -1,6 +1,6 @@
 <div
   class="search-component"
-  (click)="searchFieldExpanded = true; search.focus()"
+  (click)="searchFieldExpanded = true; searchInput.focus()"
   (focusout)="searchFieldExpanded = false"
 >
   <a class="fas fa-search search-icon"></a>
@@ -13,13 +13,29 @@
       type="text"
       placeholder="Search"
       matInput
-      #search
+      #searchInput
       [matAutocomplete]="auto"
+      (input)="search(searchInput.value)"
     >
     <mat-autocomplete autoActiveFirstOption #auto="matAutocomplete">
-      <mat-option *ngFor="let film of randomFilms" [value]="film">
-        {{film}}
-      </mat-option>
+      <mat-optgroup [label]="'Movies'">
+        <mat-option
+          *ngFor="let movie of movies$ | async"
+          [value]="movie.title"
+          (click)="updateMovieTitle(movie.title)"
+        >
+          {{movie.title}}
+        </mat-option>
+      </mat-optgroup>
+      <mat-optgroup [label]="'Cinemas'">
+        <mat-option
+          *ngFor="let cinema of cinemas$ | async"
+          [value]="cinema.name"
+          (click)="updateCinemaName(cinema.name)"
+        >
+          {{cinema.name}}
+        </mat-option>
+      </mat-optgroup>
     </mat-autocomplete>
   </mat-form-field>
 </div>
