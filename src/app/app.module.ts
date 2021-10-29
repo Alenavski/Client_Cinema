@@ -9,8 +9,9 @@ import { OrderModule } from '@app/order/order.module';
 import { CinemaService } from '@service/cinema.service';
 import { HallService } from '@service/hall.service';
 import { MovieService } from '@service/movie.service';
-import { OrderServiceFake } from '@service/order.service.fake';
 import { SeatService } from '@service/seat.service';
+import { AdditionService } from '@service/addition.service';
+import { TicketService } from '@service/ticket.service';
 
 import { AuthenticationModule } from './authentication/authentication.module';
 import { HomeModule } from './home/home.module';
@@ -52,9 +53,10 @@ import { AppRoutingModule } from './app-routing.module';
     HallService,
     MovieService,
     SeatService,
+    AdditionService,
+    TicketService,
     SnackBarService,
-    FilterService,
-    OrderServiceFake
+    FilterService
   ],
   bootstrap: [AppComponent]
 })

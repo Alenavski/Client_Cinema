@@ -9,14 +9,17 @@ import { MovieModel } from '@models/movie.model';
 import { SeatModel } from '@models/seat.model';
 import { ShowtimeModel } from '@models/showtime.model';
 import { SeatTypeModel } from '@models/seat-type.model';
+import { Nullable } from '@tools/utilityTypes';
+import { AdditionModel } from '@models/addition.model';
+import { TicketModel } from '@models/ticket.model';
 
 import { HallService } from '@service/hall.service';
 import { MovieService } from '@service/movie.service';
-import { OrderServiceFake } from '@service/order.service.fake';
 import { ShowtimeService } from '@service/showtime.service';
-
-import { Nullable } from '@tools/utilityTypes';
-import { AdditionModel } from '@models/addition.model';
+import { UserService } from '@service/user.service';
+import { TicketService } from '@service/ticket.service';
+import { SnackBarService } from '@service/snack-bar.service';
+import { SeatService } from '@service/seat.service';
 
 @Component({
   selector: 'app-order',
@@ -30,13 +33,13 @@ export class OrderComponent implements OnInit {
   chosenCinema: Nullable<CinemaModel> = null;
   chosenHall: Nullable<HallModel> = null;
   chosenShowtime: Nullable<ShowtimeModel> = null;
+  chosenAdditions: AdditionModel[] = [];
+  chosenSeats: SeatModel[] = [];
 
   seatsLayout: SeatModel[][] = [];
   seatTypes = SEAT_TYPES;
   numberOfSeats: number = 0;
   reservedSeats: SeatModel[] = [];
-
-  chosenSeats: SeatModel[] = [];
 
   timeAndPlaceFormGroup: FormGroup = new FormGroup({
     cinema: new FormControl('', [Validators.required]),
@@ -48,8 +51,10 @@ export class OrderComponent implements OnInit {
     private readonly showtimeService: ShowtimeService,
     private readonly movieService: MovieService,
     private readonly hallService: HallService,
-    private readonly orderService: OrderServiceFake,
-    private readonly activatedRoute: ActivatedRoute
+    private readonly activatedRoute: ActivatedRoute,
+    private readonly ticketService: TicketService,
+    private readonly snackBarService: SnackBarService,
+    private readonly seatService: SeatService
   ) { }
 
   ngOnInit(): void {
@@ -65,6 +70,24 @@ export class OrderComponent implements OnInit {
       );
   }
 
+  public calcFinalPrice(): number {
+    let price = 0;
+    for (const seat of this.chosenSeats) {
+      price += this.getPrice(seat.seatType);
+    }
+    for (const addition of this.chosenAdditions) {
+      price += this.getAdditionPrice(addition);
+    }
+    return price;
+  }
+
+  public onMinusAdditionClick(addition: AdditionModel): void {
+    const index = this.chosenAdditions.indexOf(addition);
+    if (index != -1) {
+      this.chosenAdditions.splice(index, 1);
+    }
+  }
+
   public onSeatClick(seat: SeatModel): void {
     const index = this.chosenSeats.indexOf(seat);
     if (index !== -1) {
@@ -72,6 +95,28 @@ export class OrderComponent implements OnInit {
     } else {
       this.chosenSeats.push(seat);
     }
+  }
+
+  public getAdditionsCount(addition: AdditionModel): number {
+    const additions = this.chosenAdditions.filter(ad => ad.id === addition.id);
+    return additions.length;
+  }
+
+  public addTicket(): void {
+    const ticket: TicketModel = {
+      id: 0,
+      showtime: this.chosenShowtime!,
+      seats: this.chosenSeats,
+      additions: this.chosenAdditions,
+      user: UserService.getUserModel(),
+      dateOfBooking: new Date()
+    };
+    this.ticketService.addTicket(ticket)
+      .subscribe(
+        () => {
+          this.snackBarService.showMessage('successful success');
+        }
+      );
   }
 
   public getPrice(seatType: SeatTypeModel): number {
@@ -86,9 +131,12 @@ export class OrderComponent implements OnInit {
 
   public getAdditionPrice(addition: AdditionModel): number {
     if (this.chosenShowtime) {
-      const ha = this.chosenShowtime.hall.additions?.find(hallAddition => hallAddition.addition.id === addition.id);
+      const hallAddition = this.chosenShowtime.hall.additions?.find(ha => ha.addition.id === addition.id);
+      if (hallAddition) {
+        return hallAddition.price;
+      }
     }
-
+    return 0;
   }
 
   public filterShowtimes(): ShowtimeModel[] | undefined {
@@ -127,14 +175,18 @@ export class OrderComponent implements OnInit {
         this.seatsLayout[seat.row][seat.index] = seat;
       }
 
-      if (this.chosenShowtime) {
-        this.orderService.getReservedSeats(this.chosenHall).subscribe(
-          (reservedSeats: SeatModel[]) => {
-            this.reservedSeats = reservedSeats;
-            console.log(this.reservedSeats);
+      this.fetchReservedSeats();
+    }
+  }
+
+  private fetchReservedSeats(): void {
+    if (this.chosenShowtime) {
+      this.seatService.getBlockedSeatsOfShowtime(this.chosenShowtime.id)
+        .subscribe(
+          (seats: SeatModel[]) => {
+            this.reservedSeats = seats;
           }
         );
-      }
     }
   }
 
