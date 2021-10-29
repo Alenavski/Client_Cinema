@@ -43,6 +43,11 @@ export class SearchFilmComponent implements OnInit {
     );
   }
 
+  public onSearchComponentClick(searchInput: HTMLInputElement): void {
+    this.searchFieldExpanded = true;
+    searchInput.focus();
+  }
+
   public search(term: string): void {
     this.searchTerms.next(term);
   }
