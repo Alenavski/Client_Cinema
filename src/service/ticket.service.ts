@@ -4,7 +4,7 @@ import { Observable } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 
 import { SnackBarService } from '@service/snack-bar.service';
-import { ErrorHandlerFactory } from '@tools/serviceTools';
+import { ErrorHandlerFactory, getHttpOptionsWithAuthorizationHeader } from '@tools/serviceTools';
 import { environment } from '../environments/environment';
 
 import { TicketModel } from '@models/ticket.model';
@@ -23,7 +23,43 @@ export class TicketService {
   }
 
   public addTicket(ticket: TicketModel): Observable<number> {
-    return this.httpClient.post<number>(`${environment.hostURL}tickets`, ticket)
+    return this.httpClient.post<number>(
+      `${environment.hostURL}tickets`,
+      ticket,
+      getHttpOptionsWithAuthorizationHeader()
+    )
+      .pipe(
+        catchError(this.errorHandler)
+      );
+  }
+
+  public blockSeat(ticketId: number, seatId: number): Observable<void> {
+    return this.httpClient.post<void>(
+      `${environment.hostURL}tickets/${ticketId}/seats/${seatId}`,
+      {},
+      getHttpOptionsWithAuthorizationHeader()
+    )
+      .pipe(
+        catchError(this.errorHandler)
+      );
+  }
+
+  public unblockSeat(ticketId: number, seatId: number): Observable<void> {
+    return this.httpClient.delete<void>(
+      `${environment.hostURL}tickets/${ticketId}/seats/${seatId}`,
+      getHttpOptionsWithAuthorizationHeader()
+    )
+      .pipe(
+        catchError(this.errorHandler)
+      );
+  }
+
+  public applyTicket(ticket: TicketModel): Observable<void> {
+    return this.httpClient.put<void>(
+      `${environment.hostURL}tickets`,
+      ticket,
+      getHttpOptionsWithAuthorizationHeader()
+    )
       .pipe(
         catchError(this.errorHandler)
       );

@@ -41,6 +41,8 @@ export class OrderComponent implements OnInit {
   numberOfSeats: number = 0;
   reservedSeats: SeatModel[] = [];
 
+  currentTicket: Nullable<TicketModel> = null;
+
   timeAndPlaceFormGroup: FormGroup = new FormGroup({
     cinema: new FormControl('', [Validators.required]),
     hall: new FormControl('', [Validators.required]),
@@ -89,34 +91,19 @@ export class OrderComponent implements OnInit {
   }
 
   public onSeatClick(seat: SeatModel): void {
-    const index = this.chosenSeats.indexOf(seat);
-    if (index !== -1) {
-      this.chosenSeats.splice(index, 1);
-    } else {
-      this.chosenSeats.push(seat);
+    if (!this.isReserved(seat)) {
+      const index = this.chosenSeats.indexOf(seat);
+      if (index === -1) {
+        this.blockSeat(seat);
+      } else {
+        this.unblockSeat(seat.id!, index);
+      }
     }
   }
 
   public getAdditionsCount(addition: AdditionModel): number {
     const additions = this.chosenAdditions.filter(ad => ad.id === addition.id);
     return additions.length;
-  }
-
-  public addTicket(): void {
-    const ticket: TicketModel = {
-      id: 0,
-      showtime: this.chosenShowtime!,
-      seats: this.chosenSeats,
-      additions: this.chosenAdditions,
-      user: UserService.getUserModel(),
-      dateOfBooking: new Date()
-    };
-    this.ticketService.addTicket(ticket)
-      .subscribe(
-        () => {
-          this.snackBarService.showMessage('successful success');
-        }
-      );
   }
 
   public getPrice(seatType: SeatTypeModel): number {
@@ -163,35 +150,53 @@ export class OrderComponent implements OnInit {
     return [maxRows, maxSeats];
   }
 
-  public fetchSeatsLayout(): void {
-    const [x, y] = this.calcSizeOfHall();
-    if (this.chosenHall) {
-      this.numberOfSeats = this.chosenHall.seats.length;
-      for (let i = 0; i <= x; i++) {
-        this.seatsLayout[i] = [];
-        this.seatsLayout[i].length = y;
-      }
-      for (const seat of this.chosenHall.seats) {
-        this.seatsLayout[seat.row][seat.index] = seat;
-      }
-
-      this.fetchReservedSeats();
-    }
+  public onShowtimeChoose(): void {
+    this.addTicket();
+    this.fetchSeatsLayout();
   }
 
-  private fetchReservedSeats(): void {
-    if (this.chosenShowtime) {
+  public onApplyClick(): void {
+    if (this.currentTicket) {
+      this.currentTicket.additions = this.chosenAdditions;
+      this.currentTicket.ticketSeats = [];
+      for (const seat of this.chosenSeats) {
+        this.currentTicket.ticketSeats.push({ seat: seat, isOrdered: true });
+      }
+      this.currentTicket.dateOfBooking = new Date();
+      console.log(this.currentTicket);
+      this.ticketService.applyTicket(this.currentTicket)
+        .subscribe(
+          () => {
+            console.log('good');
+            this.snackBarService.showMessage('Successful success');
+          }
+        );
+    }
+
+  }
+
+  public fetchSeatsLayout(): void {
+    if (this.chosenHall && this.chosenShowtime) {
       this.seatService.getBlockedSeatsOfShowtime(this.chosenShowtime.id)
         .subscribe(
           (seats: SeatModel[]) => {
             this.reservedSeats = seats;
+            const [x, y] = this.calcSizeOfHall();
+            this.numberOfSeats = this.chosenHall!.seats.length;
+            for (let i = 0; i <= x; i++) {
+              this.seatsLayout[i] = [];
+              this.seatsLayout[i].length = y;
+            }
+            for (const seat of this.chosenHall!.seats) {
+              this.seatsLayout[seat.row][seat.index] = seat;
+            }
           }
         );
     }
   }
 
   public isReserved(seat: SeatModel): boolean {
-    return this.reservedSeats.includes(seat);
+    return !!this.reservedSeats.filter(s => s.id === seat.id).length;
   }
 
   public isChosen(seat: SeatModel): boolean {
@@ -214,5 +219,42 @@ export class OrderComponent implements OnInit {
           this.cinemasWithShowtime = cinemas;
         }
       );
+  }
+
+  private addTicket(): void {
+    this.currentTicket = {
+      id: 0,
+      showtime: this.chosenShowtime!,
+      user: UserService.getUserModel(),
+      dateOfBooking: new Date()
+    };
+    this.ticketService.addTicket(this.currentTicket)
+      .subscribe(
+        (id: number) => {
+          this.currentTicket!.id = id;
+        }
+      );
+  }
+
+  private blockSeat(seat: SeatModel): void {
+    if (this.currentTicket) {
+      this.ticketService.blockSeat(this.currentTicket.id, seat.id!)
+        .subscribe(
+          () => {
+            this.chosenSeats.push(seat);
+          }
+        );
+    }
+  }
+
+  private unblockSeat(seatId: number, index: number): void {
+    if (this.currentTicket) {
+      this.ticketService.unblockSeat(this.currentTicket.id, seatId)
+        .subscribe(
+          () => {
+            this.chosenSeats.splice(index, 1);
+          }
+        );
+    }
   }
 }

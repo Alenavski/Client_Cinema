@@ -6,6 +6,7 @@ import { MovieModel } from '@models/movie.model';
 import { ShowtimeModel } from '@models/showtime.model';
 
 import { FilterService } from '@service/filter.service';
+import { Router } from '@angular/router';
 
 const movieOuterWidth: number = 400;
 const countOfDisplayedCharacters: number = 100;
@@ -28,8 +29,13 @@ export class ShowtimesSliderComponent {
   }
 
   constructor(
-    private readonly filterService: FilterService
+    private readonly filterService: FilterService,
+    private readonly router: Router
   ) {
+  }
+
+  public navigateToOrder(movieId: number): void {
+    void this.router.navigate([`movie/${movieId}/order`]);
   }
 
   public makeMovieDescription(description: string): string {

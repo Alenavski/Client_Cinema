@@ -23,6 +23,8 @@
     >
       <mat-step [stepControl]="timeAndPlaceFormGroup">
 
+        <h1>Choose cinema, hall and time for showtime</h1>
+
         <form [formGroup]="timeAndPlaceFormGroup" class="time-and-place-form">
           <ng-template matStepLabel>
             Pick time and place
@@ -83,7 +85,7 @@
               mat-button
               matStepperNext
               [disabled]="!timeAndPlaceFormGroup.valid"
-              (click)="fetchSeatsLayout()"
+              (click)="onShowtimeChoose()"
             >
               Next
             </button>
@@ -96,6 +98,8 @@
         <ng-template matStepLabel>
           Pick a seat
         </ng-template>
+
+        <h1>Choose seat in {{chosenCinema?.name}} cinema, {{chosenHall?.name}} hall</h1>
 
         <div class="hall-layout">
           <div class="screen"></div>
@@ -218,7 +222,7 @@
         <button
           mat-button
           matStepperNext
-          (click)="addTicket()"
+          (click)="onApplyClick()"
         >
           Apply
         </button>
