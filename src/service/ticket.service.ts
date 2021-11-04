@@ -22,6 +22,16 @@ export class TicketService {
     this.errorHandler = ErrorHandlerFactory(this.snackBarService);
   }
 
+  public getTickets(): Observable<TicketModel[]> {
+    return this.httpClient.get<TicketModel[]>(
+      `${environment.hostURL}tickets`,
+      getHttpOptionsWithAuthorizationHeader()
+    )
+      .pipe(
+        catchError(this.errorHandler)
+      );
+  }
+
   public addTicket(ticket: TicketModel): Observable<number> {
     return this.httpClient.post<number>(
       `${environment.hostURL}tickets`,

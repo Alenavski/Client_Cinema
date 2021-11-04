@@ -1,5 +1,7 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { MatExpansionModule } from '@angular/material/expansion';
+import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { RouterModule } from '@angular/router';
 
 import { FormsModule } from '@angular/forms';
@@ -14,6 +16,7 @@ import { NavMenuComponent } from './nav-menu/nav-menu.component';
 import { SearchFilmComponent } from './search-film/search-film.component';
 import { SelectCityComponent } from './select-city/select-city.component';
 import { AdminWindowComponent } from './admin-window/admin-window.component';
+import { TicketHistoryComponent } from './order-history/ticket-history.component';
 
 const components = [
   NavMenuComponent,
@@ -24,7 +27,8 @@ const components = [
 
 @NgModule({
   declarations: [
-    ...components
+    ...components,
+    TicketHistoryComponent
   ],
   imports: [
     CommonModule,
@@ -35,7 +39,9 @@ const components = [
     MatInputModule,
     MatAutocompleteModule,
     MatButtonModule,
-    MatToolbarModule
+    MatToolbarModule,
+    MatExpansionModule,
+    MatSlideToggleModule
   ],
   exports: [
     ...components

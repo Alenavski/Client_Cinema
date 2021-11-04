@@ -1,0 +1,32 @@
+<h1 mat-dialog-title>Order history</h1>
+<div mat-dialog-content>
+  <mat-slide-toggle></mat-slide-toggle>
+  <mat-expansion-panel *ngFor="let ticket of filteredTickets" class="ticket">
+    <mat-expansion-panel-header>
+      {{ticket.showtime.time}}
+      <span class="ticket-date-of-booking">{{ticket.dateOfBooking}}</span>
+    </mat-expansion-panel-header>
+    <div class="ticket-info">
+
+      <div class="info-item">
+        Seats:
+        <p *ngFor="let ticketSeat of ticket.ticketSeats">
+          {{ticketSeat.seat.seatType.name.toUpperCase()}}:
+          Row: {{ticketSeat.seat.row + 1}},
+          Place: {{ticketSeat.seat.place}},
+          Price: {{getPrice(ticketSeat.seat.seatType, ticket.showtime)}}$
+        </p>
+      </div>
+      <div *ngIf="ticket.additions">
+        <div *ngIf="ticket.additions.length > 0" class="info-item">
+          Additions:
+          <div *ngFor="let addition of ticket.additions">
+            <p>
+              {{addition.name}} ({{getAdditionPrice(addition, ticket.showtime)}}$):
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </mat-expansion-panel>
+</div>
