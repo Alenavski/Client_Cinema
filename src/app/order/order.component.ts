@@ -151,6 +151,8 @@ export class OrderComponent implements OnInit {
   }
 
   public onShowtimeChoose(): void {
+    this.chosenSeats = [];
+    this.seatsLayout = [];
     this.addTicket();
     this.fetchSeatsLayout();
   }
@@ -163,11 +165,9 @@ export class OrderComponent implements OnInit {
         this.currentTicket.ticketSeats.push({ seat: seat, isOrdered: true });
       }
       this.currentTicket.dateOfBooking = new Date();
-      console.log(this.currentTicket);
       this.ticketService.applyTicket(this.currentTicket)
         .subscribe(
           () => {
-            console.log('good');
             this.snackBarService.showMessage('Successful success');
           }
         );
