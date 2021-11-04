@@ -174,7 +174,6 @@ export class OrderComponent implements OnInit {
     this.chosenSeats = [];
     this.seatsLayout = [];
     this.addTicket();
-    this.fetchSeatsLayout();
   }
 
   public onApplyClick(): void {
@@ -195,9 +194,9 @@ export class OrderComponent implements OnInit {
 
   }
 
-  public fetchSeatsLayout(): void {
+  public fetchSeatsLayout(ticketId: number): void {
     if (this.chosenHall && this.chosenShowtime) {
-      this.seatService.getBlockedSeatsOfShowtime(this.chosenShowtime.id)
+      this.seatService.getBlockedSeatsOfShowtime(ticketId)
         .subscribe(
           (seats: SeatModel[]) => {
             this.reservedSeats = seats;
@@ -257,6 +256,7 @@ export class OrderComponent implements OnInit {
       .subscribe(
         (id: number) => {
           this.currentTicket!.id = id;
+          this.fetchSeatsLayout(id);
         }
       );
   }
