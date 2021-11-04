@@ -226,7 +226,8 @@ export class OrderComponent implements OnInit {
       id: 0,
       showtime: this.chosenShowtime!,
       user: UserService.getUserModel(),
-      dateOfBooking: new Date()
+      dateOfBooking: new Date(),
+      dateOfShowtime: new Date()
     };
     this.ticketService.addTicket(this.currentTicket)
       .subscribe(

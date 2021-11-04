@@ -1,9 +1,9 @@
 <h1 mat-dialog-title>Order history</h1>
 <div mat-dialog-content>
-  <mat-slide-toggle></mat-slide-toggle>
+  <mat-slide-toggle (change)="fetchFilteredTickets($event)"></mat-slide-toggle>
   <mat-expansion-panel *ngFor="let ticket of filteredTickets" class="ticket">
     <mat-expansion-panel-header>
-      {{ticket.showtime.time}}
+      {{getDateString(ticket.dateOfShowtime)}} {{ticket.showtime.time}}
       <span class="ticket-date-of-booking">{{ticket.dateOfBooking}}</span>
     </mat-expansion-panel-header>
     <div class="ticket-info">
