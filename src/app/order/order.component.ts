@@ -171,6 +171,8 @@ export class OrderComponent implements OnInit {
   }
 
   public onShowtimeChoose(): void {
+    this.chosenSeats = [];
+    this.seatsLayout = [];
     this.addTicket();
     this.fetchSeatsLayout();
   }
