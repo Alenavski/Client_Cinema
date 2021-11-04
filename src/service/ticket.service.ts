@@ -27,10 +27,9 @@ export class TicketService {
       `${environment.hostURL}tickets`,
       ticket,
       getHttpOptionsWithAuthorizationHeader()
-    )
-      .pipe(
-        catchError(this.errorHandler)
-      );
+    ).pipe(
+      catchError(this.errorHandler)
+    );
   }
 
   public blockSeat(ticketId: number, seatId: number): Observable<void> {
@@ -38,20 +37,18 @@ export class TicketService {
       `${environment.hostURL}tickets/${ticketId}/seats/${seatId}`,
       {},
       getHttpOptionsWithAuthorizationHeader()
-    )
-      .pipe(
-        catchError(this.errorHandler)
-      );
+    ).pipe(
+      catchError(this.errorHandler)
+    );
   }
 
   public unblockSeat(ticketId: number, seatId: number): Observable<void> {
     return this.httpClient.delete<void>(
       `${environment.hostURL}tickets/${ticketId}/seats/${seatId}`,
       getHttpOptionsWithAuthorizationHeader()
-    )
-      .pipe(
-        catchError(this.errorHandler)
-      );
+    ).pipe(
+      catchError(this.errorHandler)
+    );
   }
 
   public applyTicket(ticket: TicketModel): Observable<void> {
@@ -59,9 +56,8 @@ export class TicketService {
       `${environment.hostURL}tickets`,
       ticket,
       getHttpOptionsWithAuthorizationHeader()
-    )
-      .pipe(
-        catchError(this.errorHandler)
-      );
+    ).pipe(
+      catchError(this.errorHandler)
+    );
   }
 }

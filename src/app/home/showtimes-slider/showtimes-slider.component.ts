@@ -1,12 +1,12 @@
 import { Component, Input, ViewChild } from '@angular/core';
-import { HallModel } from '@models/hall.model';
+import { Router } from '@angular/router';
 import { Optional } from '@tools/utilityTypes';
 
 import { MovieModel } from '@models/movie.model';
 import { ShowtimeModel } from '@models/showtime.model';
+import { HallModel } from '@models/hall.model';
 
 import { FilterService } from '@service/filter.service';
-import { Router } from '@angular/router';
 
 const movieOuterWidth: number = 400;
 const countOfDisplayedCharacters: number = 100;
