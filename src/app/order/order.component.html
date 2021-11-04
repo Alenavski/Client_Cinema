@@ -1,0 +1,251 @@
+<div class="main-container">
+  <div class="movie-container">
+    <img
+      width="200"
+      height="300"
+      class="poster"
+      src="data:image/png;base64,{{movie?.poster}}"
+      onerror="this.src='../../assets/poster.png';"
+      alt=""
+    >
+    <div class="movie-info">
+      <h1>{{movie?.title}}</h1>
+      <p>{{movie?.description}}</p>
+      <p>Duration: {{movie?.minutesLength}} minutes</p>
+      <p>Dates: {{getDateString(movie?.startDate)}} - {{getDateString(movie?.endDate)}}</p>
+    </div>
+  </div>
+
+  <div class="movie-container">
+    <mat-stepper
+      linear
+      orientation="vertical"
+      class="stepper"
+    >
+      <mat-step [stepControl]="timeAndPlaceFormGroup">
+
+        <h1>Choose cinema, hall, date and time for showtime</h1>
+
+        <form [formGroup]="timeAndPlaceFormGroup" class="time-and-place-form">
+          <ng-template matStepLabel>
+            Pick time and place
+          </ng-template>
+
+          <mat-form-field
+            appearance="outline"
+            class="time-and-place"
+          >
+            <mat-label>Cinema</mat-label>
+            <mat-select formControlName="cinema">
+              <mat-option
+                *ngFor="let cinema of cinemasWithShowtime"
+                [value]="cinema"
+                (click)="chosenCinema = cinema"
+              >
+                {{cinema.name}}, {{cinema.address}}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+
+          <mat-form-field
+            *ngIf="chosenCinema !== null"
+            appearance="outline"
+            class="time-and-place"
+          >
+            <mat-label>Hall</mat-label>
+            <mat-select formControlName="hall">
+              <mat-option
+                *ngFor="let hall of chosenCinema?.halls"
+                [value]="hall"
+                (click)="chosenHall = hall"
+              >
+                {{hall.name}}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+
+          <mat-form-field
+            *ngIf="movie !== null"
+            class="example-full-width time-and-place"
+            appearance="outline"
+          >
+            <mat-label>Choose a date</mat-label>
+            <input
+              matInput
+              [matDatepicker]="picker"
+              [matDatepickerFilter]="dateFilter"
+              (dateChange)="onDateChange($event)"
+            >
+            <mat-datepicker-toggle matSuffix [for]="picker">
+              <i (click)="picker.open()" class="fas fa-chevron-down icon"></i>
+            </mat-datepicker-toggle>
+            <mat-datepicker #picker></mat-datepicker>
+          </mat-form-field>
+
+          <mat-form-field
+            *ngIf="chosenHall !== null"
+            appearance="outline"
+            class="time-and-place"
+          >
+            <mat-label>Showtime</mat-label>
+            <mat-select formControlName="showtime">
+              <mat-option
+                *ngFor="let showtime of filterShowtimes()"
+                [value]="showtime"
+                (click)="chosenShowtime = showtime"
+              >
+                {{showtime.time}} ({{showtime.numberOfFreeSeats}} seats)
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+
+          <div>
+            <button
+              mat-button
+              matStepperNext
+              [disabled]="!timeAndPlaceFormGroup.valid"
+              (click)="onShowtimeChoose()"
+            >
+              Next
+            </button>
+          </div>
+        </form>
+
+      </mat-step>
+
+      <mat-step>
+        <ng-template matStepLabel>
+          Pick a seat
+        </ng-template>
+
+        <h1>Choose seat in {{chosenCinema?.name}} cinema, {{chosenHall?.name}} hall</h1>
+
+        <div class="hall-layout">
+          <div class="screen"></div>
+          <table>
+            <tr *ngFor="let row of seatsLayout; let rowIndex = index">
+              <td>{{rowIndex + 1}}</td>
+              <td
+                *ngFor="let seat of row"
+                [class.sofa]="isSofa(seat)"
+              >
+                <div
+                  *ngIf="seat"
+                  class="seat"
+                  [class]="seat.seatType.name.toLowerCase()"
+                  [class.reserved]="isReserved(seat)"
+                  [class.chosen]="isChosen(seat)"
+                  (click)="onSeatClick(seat)"
+                >
+                  <div class="number">{{seat.place}}</div>
+                </div>
+              </td>
+              <td>{{rowIndex + 1}}</td>
+            </tr>
+          </table>
+        </div>
+
+        <div class="chosen-seats">
+          <h1>Chosen seats:</h1>
+          <p *ngFor="let seat of chosenSeats">
+            {{seat.seatType.name.toUpperCase()}}:
+            Row: {{seat.row + 1}},
+            Place: {{seat.place}},
+            Price: {{getPrice(seat.seatType)}}$
+          </p>
+        </div>
+
+        <button
+          mat-button
+          matStepperNext
+          [disabled]="chosenSeats.length <= 0"
+        >
+          Next
+        </button>
+      </mat-step>
+
+      <mat-step *ngIf="chosenShowtime?.additions?.length">
+        <ng-template matStepLabel>
+          Choose additional services
+        </ng-template>
+
+        <div *ngIf="chosenShowtime">
+          <div *ngFor="let addition of chosenShowtime.additions">
+            <h1>
+              {{addition.name}} ({{getAdditionPrice(addition)}}$)
+              <div class="edit-additions-count">
+                <i
+                  class="fas fa-minus plus-minus"
+                  (click)="onMinusAdditionClick(addition)"
+                >
+                </i>
+                {{getAdditionsCount(addition)}}
+                <i
+                  class="fas fa-plus plus-minus"
+                  (click)="chosenAdditions.push(addition)"
+                >
+                </i>
+              </div>
+            </h1>
+          </div>
+        </div>
+
+        <button
+          mat-button
+          matStepperNext
+        >
+          Done
+        </button>
+      </mat-step>
+
+      <mat-step>
+        <ng-template matStepLabel>
+          Check your order
+        </ng-template>
+
+        <div class="order-check">
+          <h1>Your order:</h1>
+          <div class="info-item">
+            Movie: <span>{{movie?.title}}</span>
+          </div>
+          <div class="info-item">
+            Cinema: <span>{{chosenCinema?.name}}</span>
+          </div>
+          <div class="info-item">
+            Hall: <span>{{chosenHall?.name}}</span>
+          </div>
+          <div class="info-item">
+            Seats:
+            <p *ngFor="let seat of chosenSeats">
+              {{seat.seatType.name.toUpperCase()}}:
+              Row: {{seat.row + 1}},
+              Place: {{seat.place}},
+              Price: {{getPrice(seat.seatType)}}$
+            </p>
+          </div>
+          <div *ngIf="chosenAdditions.length > 0" class="info-item">
+            Additions:
+            <div *ngFor="let addition of chosenShowtime?.additions">
+              <p *ngIf="chosenAdditions.includes(addition)">
+                {{addition.name}} ({{getAdditionPrice(addition)}}$):
+                Count: {{getAdditionsCount(addition)}}
+              </p>
+            </div>
+          </div>
+          <div class="info-item">
+            Final price: <span>{{calcFinalPrice()}}$</span>
+          </div>
+        </div>
+
+        <button
+          mat-button
+          matStepperNext
+          (click)="onApplyClick()"
+        >
+          Apply
+        </button>
+      </mat-step>
+
+    </mat-stepper>
+  </div>
+</div>

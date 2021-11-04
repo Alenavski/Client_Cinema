@@ -20,6 +20,7 @@
             src="data:image/png;base64,{{movie.poster}}"
             onerror="this.src='../../assets/poster.png';"
             alt=""
+            (click)="navigateToOrder(movie.id!)"
           >
           <div class="movie-info" #info>
             <h1 class="movie-title">{{movie.title}}</h1>
@@ -28,21 +29,9 @@
             <div class="showtime" *ngFor="let showtime of movie.showtimes">
               <p
                 class="time"
-                (mouseenter)="list.classList.add('focused')"
-                (mouseleave)="list.classList.remove('focused')"
               >
                 {{showtime.time}}
               </p>
-              <div class="cinema-list" #list>
-                Cinemas:
-                <div
-                  class="cinema"
-                  *ngFor="let cinema of getCinemasOfMovieAndTime(movie, showtime.time)"
-                >
-                  <hr>
-                  "{{cinema.name}}"
-                </div>
-              </div>
             </div>
           </div>
         </div>

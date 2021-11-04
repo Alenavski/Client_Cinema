@@ -45,4 +45,11 @@ export class SeatService {
         catchError(this.errorHandler)
       );
   }
+
+  public getBlockedSeatsOfShowtime(showtimeId: number): Observable<SeatModel[]> {
+    return this.httpClient.get<SeatModel[]>(`${environment.hostURL}seats/showtime/${showtimeId}`)
+      .pipe(
+        catchError(this.errorHandler)
+      );
+  }
 }

@@ -1,9 +1,10 @@
 import { Component, Input, ViewChild } from '@angular/core';
-import { HallModel } from '@models/hall.model';
+import { Router } from '@angular/router';
 import { Optional } from '@tools/utilityTypes';
 
 import { MovieModel } from '@models/movie.model';
 import { ShowtimeModel } from '@models/showtime.model';
+import { HallModel } from '@models/hall.model';
 
 import { FilterService } from '@service/filter.service';
 
@@ -28,8 +29,13 @@ export class ShowtimesSliderComponent {
   }
 
   constructor(
-    private readonly filterService: FilterService
+    private readonly filterService: FilterService,
+    private readonly router: Router
   ) {
+  }
+
+  public navigateToOrder(movieId: number): void {
+    void this.router.navigate([`movie/${movieId}/order`]);
   }
 
   public makeMovieDescription(description: string): string {
