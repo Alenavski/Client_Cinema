@@ -11,7 +11,8 @@
     <div class="movie-info">
       <h1>{{movie?.title}}</h1>
       <p>{{movie?.description}}</p>
-      <p>Duration: {{movie?.minutesLength}}</p>
+      <p>Duration: {{movie?.minutesLength}} minutes</p>
+      <p>Dates: {{getDateString(movie?.startDate)}} - {{getDateString(movie?.endDate)}}</p>
     </div>
   </div>
 
@@ -23,7 +24,7 @@
     >
       <mat-step [stepControl]="timeAndPlaceFormGroup">
 
-        <h1>Choose cinema, hall and time for showtime</h1>
+        <h1>Choose cinema, hall, date and time for showtime</h1>
 
         <form [formGroup]="timeAndPlaceFormGroup" class="time-and-place-form">
           <ng-template matStepLabel>
@@ -61,6 +62,24 @@
                 {{hall.name}}
               </mat-option>
             </mat-select>
+          </mat-form-field>
+
+          <mat-form-field
+            *ngIf="movie !== null"
+            class="example-full-width time-and-place"
+            appearance="outline"
+          >
+            <mat-label>Choose a date</mat-label>
+            <input
+              matInput
+              [matDatepicker]="picker"
+              [matDatepickerFilter]="dateFilter"
+              (dateChange)="onDateChange($event)"
+            >
+            <mat-datepicker-toggle matSuffix [for]="picker">
+              <i (click)="picker.open()" class="fas fa-chevron-down icon"></i>
+            </mat-datepicker-toggle>
+            <mat-datepicker #picker></mat-datepicker>
           </mat-form-field>
 
           <mat-form-field
@@ -184,7 +203,6 @@
           Check your order
         </ng-template>
 
-        <!--need to be beautiful styled-->
         <div class="order-check">
           <h1>Your order:</h1>
           <div class="info-item">

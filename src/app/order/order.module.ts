@@ -8,6 +8,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatSelectModule } from '@angular/material/select';
 import { MatStepperModule } from '@angular/material/stepper';
 import { OrderComponent } from './order.component';
+import { MatDatepickerModule } from '@angular/material/datepicker';
 
 const components = [
   OrderComponent
@@ -17,17 +18,18 @@ const components = [
   declarations: [
     ...components
   ],
-  imports: [
-    CommonModule,
-    MatStepperModule,
-    ReactiveFormsModule,
-    MatFormFieldModule,
-    MatAutocompleteModule,
-    MatInputModule,
-    MatButtonModule,
-    MatSelectModule,
-    FormsModule
-  ],
+    imports: [
+        CommonModule,
+        MatStepperModule,
+        ReactiveFormsModule,
+        MatFormFieldModule,
+        MatAutocompleteModule,
+        MatInputModule,
+        MatButtonModule,
+        MatSelectModule,
+        FormsModule,
+        MatDatepickerModule
+    ],
   exports: [
     ...components
   ]

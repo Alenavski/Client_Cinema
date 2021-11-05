@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, ParamMap } from '@angular/router';
+import { MatDatepickerInputEvent } from '@angular/material/datepicker';
+import * as moment from 'moment';
 
 import { CinemaModel } from '@models/cinema.model';
 import { SEAT_TYPES } from '@models/constants/seat-types';
@@ -32,6 +34,7 @@ export class OrderComponent implements OnInit {
 
   chosenCinema: Nullable<CinemaModel> = null;
   chosenHall: Nullable<HallModel> = null;
+  chosenDate: Nullable<Date> = null;
   chosenShowtime: Nullable<ShowtimeModel> = null;
   chosenAdditions: AdditionModel[] = [];
   chosenSeats: SeatModel[] = [];
@@ -63,13 +66,30 @@ export class OrderComponent implements OnInit {
     this.activatedRoute.paramMap
       .subscribe(
         (params: ParamMap) => {
-          const idMovie = Number(params.get('id'));
-          if (idMovie != 0) {
-            this.fetchMovie(idMovie);
-            this.fetchCinemas(idMovie);
+          const movieId = Number(params.get('id'));
+          if (movieId != 0) {
+            this.fetchMovie(movieId);
+            this.fetchCinemas(movieId);
           }
         }
       );
+  }
+
+  public getDateString(date?: Date): string {
+    return moment(date).format('DD/MM/YYYY');
+}
+
+  public dateFilter = (d: Nullable<Date>): boolean => {
+    if (this.movie){
+      const day = (d ?? new Date());
+      return day.getTime() >= new Date(this.movie.startDate).getTime()
+        && day.getTime() <= new Date(this.movie.endDate).getTime();
+    }
+    return true;
+  };
+
+  public onDateChange(event: MatDatepickerInputEvent<Date>): void {
+    this.chosenDate = event.value;
   }
 
   public calcFinalPrice(): number {
@@ -154,7 +174,6 @@ export class OrderComponent implements OnInit {
     this.chosenSeats = [];
     this.seatsLayout = [];
     this.addTicket();
-    this.fetchSeatsLayout();
   }
 
   public onApplyClick(): void {
@@ -175,21 +194,13 @@ export class OrderComponent implements OnInit {
 
   }
 
-  public fetchSeatsLayout(): void {
+  public fetchSeatsLayout(ticketId: number): void {
     if (this.chosenHall && this.chosenShowtime) {
-      this.seatService.getBlockedSeatsOfShowtime(this.chosenShowtime.id)
+      this.seatService.getBlockedSeatsOfShowtime(ticketId)
         .subscribe(
           (seats: SeatModel[]) => {
             this.reservedSeats = seats;
-            const [x, y] = this.calcSizeOfHall();
-            this.numberOfSeats = this.chosenHall!.seats.length;
-            for (let i = 0; i <= x; i++) {
-              this.seatsLayout[i] = [];
-              this.seatsLayout[i].length = y;
-            }
-            for (const seat of this.chosenHall!.seats) {
-              this.seatsLayout[seat.row][seat.index] = seat;
-            }
+            this.setSeatsLayout();
           }
         );
     }
@@ -201,6 +212,18 @@ export class OrderComponent implements OnInit {
 
   public isChosen(seat: SeatModel): boolean {
     return this.chosenSeats.includes(seat);
+  }
+
+  private setSeatsLayout(): void {
+    const [x, y] = this.calcSizeOfHall();
+    this.numberOfSeats = this.chosenHall!.seats.length;
+    for (let i = 0; i <= x; i++) {
+      this.seatsLayout[i] = [];
+      this.seatsLayout[i].length = y;
+    }
+    for (const seat of this.chosenHall!.seats) {
+      this.seatsLayout[seat.row][seat.index] = seat;
+    }
   }
 
   private fetchMovie(id: number): void {
@@ -227,12 +250,13 @@ export class OrderComponent implements OnInit {
       showtime: this.chosenShowtime!,
       user: UserService.getUserModel(),
       dateOfBooking: new Date(),
-      dateOfShowtime: new Date()
+      dateOfShowtime: this.chosenDate ?? new Date()
     };
     this.ticketService.addTicket(this.currentTicket)
       .subscribe(
         (id: number) => {
           this.currentTicket!.id = id;
+          this.fetchSeatsLayout(id);
         }
       );
   }

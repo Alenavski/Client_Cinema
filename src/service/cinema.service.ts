@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+import { Observable, of } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 
 import { CinemaModel } from '@models/cinema.model';
@@ -21,6 +21,28 @@ export class CinemaService {
     private readonly snackBarService: SnackBarService
   ) {
     this.errorHandler = ErrorHandlerFactory(this.snackBarService);
+  }
+
+  public getCitiesByTerm(term: string): Observable<string[]> {
+    if (!term.trim()) {
+      return of([]);
+    }
+
+    return this.httpClient.get<string[]>(`${environment.hostURL}cinemas/cities/?term=${term}`)
+      .pipe(
+        catchError(this.errorHandler)
+      );
+  }
+
+  public getCinemasByTerm(term: string): Observable<CinemaModel[]> {
+    if (!term.trim()) {
+      return of([]);
+    }
+
+    return this.httpClient.get<CinemaModel[]>(`${environment.hostURL}cinemas/?term=${term}`)
+      .pipe(
+        catchError(this.errorHandler)
+      );
   }
 
   public getCinemas(): Observable<CinemaModel[]> {
