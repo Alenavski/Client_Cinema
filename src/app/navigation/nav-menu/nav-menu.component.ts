@@ -72,7 +72,7 @@ export class NavMenuComponent {
 
   openHistory(): void {
     this.dialogAuth.open(TicketHistoryComponent, {
-      width: '500px'
+      width: '700px'
     });
   }
 

@@ -3,6 +3,7 @@ import { AdditionModel } from '@models/addition.model';
 import { SEAT_TYPES } from '@models/constants/seat-types';
 import { SeatTypeModel } from '@models/seat-type.model';
 import { ShowtimeModel } from '@models/showtime.model';
+import { TicketMovieModel } from '@models/ticket-movie.model';
 import { TicketModel } from '@models/ticket.model';
 import { TicketService } from '@service/ticket.service';
 import { Nullable } from '@tools/utilityTypes';
@@ -28,8 +29,16 @@ export class TicketHistoryComponent implements OnInit{
   public ngOnInit(): void {
     this.ticketService.getTickets().subscribe(
       (tickets: TicketModel[]) => {
-        this.tickets = tickets;
-        this.filteredTickets = this.tickets;
+        this.ticketService.getTicketMovies().subscribe(
+          (ticketMovies: TicketMovieModel[]) => {
+            console.log(ticketMovies);
+            tickets.forEach((ticket: TicketModel) => {
+              ticket.movie = ticketMovies.find((tm) => tm.ticket.id == ticket.id)?.movie;
+            });
+            this.tickets = tickets;
+            this.filteredTickets = this.tickets;
+          }
+        );
       }
     );
   }
@@ -45,17 +54,17 @@ export class TicketHistoryComponent implements OnInit{
   private isPastTicket(ticket: TicketModel): boolean {
     const curDate = new Date();
     const ticketDate = new Date(ticket.dateOfShowtime);
-    if (curDate.getFullYear() > ticketDate.getFullYear()) {
+    if (curDate.getUTCFullYear() > ticketDate.getUTCFullYear()) {
       return true;
     }
-    if (curDate.getMonth() > ticketDate.getMonth()) {
+    if (curDate.getUTCMonth() > ticketDate.getUTCMonth()) {
       return true;
     }
-    return curDate.getDay() > ticketDate.getDay();
+    return curDate.getUTCDay() > ticketDate.getUTCDay();
   }
 
   public getDateString(date: Date): string {
-    return moment(date).format('DD/MM/YYYY');
+    return moment(date).format('DD/MM/YYYY').toString();
   }
 
   public getPrice(seatType: SeatTypeModel, showtime: ShowtimeModel): number {

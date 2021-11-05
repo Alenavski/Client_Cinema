@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
+import { TicketMovieModel } from '@models/ticket-movie.model';
 import { Observable } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 
@@ -26,10 +27,18 @@ export class TicketService {
     return this.httpClient.get<TicketModel[]>(
       `${environment.hostURL}tickets`,
       getHttpOptionsWithAuthorizationHeader()
-    )
-      .pipe(
-        catchError(this.errorHandler)
-      );
+    ).pipe(
+      catchError(this.errorHandler)
+    );
+  }
+
+  public getTicketMovies(): Observable<TicketMovieModel[]> {
+    return this.httpClient.get<TicketMovieModel[]>(
+      `${environment.hostURL}tickets/movies`,
+      getHttpOptionsWithAuthorizationHeader()
+    ).pipe(
+      catchError(this.errorHandler)
+    );
   }
 
   public addTicket(ticket: TicketModel): Observable<number> {
@@ -37,10 +46,9 @@ export class TicketService {
       `${environment.hostURL}tickets`,
       ticket,
       getHttpOptionsWithAuthorizationHeader()
-    )
-      .pipe(
-        catchError(this.errorHandler)
-      );
+    ).pipe(
+      catchError(this.errorHandler)
+    );
   }
 
   public blockSeat(ticketId: number, seatId: number): Observable<void> {
@@ -48,20 +56,18 @@ export class TicketService {
       `${environment.hostURL}tickets/${ticketId}/seats/${seatId}`,
       {},
       getHttpOptionsWithAuthorizationHeader()
-    )
-      .pipe(
-        catchError(this.errorHandler)
-      );
+    ).pipe(
+      catchError(this.errorHandler)
+    );
   }
 
   public unblockSeat(ticketId: number, seatId: number): Observable<void> {
     return this.httpClient.delete<void>(
       `${environment.hostURL}tickets/${ticketId}/seats/${seatId}`,
       getHttpOptionsWithAuthorizationHeader()
-    )
-      .pipe(
-        catchError(this.errorHandler)
-      );
+    ).pipe(
+      catchError(this.errorHandler)
+    );
   }
 
   public applyTicket(ticket: TicketModel): Observable<void> {
@@ -69,9 +75,8 @@ export class TicketService {
       `${environment.hostURL}tickets`,
       ticket,
       getHttpOptionsWithAuthorizationHeader()
-    )
-      .pipe(
-        catchError(this.errorHandler)
-      );
+    ).pipe(
+      catchError(this.errorHandler)
+    );
   }
 }

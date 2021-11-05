@@ -3,14 +3,16 @@
   <mat-slide-toggle (change)="fetchFilteredTickets($event)"></mat-slide-toggle>
   <mat-expansion-panel *ngFor="let ticket of filteredTickets" class="ticket">
     <mat-expansion-panel-header>
-      {{getDateString(ticket.dateOfShowtime)}} {{ticket.showtime.time}}
-      <span class="ticket-date-of-booking">{{ticket.dateOfBooking}}</span>
+      <mat-panel-title>
+        <span class="movie-title">{{ticket?.movie?.title}}</span>
+        <span class="showtime-time">{{getDateString(ticket.dateOfShowtime)}}</span>
+        <span class="showtime-time">{{ticket.showtime.time.substring(0,5)}}</span>
+      </mat-panel-title>
+      <span class="ticket-date-of-booking">{{getDateString(ticket.dateOfBooking)}}</span>
     </mat-expansion-panel-header>
-    <div class="ticket-info">
-
       <div class="info-item">
         Seats:
-        <p *ngFor="let ticketSeat of ticket.ticketSeats">
+        <p *ngFor="let ticketSeat of ticket.ticketsSeats">
           {{ticketSeat.seat.seatType.name.toUpperCase()}}:
           Row: {{ticketSeat.seat.row + 1}},
           Place: {{ticketSeat.seat.place}},
@@ -27,6 +29,5 @@
           </div>
         </div>
       </div>
-    </div>
   </mat-expansion-panel>
 </div>

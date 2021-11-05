@@ -3,13 +3,15 @@ import { UserModel } from '@models/user.model';
 import { AdditionModel } from '@models/addition.model';
 import { Nullable } from '@tools/utilityTypes';
 import { TicketSeatModel } from '@models/ticket-seat.model';
+import { MovieModel } from '@models/movie.model';
 
 export interface TicketModel {
   id: number,
   showtime: ShowtimeModel,
   user: Nullable<UserModel>,
-  ticketSeats?: TicketSeatModel[],
+  ticketsSeats?: TicketSeatModel[],
   dateOfBooking: Date,
   dateOfShowtime: Date,
-  additions?: AdditionModel[]
+  additions?: AdditionModel[],
+  movie?: Nullable<MovieModel>
 }
