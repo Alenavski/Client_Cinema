@@ -89,7 +89,8 @@ export class OrderComponent implements OnInit {
   };
 
   public onDateChange(event: MatDatepickerInputEvent<Date>): void {
-    this.chosenDate = event.value;
+    const loc: Date = event.value ?? new Date(Date.now());
+    this.chosenDate = new Date(Date.UTC(loc.getUTCFullYear(), loc.getUTCMonth(), loc.getDay()));
   }
 
   public calcFinalPrice(): number {
