@@ -1,6 +1,6 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+import { Observable, of } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 
 import { MovieModel } from '@models/movie.model';
@@ -34,6 +34,17 @@ export class MovieService {
     }
 
     return this.httpClient.get<MovieModel[]>(`${environment.hostURL}movies`, options)
+      .pipe(
+        catchError(this.errorHandler)
+      );
+  }
+
+  public getMoviesByTerm(term: string): Observable<MovieModel[]> {
+    if (!term.trim()) {
+      return of([]);
+    }
+
+    return this.httpClient.get<MovieModel[]>(`${environment.hostURL}movies/?term=${term}`)
       .pipe(
         catchError(this.errorHandler)
       );
