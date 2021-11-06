@@ -27,7 +27,8 @@ export class TicketService {
     return this.httpClient.get<TicketModel[]>(
       `${environment.hostURL}tickets`,
       getHttpOptionsWithAuthorizationHeader()
-    ).pipe(
+    )
+    .pipe(
       catchError(this.errorHandler)
     );
   }
@@ -36,7 +37,8 @@ export class TicketService {
     return this.httpClient.get<TicketMovieModel[]>(
       `${environment.hostURL}tickets/movies`,
       getHttpOptionsWithAuthorizationHeader()
-    ).pipe(
+    )
+    .pipe(
       catchError(this.errorHandler)
     );
   }
@@ -46,7 +48,8 @@ export class TicketService {
       `${environment.hostURL}tickets`,
       ticket,
       getHttpOptionsWithAuthorizationHeader()
-    ).pipe(
+    )
+    .pipe(
       catchError(this.errorHandler)
     );
   }
@@ -56,7 +59,8 @@ export class TicketService {
       `${environment.hostURL}tickets/${ticketId}/seats/${seatId}`,
       {},
       getHttpOptionsWithAuthorizationHeader()
-    ).pipe(
+    )
+    .pipe(
       catchError(this.errorHandler)
     );
   }
@@ -65,7 +69,8 @@ export class TicketService {
     return this.httpClient.delete<void>(
       `${environment.hostURL}tickets/${ticketId}/seats/${seatId}`,
       getHttpOptionsWithAuthorizationHeader()
-    ).pipe(
+    )
+    .pipe(
       catchError(this.errorHandler)
     );
   }
@@ -75,7 +80,8 @@ export class TicketService {
       `${environment.hostURL}tickets`,
       ticket,
       getHttpOptionsWithAuthorizationHeader()
-    ).pipe(
+    )
+    .pipe(
       catchError(this.errorHandler)
     );
   }

@@ -1,14 +1,17 @@
 import { Component, OnInit } from '@angular/core';
+import { MatSlideToggleChange } from '@angular/material/slide-toggle';
+import * as moment from 'moment';
+
 import { AdditionModel } from '@models/addition.model';
-import { SEAT_TYPES } from '@models/constants/seat-types';
 import { SeatTypeModel } from '@models/seat-type.model';
 import { ShowtimeModel } from '@models/showtime.model';
 import { TicketMovieModel } from '@models/ticket-movie.model';
 import { TicketModel } from '@models/ticket.model';
+import { SEAT_TYPES } from '@models/constants/seat-types';
+
 import { TicketService } from '@service/ticket.service';
+
 import { Nullable } from '@tools/utilityTypes';
-import * as moment from 'moment';
-import { MatSlideToggleChange } from '@angular/material/slide-toggle';
 
 @Component({
   selector: 'app-ticket-history',
@@ -31,7 +34,6 @@ export class TicketHistoryComponent implements OnInit{
       (tickets: TicketModel[]) => {
         this.ticketService.getTicketMovies().subscribe(
           (ticketMovies: TicketMovieModel[]) => {
-            console.log(ticketMovies);
             tickets.forEach((ticket: TicketModel) => {
               ticket.movie = ticketMovies.find((tm) => tm.ticket.id == ticket.id)?.movie;
             });
