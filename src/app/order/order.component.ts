@@ -179,9 +179,9 @@ export class OrderComponent implements OnInit {
   public onApplyClick(): void {
     if (this.currentTicket) {
       this.currentTicket.additions = this.chosenAdditions;
-      this.currentTicket.ticketSeats = [];
+      this.currentTicket.ticketsSeats = [];
       for (const seat of this.chosenSeats) {
-        this.currentTicket.ticketSeats.push({ seat: seat, isOrdered: true });
+        this.currentTicket.ticketsSeats.push({ seat: seat, isOrdered: true });
       }
       this.currentTicket.dateOfBooking = new Date();
       this.ticketService.applyTicket(this.currentTicket)

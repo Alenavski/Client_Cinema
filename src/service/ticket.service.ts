@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
+import { TicketMovieModel } from '@models/ticket-movie.model';
 import { Observable } from 'rxjs';
 import { catchError } from 'rxjs/operators';
 
@@ -22,12 +23,33 @@ export class TicketService {
     this.errorHandler = ErrorHandlerFactory(this.snackBarService);
   }
 
+  public getTickets(): Observable<TicketModel[]> {
+    return this.httpClient.get<TicketModel[]>(
+      `${environment.hostURL}tickets`,
+      getHttpOptionsWithAuthorizationHeader()
+    )
+    .pipe(
+      catchError(this.errorHandler)
+    );
+  }
+
+  public getTicketMovies(): Observable<TicketMovieModel[]> {
+    return this.httpClient.get<TicketMovieModel[]>(
+      `${environment.hostURL}tickets/movies`,
+      getHttpOptionsWithAuthorizationHeader()
+    )
+    .pipe(
+      catchError(this.errorHandler)
+    );
+  }
+
   public addTicket(ticket: TicketModel): Observable<number> {
     return this.httpClient.post<number>(
       `${environment.hostURL}tickets`,
       ticket,
       getHttpOptionsWithAuthorizationHeader()
-    ).pipe(
+    )
+    .pipe(
       catchError(this.errorHandler)
     );
   }
@@ -37,7 +59,8 @@ export class TicketService {
       `${environment.hostURL}tickets/${ticketId}/seats/${seatId}`,
       {},
       getHttpOptionsWithAuthorizationHeader()
-    ).pipe(
+    )
+    .pipe(
       catchError(this.errorHandler)
     );
   }
@@ -46,7 +69,8 @@ export class TicketService {
     return this.httpClient.delete<void>(
       `${environment.hostURL}tickets/${ticketId}/seats/${seatId}`,
       getHttpOptionsWithAuthorizationHeader()
-    ).pipe(
+    )
+    .pipe(
       catchError(this.errorHandler)
     );
   }
@@ -56,7 +80,8 @@ export class TicketService {
       `${environment.hostURL}tickets`,
       ticket,
       getHttpOptionsWithAuthorizationHeader()
-    ).pipe(
+    )
+    .pipe(
       catchError(this.errorHandler)
     );
   }

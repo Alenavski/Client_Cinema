@@ -7,9 +7,12 @@
       <span>{{location}}</span>
     </a>
     <ng-container *ngIf="isAuthed; else authBtn">
-      <ng-container *ngIf="isAdmin">
-        <a class="fas fa-cog user-icon container-item" (click)="openDialogAdmin()"></a>
+      <ng-container *ngIf="isAdmin; else history">
+        <i class="fas fa-cog user-icon container-item" (click)="openDialogAdmin()"></i>
       </ng-container>
+      <ng-template #history>
+        <i class="fas fa-clipboard-list user-icon container-item" (click)="openHistory()"></i>
+      </ng-template>
       <i class="fas fa-user-slash user-icon container-item" (click)="logout()"></i>
     </ng-container>
     <ng-template #authBtn>
