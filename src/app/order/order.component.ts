@@ -49,6 +49,7 @@ export class OrderComponent implements OnInit {
   timeAndPlaceFormGroup: FormGroup = new FormGroup({
     cinema: new FormControl('', [Validators.required]),
     hall: new FormControl('', [Validators.required]),
+    date: new FormControl('', [Validators.required]),
     showtime: new FormControl('', [Validators.required])
   });
 
@@ -69,7 +70,6 @@ export class OrderComponent implements OnInit {
           const movieId = Number(params.get('id'));
           if (movieId != 0) {
             this.fetchMovie(movieId);
-            this.fetchCinemas(movieId);
           }
         }
       );
@@ -231,6 +231,7 @@ export class OrderComponent implements OnInit {
       .subscribe(
         (movie: MovieModel) => {
           this.movie = movie;
+          this.fetchCinemas(movie.id!);
         }
       );
   }
@@ -240,6 +241,36 @@ export class OrderComponent implements OnInit {
       .subscribe(
         (cinemas: CinemaModel[]) => {
           this.cinemasWithShowtime = cinemas;
+          this.fillForm();
+        }
+      );
+  }
+
+  private fillForm(): void {
+    this.activatedRoute.queryParamMap
+      .subscribe(
+        (params: ParamMap) => {
+          const showtimeId = params.get('showtimeId');
+          const cinemaId = params.get('cinemaId');
+          const hallId = params.get('hallId');
+          if (showtimeId && cinemaId && hallId) {
+            const cinema = this.cinemasWithShowtime.find(c => c.id?.toString() === cinemaId);
+            if (cinema) {
+              this.timeAndPlaceFormGroup.get('cinema')?.setValue(cinema);
+              this.chosenCinema = cinema;
+              const hall = cinema.halls?.find(h => h.id.toString() === hallId);
+              if (hall) {
+                this.timeAndPlaceFormGroup.get('hall')?.setValue(hall);
+                this.chosenHall = hall;
+                const showtime = this.movie?.showtimes?.find(sh => sh.id.toString() === showtimeId);
+                console.log(this.movie);
+                if (showtime) {
+                  this.chosenShowtime = showtime;
+                  this.timeAndPlaceFormGroup.get('showtime')?.setValue(showtime);
+                }
+              }
+            }
+          }
         }
       );
   }

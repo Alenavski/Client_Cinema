@@ -5,6 +5,7 @@ import { HttpClientModule } from '@angular/common/http';
 
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 import { OrderModule } from '@app/order/order.module';
+import { ShowtimeScheduleModule } from '@app/showtime-schedule/showtime-schedule.module';
 
 import { CinemaService } from '@service/cinema.service';
 import { HallService } from '@service/hall.service';
@@ -44,7 +45,8 @@ import { AppRoutingModule } from './app-routing.module';
     CinemaModule,
     HallModule,
     MovieModule,
-    OrderModule
+    OrderModule,
+    ShowtimeScheduleModule
   ],
   providers: [
     UserService,

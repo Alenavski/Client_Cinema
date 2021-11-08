@@ -34,8 +34,8 @@ export class ShowtimesSliderComponent {
   ) {
   }
 
-  public navigateToOrder(movieId: number): void {
-    void this.router.navigate([`movie/${movieId}/order`]);
+  public navigateToSchedule(movieId: number): void {
+    void this.router.navigate([`movie/${movieId}/schedule`]);
   }
 
   public makeMovieDescription(description: string): string {

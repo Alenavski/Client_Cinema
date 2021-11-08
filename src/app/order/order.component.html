@@ -75,6 +75,7 @@
               [matDatepicker]="picker"
               [matDatepickerFilter]="dateFilter"
               (dateChange)="onDateChange($event)"
+              formControlName="date"
             >
             <mat-datepicker-toggle matSuffix [for]="picker">
               <i (click)="picker.open()" class="fas fa-chevron-down icon"></i>
