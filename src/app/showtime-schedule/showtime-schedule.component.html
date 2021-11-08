@@ -1,0 +1,50 @@
+<div class="page">
+  <div class="main-container">
+    <div class="movie" *ngIf="currentMovie">
+      <img class="movie-poster"
+        width="300"
+        height="450"
+        src="data:image/png;base64,{{currentMovie?.poster}}"
+        onerror="this.src='../../assets/poster.png';"
+        alt=""
+      >
+      <div class="movie-information">
+        <h1 class="movie-title">{{currentMovie.title}}</h1>
+        <h1 class="movie-title"><span class="movie-date">{{formatDate(currentMovie.startDate)}}</span> - <span class="movie-date">{{formatDate(currentMovie.endDate)}}</span></h1>
+        <p class="movie-description">{{currentMovie.description}}</p>
+        <p class="movie-description">Duration:<span class="movie-duration">{{currentMovie.minutesLength}}</span> minutes</p>
+        <button mat-raised-button class="book-button" (click)="navigateToOrder(currentMovie.id!)">Book now</button>
+      </div>
+    </div>
+    <mat-divider class="divider"></mat-divider>
+    <div class="cinema-list">
+      <h1 class="list-title">In cinemas:</h1>
+      <div class="cinema" *ngFor="let cinema of cinemasWithMovieShowtimes">
+        <img class="cinema-poster"
+             width="200"
+             height="300"
+             src="data:image/png;base64,{{cinema?.image}}"
+             onerror="this.src='../../assets/poster.png';"
+             alt="">
+        <div class="cinema-information">
+          <h1 class="cinema-title">{{cinema.name}}</h1>
+          <h2 class="cinema-address">{{cinema.city}}, {{cinema.address}}</h2>
+          <div class="hall-list">
+            <h1 class="list-title">In halls:</h1>
+            <div class="hall" *ngFor="let hall of cinema.halls">
+                <h1 class="hall-title">{{hall.name}}:</h1>
+                <mat-chip-list class="showtime-list">
+                  <ng-container *ngFor="let showtime of currentMovie?.showtimes">
+                    <mat-chip class="showtime"
+                              *ngIf="showtime.hall.id === hall.id"
+                              (click)="navigateToOrderEx(currentMovie!.id!, cinema.id!, hall.id, showtime.id)"
+                    >{{showtime.time}}</mat-chip>
+                  </ng-container>
+                </mat-chip-list>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
