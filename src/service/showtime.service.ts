@@ -63,7 +63,7 @@ export class ShowtimeService {
       )
     );
 
-    return this.httpClient.get<MovieModel[]>(`${environment.hostURL}movies`, options)
+    return this.httpClient.get<MovieModel[]>(`${environment.hostURL}movies/with-showtimes`, options)
       .pipe(
         catchError(this.errorHandler)
       );

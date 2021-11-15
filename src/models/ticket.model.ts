@@ -12,6 +12,6 @@ export interface TicketModel {
   ticketsSeats?: TicketSeatModel[],
   dateOfBooking: Date,
   dateOfShowtime: Date,
-  additions?: AdditionModel[],
+  ticketsAdditions?: AdditionModel[],
   movie?: Nullable<MovieModel>
 }

@@ -8,10 +8,11 @@
 }
 
 .movies-table {
+  margin-right: 45px;
+
   .add-movie {
     margin-bottom: 10px;
     box-shadow: 0 .25rem .75rem rgba(0, 0, 0, .25);
-    margin-right: 45px;
     padding: 10px;
 
     button {
@@ -22,8 +23,7 @@
   .movie-list {
     margin-bottom: 10px;
     box-shadow: 0 .25rem .75rem rgba(0, 0, 0, .25);
-    margin-right: 45px;
-    padding: 10px 30px;
+    padding: 10px;
 
     .movie {
       margin: 5px 0;
@@ -51,35 +51,40 @@
     min-height: 300px;
     display: flex;
 
-    .poster {
-      overflow: hidden;
-      border-radius: 15%;
-      margin: 25px;
-      width: 300px;
-      min-width: 300px;
-      height: 450px;
-      position: relative;
+    .image {
+      width: 320px;
+      padding: 20px;
 
-      .icon {
+      .poster {
+        overflow: hidden;
+        border-radius: 15%;
+        margin: 10px;
         width: 300px;
+        min-width: 300px;
         height: 450px;
-        background: linear-gradient(to bottom, transparent, rgba(0,0,0, 0.2) 5%, rgba(0,0,0, 0.2));
-        position: absolute;
-        bottom: -300px;
-        left: 0;
-        transition: bottom 1s;
-        display: flex;
-        align-items: center;
-        justify-content: center;
+        position: relative;
 
-        i {
-          font-size: 100px;
-          color: rgba(255,255,255, 0.6);
-          text-align: center;
-        }
+        .icon {
+          width: 300px;
+          height: 450px;
+          background: linear-gradient(to bottom, transparent, rgba(0, 0, 0, 0.2) 5%, rgba(0, 0, 0, 0.2));
+          position: absolute;
+          bottom: -300px;
+          left: 0;
+          transition: bottom 1s;
+          display: flex;
+          align-items: center;
+          justify-content: center;
 
-        &.focused {
-          bottom: 0;
+          i {
+            font-size: 100px;
+            color: rgba(255, 255, 255, 0.6);
+            text-align: center;
+          }
+
+          &.focused {
+            bottom: 0;
+          }
         }
       }
     }
@@ -96,6 +101,10 @@
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
+
+  span {
+    margin: auto;
+  }
 }
 
 .date {
@@ -109,9 +118,12 @@
   border: 0;
   border-bottom: 2px solid lightgray;
   outline: none;
-  text-transform: uppercase;
-  margin: 30px 0;
+  margin: 30px 0 10px;
   display: block;
+
+  &.title-field {
+    text-transform: uppercase;
+  }
 
   &.minutes-length {
     width: 20%;
@@ -132,6 +144,14 @@
 .error {
   color: red;
   font-size: 15px;
+  margin: 0;
+}
+
+.info {
+  color: @yellow;
+  font-size: 12px;
+  font-weight: bold;
+  margin: 0;
 }
 
 .button-apply {

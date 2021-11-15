@@ -1,5 +1,13 @@
 <div class="main-container">
   <mat-accordion class="list-container">
+    <button
+      mat-raised-button
+      class="add-new"
+      (click)="navigateToCinema()"
+    >
+      Add new cinema
+      <i class="fas fa-plus"></i>
+    </button>
     <mat-expansion-panel
       hideToggle
       *ngFor="let cinema of allCinemas"
@@ -8,7 +16,7 @@
         <mat-panel-title class="cinema-name">
           {{cinema.name}}
           <i class="fas fa-pen" (click)="navigateToCinema(cinema.id)"></i>
-          <i class="fas fa-trash" (click)="onDeleteCinemaClick(cinema.id)"></i>
+          <i class="fas fa-trash" (click)="onDeleteCinemaClick(cinema.id, cinema.name)"></i>
         </mat-panel-title>
       </mat-expansion-panel-header>
       <p
@@ -18,7 +26,7 @@
         <span (click)="navigateToHall(cinema.id!, hall.id)">
           {{hall.name}}
         </span>
-        <i class="fas fa-trash" (click)="deleteHall(cinema.id!, hall.id)"></i>
+        <i class="fas fa-trash" (click)="deleteHall(cinema.id!, hall.id, hall.name)"></i>
       </p>
       <p
         class="hall"
@@ -27,33 +35,38 @@
         Add hall
       </p>
     </mat-expansion-panel>
-    <button
-      mat-raised-button
-      class="add-new"
-      (click)="navigateToCinema()"
-    >
-      Add new cinema
-      <i class="fas fa-plus"></i>
-    </button>
   </mat-accordion>
 
-  <div class="cinema-container">
+  <div *ngIf="cinema" class="cinema-container">
     <div class="page">
-      <div
-        class="poster"
-        (mouseenter)="icon.classList.add('focused')"
-        (mouseleave)="icon.classList.remove('focused')"
-      >
-        <img
-          height="250"
-          width="250"
-          src="data:image/png;base64,{{cinema?.image}}"
-          onerror="this.src='../../assets/poster.png';"
-          alt=""
+      <div class="image">
+        <div
+          class="poster"
+          (mouseenter)="icon.classList.add('focused')"
+          (mouseleave)="icon.classList.remove('focused')"
+          (click)="fileInput.click()"
         >
-        <div class="icon" #icon>
-          <i class="fas fa-plus-circle"></i>
+          <input
+            style="display: none"
+            type="file"
+            accept=".jpg, .jpeg, .png"
+            (change)="onFileChanged($event)"
+            #fileInput
+          >
+          <img
+            height="250"
+            width="250"
+            src="data:image/png;base64,{{cinema?.image}}"
+            onerror="this.src='../../assets/no-image.jpg';"
+            alt=""
+          >
+          <div class="icon" #icon>
+            <i class="fas fa-plus-circle"></i>
+          </div>
         </div>
+        <p class="info">
+          To add picture for cinema move mouse on picture and click
+        </p>
       </div>
       <div class="cinema-info" [formGroup]="cinemaForm">
         <input
@@ -61,15 +74,31 @@
           class="input-field name-field"
           formControlName="name"
         >
-        <p class="error" *ngIf="!cinemaForm.get('name')?.valid">
+        <p class="info">Name of cinema.</p>
+        <p
+          class="error"
+          *ngIf="cinemaForm.get('name')?.dirty && !cinemaForm.get('name')?.valid"
+        >
           Name is required.
         </p>
         <input
           type="text"
           class="input-field address-field"
           formControlName="city"
+          #cityInput
+          (input)="search(cityInput.value)"
+          [matAutocomplete]="auto"
         >
-        <p class="error" *ngIf="!cinemaForm.get('city')?.valid">
+        <mat-autocomplete autoActiveFirstOption #auto="matAutocomplete">
+          <mat-option *ngFor="let city of cities$ | async" [value]="city">
+            {{city}}
+          </mat-option>
+        </mat-autocomplete>
+        <p class="info">City of cinema.</p>
+        <p
+          class="error"
+          *ngIf="cinemaForm.get('city')?.dirty && !cinemaForm.get('city')?.valid"
+        >
           City is required.
         </p>
         <input
@@ -77,10 +106,14 @@
           class="input-field address-field"
           formControlName="address"
         >
+        <p class="info">Address of cinema.</p>
         <p class="error" *ngIf="!!cinemaForm.get('address')?.getError('minlength')">
           Address is too short.
         </p>
-        <p class="error" *ngIf="!!cinemaForm.get('address')?.getError('required')">
+        <p
+          class="error"
+          *ngIf="cinemaForm.get('address')?.dirty && !!cinemaForm.get('address')?.getError('required')"
+        >
           Address is required.
         </p>
         <button

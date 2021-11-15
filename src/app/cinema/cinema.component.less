@@ -32,34 +32,39 @@
     min-height: 300px;
     display: flex;
 
-    .poster {
-      overflow: hidden;
-      border-radius: 15%;
-      margin: 25px;
-      width: 250px;
-      height: 250px;
-      position: relative;
+    .image {
+      width: 270px;
+      padding: 20px;
 
-      .icon {
+      .poster {
+        overflow: hidden;
+        border-radius: 15%;
+        margin: 10px;
         width: 250px;
         height: 250px;
-        background: linear-gradient(to bottom, transparent, rgba(0,0,0, 0.2) 5%, rgba(0,0,0, 0.2));
-        position: absolute;
-        bottom: -250px;
-        left: 0;
-        transition: bottom 1s;
-        display: flex;
-        align-items: center;
-        justify-content: center;
+        position: relative;
 
-        i {
-          font-size: 100px;
-          color: rgba(255,255,255, 0.6);
-          text-align: center;
-        }
+        .icon {
+          width: 250px;
+          height: 250px;
+          background: linear-gradient(to bottom, transparent, rgba(0, 0, 0, 0.2) 5%, rgba(0, 0, 0, 0.2));
+          position: absolute;
+          bottom: -250px;
+          left: 0;
+          transition: bottom 1s;
+          display: flex;
+          align-items: center;
+          justify-content: center;
 
-        &.focused {
-          bottom: 0;
+          i {
+            font-size: 100px;
+            color: rgba(255, 255, 255, 0.6);
+            text-align: center;
+          }
+
+          &.focused {
+            bottom: 0;
+          }
         }
       }
     }
@@ -110,6 +115,14 @@
 .error {
   color: red;
   font-size: 15px;
+  margin: 0;
+}
+
+.info {
+  color: @yellow;
+  font-size: 12px;
+  font-weight: bold;
+  margin: 0;
 }
 
 .hall {

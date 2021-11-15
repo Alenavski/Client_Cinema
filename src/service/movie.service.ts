@@ -28,7 +28,7 @@ export class MovieService {
     if (date) {
       options = {
         params: new HttpParams({
-            fromObject: { date: date }
+          fromObject: { date: date }
         })
       };
     }
@@ -39,12 +39,28 @@ export class MovieService {
       );
   }
 
+  public getMoviesWithShowtimes(date?: string): Observable<MovieModel[]> {
+    let options;
+    if (date) {
+      options = {
+        params: new HttpParams({
+            fromObject: { date: date }
+        })
+      };
+    }
+
+    return this.httpClient.get<MovieModel[]>(`${environment.hostURL}movies/with-showtimes`, options)
+      .pipe(
+        catchError(this.errorHandler)
+      );
+  }
+
   public getMoviesByTerm(term: string): Observable<MovieModel[]> {
     if (!term.trim()) {
       return of([]);
     }
 
-    return this.httpClient.get<MovieModel[]>(`${environment.hostURL}movies/?term=${term}`)
+    return this.httpClient.get<MovieModel[]>(`${environment.hostURL}movies/with-showtimes/?term=${term}`)
       .pipe(
         catchError(this.errorHandler)
       );

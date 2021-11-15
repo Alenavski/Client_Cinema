@@ -1,5 +1,6 @@
 import { Component, EventEmitter, Output } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { AuthModel } from '@models/auth.model';
 import { UserService } from '@service/user.service';
 
 @Component({
@@ -32,8 +33,9 @@ export class SignInComponent {
   onSignInClick(): void {
     this.userService.login(this.authForm.get('email')?.value, this.authForm.get('password')?.value)
       .subscribe(
-        () => {
+        (authModel: AuthModel) => {
           this.closeRequest.emit(true);
+          UserService.saveToken(authModel.token);
         }
       );
   }

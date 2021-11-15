@@ -62,6 +62,8 @@
 
 table {
   margin: 0 auto;
+  padding-top: 10px;
+  background-color: white;
 
   td {
     width: 50px;
@@ -76,12 +78,19 @@ table {
   }
 }
 
+.table-wrapper {
+  background: linear-gradient(to right, white 25%, black 25%, black 75%, white 75%);
+  padding-top: 10px;
+  display: inline-block;
+}
+
 .screen {
   content: '';
   margin: 0 auto 20px auto;
-  width: 250px;
+  width: 50%;
   min-height: 5px;
   background: black;
+  flex-grow: 1;
 }
 
 .seat {
@@ -167,6 +176,7 @@ table {
 }
 
 .hall-layout {
+  overflow-x: scroll;
   background-color: rgba(0,0,0,0.05);
   margin: 0 auto;
 }

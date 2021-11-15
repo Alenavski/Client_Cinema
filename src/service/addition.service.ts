@@ -60,16 +60,6 @@ export class AdditionService {
       );
   }
 
-  public deleteAddition(id: number): Observable<void> {
-    return this.httpClient.delete<void>(
-      `${environment.hostURL}additions/${id}`,
-      getHttpOptionsWithAuthorizationHeader()
-    )
-      .pipe(
-        catchError(this.errorHandler)
-      );
-  }
-
   public deleteHallAddition(hallId: number, additionId: number): Observable<void> {
     return this.httpClient.delete<void>(
       `${environment.hostURL}halls/${hallId}/additions/${additionId}`,

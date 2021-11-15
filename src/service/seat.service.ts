@@ -46,8 +46,8 @@ export class SeatService {
       );
   }
 
-  public getBlockedSeatsOfShowtime(showtimeId: number): Observable<SeatModel[]> {
-    return this.httpClient.get<SeatModel[]>(`${environment.hostURL}seats/showtime/${showtimeId}`)
+  public getBlockedSeatsOfShowtime(ticketId: number): Observable<SeatModel[]> {
+    return this.httpClient.get<SeatModel[]>(`${environment.hostURL}seats/showtime/ticket/${ticketId}`)
       .pipe(
         catchError(this.errorHandler)
       );

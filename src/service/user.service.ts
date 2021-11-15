@@ -1,20 +1,19 @@
-import jwt_decode from 'jwt-decode';
-
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
-import { catchError } from 'rxjs/operators';
-
-import { environment } from '../environments/environment';
 
 import { AuthModel } from '@models/auth.model';
 import { TokenModel } from '@models/token.model';
 import { UserModel } from '@models/user.model';
 
 import { ErrorHandlerFactory } from '@tools/serviceTools';
-import { SnackBarService } from './snack-bar.service';
 
 import { Nullable } from '@tools/utilityTypes';
+import jwt_decode from 'jwt-decode';
+import { Observable } from 'rxjs';
+import { catchError } from 'rxjs/operators';
+
+import { environment } from '../environments/environment';
+import { SnackBarService } from './snack-bar.service';
 
 const enum Token {
   role = 'http://schemas.microsoft.com/ws/2008/06/identity/claims/role',
@@ -48,7 +47,7 @@ export class UserService {
     };
   }
 
-  private static saveToken(token: string): void {
+  static saveToken(token: string): void {
     localStorage.setItem('token', token);
   }
 
@@ -63,35 +62,19 @@ export class UserService {
   public register(email: string, password: string): Observable<AuthModel> {
     const errorHandler = ErrorHandlerFactory(this.snackBarService);
 
-    const observable = this.httpClient.post<AuthModel>(environment.hostURL + 'user/register', { Email: email, Password: password })
+    return this.httpClient.post<AuthModel>(environment.hostURL + 'user/register', { Email: email, Password: password })
       .pipe(
         catchError(errorHandler)
       );
-
-      observable.subscribe(
-        (authModel: AuthModel) => {
-          UserService.saveToken(authModel.token);
-        }
-      );
-
-    return observable;
   }
 
   public login(email: string, password: string): Observable<AuthModel> {
     const errorHandler = ErrorHandlerFactory(this.snackBarService);
 
-    const observable = this.httpClient.post<AuthModel>(environment.hostURL + 'user/login', { Email: email, Password: password })
+    return this.httpClient.post<AuthModel>(environment.hostURL + 'user/login', {Email: email, Password: password})
       .pipe(
         catchError(errorHandler)
       );
-
-      observable.subscribe(
-        (authModel: AuthModel) => {
-          UserService.saveToken(authModel.token);
-        }
-      );
-
-    return observable;
   }
 
   public logout(): void {

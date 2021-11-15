@@ -87,15 +87,16 @@ export class HallComponent implements OnInit {
             () => {
               this.fetchHall(this.hall.id);
               this.editedSeats = [];
-            }
-          );
-      }
-      if (this.deletedSeats.length > 0) {
-        this.seatService.removeDeletedSeats(this.deletedSeats)
-          .subscribe(
-            () => {
-              this.fetchHall(this.hall.id);
-              this.deletedSeats = [];
+
+              if (this.deletedSeats.length > 0) {
+                this.seatService.removeDeletedSeats(this.deletedSeats)
+                  .subscribe(
+                    () => {
+                      this.fetchHall(this.hall.id);
+                      this.deletedSeats = [];
+                    }
+                  );
+              }
             }
           );
       }
@@ -147,13 +148,13 @@ export class HallComponent implements OnInit {
   }
 
   public onDeleteSeatClick(seat: SeatModel): void {
+    this.deleteSeat(seat);
     for (let i = this.seatsLayout[seat.row].length - 1; i > seat.index; i--) {
       if (this.seatsLayout[seat.row][i]) {
         this.seatsLayout[seat.row][i].place--;
         this.editSeat(this.seatsLayout[seat.row][i]);
       }
     }
-    this.deleteSeat(seat);
   }
 
   public onNumberOfRowsChange(event: any): void {
@@ -242,7 +243,7 @@ export class HallComponent implements OnInit {
     if (this.hall.id === 0) {
       return;
     }
-    if (seat.id === 0) {
+    if (!seat.id) {
       return;
     }
     if (this.editedSeats.includes(seat)) {
@@ -255,8 +256,12 @@ export class HallComponent implements OnInit {
     if (!seat) {
       return;
     }
-    if (seat.id === 0) {
-      return;
+    if (!seat.id) {
+      const findSeat = this.hall.seats.find((s: SeatModel) => s.row === seat.row && s.index === seat.index);
+      if (findSeat) {
+        this.hall.seats.splice(this.hall.seats.indexOf(findSeat), 1);
+        this.fetchSeatsLayout();
+      }
     }
     if (this.deletedSeats.includes(seat)) {
       return;

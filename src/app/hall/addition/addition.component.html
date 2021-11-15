@@ -23,10 +23,6 @@
         [value]="addition"
       >
         {{addition.name}}
-        <i
-          class="fas fa-trash"
-          (click)="deleteAddition(addition.id)"
-        ></i>
       </mat-option>
       <mat-option>
         <input
@@ -47,6 +43,7 @@
     min="0"
     [(ngModel)]="newHallAddition.price"
   >
+  <span>$</span>
   <button
     mat-button
     [disabled]="newHallAddition.price <= 0 || newHallAddition.addition.id === 0"

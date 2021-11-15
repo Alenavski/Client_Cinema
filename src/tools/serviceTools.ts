@@ -15,6 +15,7 @@ export function ErrorHandlerFactory(
   snackBarService: SnackBarService
 ) {
   return (httpErrorResponse: HttpErrorResponse) => {
+    console.log(httpErrorResponse);
     const message: Nullable<string> = httpErrorResponse.error.message;
     if (message) {
       snackBarService.showMessage(message);

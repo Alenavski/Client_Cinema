@@ -122,28 +122,29 @@
         <h1>Choose seat in {{chosenCinema?.name}} cinema, {{chosenHall?.name}} hall</h1>
 
         <div class="hall-layout">
-          <div class="screen"></div>
-          <table>
-            <tr *ngFor="let row of seatsLayout; let rowIndex = index">
-              <td>{{rowIndex + 1}}</td>
-              <td
-                *ngFor="let seat of row"
-                [class.sofa]="isSofa(seat)"
-              >
-                <div
-                  *ngIf="seat"
-                  class="seat"
-                  [class]="seat.seatType.name.toLowerCase()"
-                  [class.reserved]="isReserved(seat)"
-                  [class.chosen]="isChosen(seat)"
-                  (click)="onSeatClick(seat)"
+          <div class="table-wrapper">
+            <table>
+              <tr *ngFor="let row of seatsLayout; let rowIndex = index">
+                <td>{{rowIndex + 1}}</td>
+                <td
+                  *ngFor="let seat of row"
+                  [class.sofa]="isSofa(seat)"
                 >
-                  <div class="number">{{seat.place}}</div>
-                </div>
-              </td>
-              <td>{{rowIndex + 1}}</td>
-            </tr>
-          </table>
+                  <div
+                    *ngIf="seat"
+                    class="seat"
+                    [class]="seat.seatType.name.toLowerCase()"
+                    [class.reserved]="isReserved(seat)"
+                    [class.chosen]="isChosen(seat)"
+                    (click)="onSeatClick(seat)"
+                  >
+                    <div class="number">{{seat.place}}</div>
+                  </div>
+                </td>
+                <td>{{rowIndex + 1}}</td>
+              </tr>
+            </table>
+          </div>
         </div>
 
         <div class="chosen-seats">

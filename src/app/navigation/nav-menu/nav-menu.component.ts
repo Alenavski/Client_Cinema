@@ -1,8 +1,8 @@
 import { Component } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
+import { Router } from '@angular/router';
 import { AuthModalComponent } from '@app/authentication/auth-modal/auth-modal.component';
 import { AdminWindowComponent } from '@app/navigation/admin-window/admin-window.component';
-import { TicketHistoryComponent } from '@app/navigation/order-history/ticket-history.component';
 import { Roles } from '@models/constants/roles';
 import { ShowtimesFilterModel } from '@models/showtimes-filter.model';
 import { FilterService } from '@service/filter.service';
@@ -21,6 +21,7 @@ export class NavMenuComponent {
   constructor(
     public dialogCity: MatDialog,
     public dialogAuth: MatDialog,
+    private router: Router,
     private readonly filterService: FilterService,
     private readonly userService: UserService
   ) {
@@ -71,9 +72,8 @@ export class NavMenuComponent {
   }
 
   openHistory(): void {
-    this.dialogAuth.open(TicketHistoryComponent, {
-      width: '700px'
-    });
+    const user = UserService.getUserModel();
+    void this.router.navigate([`user/${user?.id}/tickets`]);
   }
 
   logout(): void {

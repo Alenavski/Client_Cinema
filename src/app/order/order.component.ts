@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { ActivatedRoute, ParamMap } from '@angular/router';
+import { ActivatedRoute, ParamMap, Router } from '@angular/router';
 import { MatDatepickerInputEvent } from '@angular/material/datepicker';
 import * as moment from 'moment';
 
@@ -58,6 +58,7 @@ export class OrderComponent implements OnInit {
     private readonly movieService: MovieService,
     private readonly hallService: HallService,
     private readonly activatedRoute: ActivatedRoute,
+    private readonly router: Router,
     private readonly ticketService: TicketService,
     private readonly snackBarService: SnackBarService,
     private readonly seatService: SeatService
@@ -90,7 +91,7 @@ export class OrderComponent implements OnInit {
 
   public onDateChange(event: MatDatepickerInputEvent<Date>): void {
     const loc: Date = event.value ?? new Date(Date.now());
-    this.chosenDate = new Date(Date.UTC(loc.getUTCFullYear(), loc.getUTCMonth(), loc.getDay()));
+    this.chosenDate = new Date(Date.UTC(loc.getUTCFullYear(), loc.getUTCMonth(), loc.getDate()));
   }
 
   public calcFinalPrice(): number {
@@ -168,7 +169,7 @@ export class OrderComponent implements OnInit {
         maxRows = Math.max(maxRows, seat.row);
       }
     }
-    return [maxRows, maxSeats];
+    return [maxRows, maxSeats + 2];
   }
 
   public onShowtimeChoose(): void {
@@ -179,7 +180,7 @@ export class OrderComponent implements OnInit {
 
   public onApplyClick(): void {
     if (this.currentTicket) {
-      this.currentTicket.additions = this.chosenAdditions;
+      this.currentTicket.ticketsAdditions = this.chosenAdditions;
       this.currentTicket.ticketsSeats = [];
       for (const seat of this.chosenSeats) {
         this.currentTicket.ticketsSeats.push({ seat: seat, isOrdered: true });
@@ -189,6 +190,7 @@ export class OrderComponent implements OnInit {
         .subscribe(
           () => {
             this.snackBarService.showMessage('Successful success');
+            void this.router.navigate(['']);
           }
         );
     }
