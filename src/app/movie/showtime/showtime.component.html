@@ -110,7 +110,7 @@
                 <mat-expansion-panel-header *ngIf="showtime.hall.id === hall.id">
                   <mat-panel-title>
                     <span class="panel-title">Time: {{showtime.time}}</span>
-                    <i class="fas fa-trash delete-showtime" (click)="deleteShowtime(showtime.id)"></i>
+                    <i class="fas fa-trash delete-showtime" (click)="deleteShowtime(showtime.id, showtime.time)"></i>
                   </mat-panel-title>
                 </mat-expansion-panel-header>
                 Prices:

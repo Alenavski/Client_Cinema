@@ -29,6 +29,18 @@ export class TicketHistoryComponent implements OnInit{
   ) {
   }
 
+  private static isPastTicket(ticket: TicketModel): boolean {
+    const curDate = new Date();
+    const ticketDate = new Date(ticket.dateOfShowtime);
+    if (curDate.getUTCFullYear() > ticketDate.getUTCFullYear()) {
+      return true;
+    }
+    if (curDate.getUTCMonth() > ticketDate.getUTCMonth()) {
+      return true;
+    }
+    return curDate.getUTCDate() > ticketDate.getUTCDate();
+  }
+
   public ngOnInit(): void {
     this.ticketService.getTickets().subscribe(
       (tickets: TicketModel[]) => {
@@ -47,22 +59,10 @@ export class TicketHistoryComponent implements OnInit{
 
   public fetchFilteredTickets(event: MatSlideToggleChange): void {
     if (event.checked && this.tickets) {
-      this.filteredTickets = this.tickets.filter(t => !this.isPastTicket(t));
+      this.filteredTickets = this.tickets.filter(t => !TicketHistoryComponent.isPastTicket(t));
     } else {
       this.filteredTickets = this.tickets;
     }
-  }
-
-  private isPastTicket(ticket: TicketModel): boolean {
-    const curDate = new Date();
-    const ticketDate = new Date(ticket.dateOfShowtime);
-    if (curDate.getUTCFullYear() > ticketDate.getUTCFullYear()) {
-      return true;
-    }
-    if (curDate.getUTCMonth() > ticketDate.getUTCMonth()) {
-      return true;
-    }
-    return curDate.getUTCDate() > ticketDate.getUTCDate();
   }
 
   public getDateString(date: Date): string {

@@ -13,13 +13,14 @@ export class UserGuard implements CanActivate {
   constructor(
     private readonly router: Router,
     private readonly snackBarService: SnackBarService,
-  public dialogAuth: MatDialog
+    public dialogAuth: MatDialog
   ) {
   }
 
   canActivate(
     route: ActivatedRouteSnapshot,
-    state: RouterStateSnapshot):  boolean | UrlTree {
+    state: RouterStateSnapshot
+  ):  boolean | UrlTree {
     const userModel = UserService.getUserModel();
     if (userModel?.role === Roles.User) {
       return true;
@@ -27,18 +28,13 @@ export class UserGuard implements CanActivate {
     else {
       this.snackBarService.showMessage('Please, authorize to make order');
       this.openDialogAuth();
-      return this.router.parseUrl('');
+      return false;
     }
   }
 
   private openDialogAuth(): void {
-    const dialogRef = this.dialogAuth.open(AuthModalComponent, {
+    this.dialogAuth.open(AuthModalComponent, {
       width: '450px'
     });
-    dialogRef.afterClosed()
-      .subscribe(
-        () => {
-        }
-      );
   }
 }

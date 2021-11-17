@@ -51,7 +51,7 @@ export class MovieComponent implements OnInit {
   }
 
   public onFileChanged(event: Event): void {
-    if (this.movie!.id === 0) {
+    if (this.movie?.id === 0) {
       this.snackBarService.showMessage('Please, add movie first');
       return;
     }
@@ -60,7 +60,7 @@ export class MovieComponent implements OnInit {
     const files = target.files as FileList;
 
     const reader = new FileReader();
-    reader.onload = (e: any) => {
+    reader.onload = (e: any): void => {
       this.movie!.poster = e.target.result.split('base64,')[1];
       this.movieService.editMovie(this.movie!)
         .subscribe(
@@ -108,17 +108,17 @@ export class MovieComponent implements OnInit {
 
   public onApplyClick(): void {
     const newMovie: MovieModel = {
-      title: this.movieForm.get('title')?.value,
-      description: this.movieForm.get('description')?.value,
-      startDate: this.movieForm.get('startDate')?.value,
-      endDate: this.movieForm.get('endDate')?.value,
-      minutesLength: this.movieForm.get('minutesLength')?.value
+      title: this.movieForm.get('title')?.value as string,
+      description: this.movieForm.get('description')?.value as string,
+      startDate: this.movieForm.get('startDate')?.value as Date,
+      endDate: this.movieForm.get('endDate')?.value as Date,
+      minutesLength: this.movieForm.get('minutesLength')?.value as number
     };
     if (this.movie?.id) {
       this.movieService.editMovie(Object.assign(this.movie, newMovie))
         .subscribe(
           () => {
-            this.navigateToMovie(this.movie!.id);
+            this.navigateToMovie(this.movie?.id);
             this.snackBarService.showMessage(`Movie "${newMovie.title}" edited successful!`);
           }
         );

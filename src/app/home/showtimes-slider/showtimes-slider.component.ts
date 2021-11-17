@@ -61,10 +61,4 @@ export class ShowtimesSliderComponent {
     movieList.style.left = (-movieOuterWidth * this.sliderIndex) + 'px';
     this.calculateMovieIndent(movieList);
   }
-
-  public getCinemasOfMovieAndTime(movie: MovieModel, time: string): HallModel[] {
-    const cinemas: Optional<HallModel[]> = movie.showtimes?.filter((showtime: ShowtimeModel) => showtime.time === time)
-      .map((showtime: ShowtimeModel) => showtime.hall);
-    return cinemas ? cinemas : [];
-  }
 }

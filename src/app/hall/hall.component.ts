@@ -232,7 +232,7 @@ export class HallComponent implements OnInit {
   }
 
   public onSeatTypeChange(seat: SeatModel, selectionChange: MatSelectChange): void {
-    seat.seatType = selectionChange.value;
+    seat.seatType = selectionChange.value as SeatTypeModel;
     this.editSeat(seat);
   }
 

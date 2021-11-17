@@ -18,7 +18,6 @@ import { debounceTime, distinctUntilChanged, switchMap } from 'rxjs/operators';
 })
 export class CinemaComponent implements OnInit {
   cities$!: Observable<string[]>;
-  private readonly searchTerms = new Subject<string>();
 
   cinemaForm: FormGroup = new FormGroup({
     name: new FormControl('', [Validators.required]),
@@ -35,6 +34,8 @@ export class CinemaComponent implements OnInit {
   cinema: Nullable<CinemaModel> = null;
   allCinemas: CinemaModel[] = [];
   currentId?: number;
+
+  private readonly searchTerms = new Subject<string>();
 
   constructor(
     private readonly cinemaService: CinemaService,
@@ -66,7 +67,7 @@ export class CinemaComponent implements OnInit {
   }
 
   public onFileChanged(event: Event): void {
-    if (this.cinema!.id === 0) {
+    if (this.cinema?.id === 0) {
       this.snackBarService.showMessage('Please, add cinema first');
       return;
     }
@@ -75,7 +76,7 @@ export class CinemaComponent implements OnInit {
     const files = target.files as FileList;
 
     const reader = new FileReader();
-    reader.onload = (e: any) => {
+    reader.onload = (e: any): void => {
       this.cinema!.image = e.target.result.split('base64,')[1];
       this.cinemaService.editCinema(this.cinema!)
         .subscribe(
@@ -99,7 +100,7 @@ export class CinemaComponent implements OnInit {
     if (id) {
       void this.router.navigate(['/cinema/', id]);
     } else {
-      this.router.navigate(['/cinema'])
+      void this.router.navigate(['/cinema'])
         .then(
           () => {
             this.cinema = {
@@ -125,9 +126,9 @@ export class CinemaComponent implements OnInit {
 
   public onApplyClick(): void {
     const newCinema: CinemaModel = {
-      name: this.cinemaForm.get('name')?.value,
-      city: this.cinemaForm.get('city')?.value,
-      address: this.cinemaForm.get('address')?.value
+      name: this.cinemaForm.get('name')?.value as string,
+      city: this.cinemaForm.get('city')?.value as string,
+      address: this.cinemaForm.get('address')?.value as string
     };
     if (this.currentId) {
       this.cinemaService.editCinema(Object.assign(this.cinema, newCinema))

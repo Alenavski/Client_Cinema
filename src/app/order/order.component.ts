@@ -84,15 +84,15 @@ export class OrderComponent implements OnInit {
   public dateFilter = (d: Nullable<Date>): boolean => {
     if (this.movie){
       const day = (d ?? new Date());
-      return day.getTime() >= new Date(this.movie.startDate).getTime()
+      return day.getTime() >= new Date().getTime() - 86400000
         && day.getTime() <= new Date(this.movie.endDate).getTime();
     }
     return true;
   };
 
   public onDateChange(event: MatDatepickerInputEvent<Date>): void {
-    const loc: Date = event.value ?? new Date(Date.now());
-    this.chosenDate = new Date(Date.UTC(loc.getUTCFullYear(), loc.getUTCMonth(), loc.getDate()));
+    const chosenDate: Date = event.value ?? new Date(Date.now());
+    this.chosenDate = new Date(Date.UTC(chosenDate.getUTCFullYear(), chosenDate.getUTCMonth(), chosenDate.getDate()));
   }
 
   public calcFinalPrice(): number {
@@ -187,7 +187,7 @@ export class OrderComponent implements OnInit {
         maxRows = Math.max(maxRows, seat.row);
       }
     }
-    return [maxRows, maxSeats + 2];
+    return [maxRows, maxSeats];
   }
 
   public onShowtimeChoose(): void {
@@ -284,7 +284,6 @@ export class OrderComponent implements OnInit {
                 this.timeAndPlaceFormGroup.get('hall')?.setValue(hall);
                 this.chosenHall = hall;
                 const showtime = this.movie?.showtimes?.find(sh => sh.id.toString() === showtimeId);
-                console.log(this.movie);
                 if (showtime) {
                   this.chosenShowtime = showtime;
                   this.timeAndPlaceFormGroup.get('showtime')?.setValue(showtime);

@@ -10,6 +10,7 @@ import { ShowtimeModel } from '@models/showtime.model';
 import { MovieModel } from '@models/movie.model';
 import { MovieService } from '@service/movie.service';
 import { ActivatedRoute, ParamMap } from '@angular/router';
+import { SnackBarService } from '@service/snack-bar.service';
 
 @Component({
   selector: 'app-showtime',
@@ -36,7 +37,8 @@ export class ShowtimeComponent implements OnInit {
     private readonly cinemaService: CinemaService,
     private readonly showtimeService: ShowtimeService,
     private readonly movieService: MovieService,
-    private readonly activatedRoute: ActivatedRoute
+    private readonly activatedRoute: ActivatedRoute,
+    private readonly snackBarService: SnackBarService
   ) {
   }
 
@@ -107,18 +109,22 @@ export class ShowtimeComponent implements OnInit {
           () => {
             this.fetchMovie(this.currentMovie?.id!);
             this.fetchCinemasByMovieShowtimes(this.currentMovie?.id!);
+            this.snackBarService
+              .showMessage(`Showtime at ${showtime?.time} added to ${this.currentMovie?.title} movie!`);
           }
         );
     }
   }
 
-  public deleteShowtime(id: number): void {
+  public deleteShowtime(id: number, time: string): void {
     if (this.currentMovie?.id) {
       this.showtimeService.deleteShowtime(this.currentMovie.id, id)
         .subscribe(
           () => {
             this.fetchMovie(this.currentMovie?.id!);
             this.fetchCinemasByMovieShowtimes(this.currentMovie?.id!);
+            this.snackBarService
+              .showMessage(`Showtime at ${time} deleted from ${this.currentMovie?.title} movie!`);
           }
         );
     }

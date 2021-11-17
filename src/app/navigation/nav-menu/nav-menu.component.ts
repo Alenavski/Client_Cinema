@@ -48,14 +48,9 @@ export class NavMenuComponent {
   }
 
   openDialogAuth(): void {
-    const dialogRef = this.dialogAuth.open(AuthModalComponent, {
+    this.dialogAuth.open(AuthModalComponent, {
       width: '450px'
     });
-    dialogRef.afterClosed()
-      .subscribe(
-        () => {
-        }
-      );
   }
 
   get isAdmin(): boolean {

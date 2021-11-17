@@ -1,16 +1,15 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { Observable } from 'rxjs';
+import { catchError } from 'rxjs/operators';
+import jwt_decode from 'jwt-decode';
 
 import { AuthModel } from '@models/auth.model';
 import { TokenModel } from '@models/token.model';
 import { UserModel } from '@models/user.model';
 
 import { ErrorHandlerFactory } from '@tools/serviceTools';
-
 import { Nullable } from '@tools/utilityTypes';
-import jwt_decode from 'jwt-decode';
-import { Observable } from 'rxjs';
-import { catchError } from 'rxjs/operators';
 
 import { environment } from '../environments/environment';
 import { SnackBarService } from './snack-bar.service';
@@ -71,7 +70,7 @@ export class UserService {
   public login(email: string, password: string): Observable<AuthModel> {
     const errorHandler = ErrorHandlerFactory(this.snackBarService);
 
-    return this.httpClient.post<AuthModel>(environment.hostURL + 'user/login', {Email: email, Password: password})
+    return this.httpClient.post<AuthModel>(environment.hostURL + 'user/login', { Email: email, Password: password })
       .pipe(
         catchError(errorHandler)
       );
