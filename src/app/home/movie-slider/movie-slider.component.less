@@ -1,0 +1,131 @@
+@import "../../../color-schema";
+
+.slider {
+  position: relative;
+  overflow: hidden;
+}
+
+.movie-list {
+  display: flex;
+  position: relative;
+  left: 0;
+  transition: left 500ms ease-in;
+}
+
+.movie {
+  position: relative;
+  min-width: 100vw;
+  min-height: 100vh;
+  display: flex;
+
+  .poster-container {
+    max-width: 50vw;
+    min-width: 50vw;
+    max-height: 100vh;
+    min-height: 100vh;
+    position: relative;
+
+    img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    &:after {
+      content: '';
+      width: 50vw;
+      height: 100vh;
+      position: absolute;
+      top: 0;
+      left: 0;
+      z-index: 1;
+      background:
+        linear-gradient(to right, transparent 98%, rgba(255, 255, 255, 0.1) 99%, white);
+    }
+  }
+
+  .movie-info {
+    padding: 100px;
+
+    .movie-title {
+      font-size: 60px;
+      font-weight: bold;
+      margin-bottom: 32px;
+      line-height: 1;
+      color: @dark-blue;
+    }
+
+    .movie-date {
+      display: inline-block;
+      position: relative;
+      font-size: 36px;
+      margin: 0;
+      padding: 2px 2px;
+      border: 5px solid @dark-blue;
+      border-radius: 20% 0;
+    }
+
+    .movie-description {
+      font-size: 20px;
+      margin-bottom: 16px;
+    }
+
+    .movie-duration {
+      margin-left: 10px;
+      font-weight: bold;
+    }
+
+    .book-button {
+      font-size: 24px;
+      background-color: #f9d030;
+      color: white;
+    }
+  }
+}
+
+.icon {
+  cursor: pointer;
+  position: absolute;
+  opacity: 75%;
+  top: 93vh;
+  font-style: unset;
+  font-size: 90px;
+  z-index: 2;
+
+  &.left {
+    left: 10px;
+  }
+
+  &.right {
+    right: 10px;
+  }
+}
+
+.search-popup {
+  font-size: 16px;
+  z-index: 1;
+  position: absolute;
+  top: 93vh;
+  left: 65vw;
+
+  .popup-button {
+    cursor: pointer;
+    display: block;
+    border: none;
+    opacity: 75%;
+    color: @dark-blue;
+    background: none;
+    font-size: 16px;
+    font-weight: 700;
+    text-decoration: none;
+
+    .popup-icon {
+      position: relative;
+      top: 3px;
+      font-size: 24px;
+    }
+
+  }
+}
+
+

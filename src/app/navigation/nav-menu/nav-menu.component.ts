@@ -15,22 +15,21 @@ import { SelectCityComponent } from '../select-city/select-city.component';
   styleUrls: ['./nav-menu.component.less']
 })
 export class NavMenuComponent {
-  isAuthed = false;
   location = 'Minsk';
 
   constructor(
     public dialogCity: MatDialog,
     public dialogAuth: MatDialog,
-    private router: Router,
+    private readonly router: Router,
     private readonly filterService: FilterService,
     private readonly userService: UserService
   ) {
-    const userModel = UserService.getUserModel();
-    if (userModel) {
-      this.isAuthed = true;
-    }
     const filter: ShowtimesFilterModel = { city: this.location };
     this.filterService.updateFilter(filter);
+  }
+
+  public get isAuthed(): boolean {
+    return !!UserService.getUserModel();
   }
 
   openDialogCity(): void {
@@ -54,8 +53,7 @@ export class NavMenuComponent {
     });
     dialogRef.afterClosed()
       .subscribe(
-        (result: boolean) => {
-          this.isAuthed = result;
+        () => {
         }
       );
   }
@@ -78,6 +76,5 @@ export class NavMenuComponent {
 
   logout(): void {
     this.userService.logout();
-    this.isAuthed = false;
   }
 }

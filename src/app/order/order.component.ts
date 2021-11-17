@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, ParamMap, Router } from '@angular/router';
 import { MatDatepickerInputEvent } from '@angular/material/datepicker';
+import { TicketAdditionModel } from '@models/ticket-addition.model';
 import * as moment from 'moment';
 
 import { CinemaModel } from '@models/cinema.model';
@@ -36,7 +37,7 @@ export class OrderComponent implements OnInit {
   chosenHall: Nullable<HallModel> = null;
   chosenDate: Nullable<Date> = null;
   chosenShowtime: Nullable<ShowtimeModel> = null;
-  chosenAdditions: AdditionModel[] = [];
+  chosenAdditions: TicketAdditionModel[] = [];
   chosenSeats: SeatModel[] = [];
 
   seatsLayout: SeatModel[][] = [];
@@ -100,15 +101,32 @@ export class OrderComponent implements OnInit {
       price += this.getPrice(seat.seatType);
     }
     for (const addition of this.chosenAdditions) {
-      price += this.getAdditionPrice(addition);
+      price += this.getAdditionPrice(addition.addition) * addition.count;
     }
     return price;
   }
 
+  public isTicketIncludeAddition(addition: AdditionModel): boolean {
+    return !!this.chosenAdditions.find(a => a.addition.id === addition.id);
+  }
+
   public onMinusAdditionClick(addition: AdditionModel): void {
-    const index = this.chosenAdditions.indexOf(addition);
-    if (index != -1) {
-      this.chosenAdditions.splice(index, 1);
+    const ticketAddition = this.chosenAdditions.find(a => a.addition.id === addition.id);
+    if (ticketAddition) {
+      ticketAddition.count -= 1;
+      if (ticketAddition.count === 0) {
+        const index = this.chosenAdditions.indexOf(ticketAddition);
+        this.chosenAdditions.splice(index, 1);
+      }
+    }
+  }
+
+  public onPlusAdditionClick(addition: AdditionModel): void {
+    const ticketAddition = this.chosenAdditions.find(a => a.addition.id === addition.id);
+    if (ticketAddition) {
+      ticketAddition.count += 1;
+    } else {
+      this.chosenAdditions.push({ addition: addition, count: 1 });
     }
   }
 
@@ -124,8 +142,8 @@ export class OrderComponent implements OnInit {
   }
 
   public getAdditionsCount(addition: AdditionModel): number {
-    const additions = this.chosenAdditions.filter(ad => ad.id === addition.id);
-    return additions.length;
+    const ticketAddition = this.chosenAdditions.find(ad => ad.addition.id === addition.id);
+    return ticketAddition ? ticketAddition.count : 0;
   }
 
   public getPrice(seatType: SeatTypeModel): number {

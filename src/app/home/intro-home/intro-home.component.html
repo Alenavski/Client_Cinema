@@ -1,28 +1,53 @@
-<div class="intro-inner">
-  <div class="container" [formGroup]="introForm">
-    <h2>What are you looking for?</h2>
-    <mat-form-field appearance="standard">
-      <mat-label>cinema</mat-label>
-      <input
-        type="text"
-        matInput
-        formControlName="cinema"
+<div class="outer-container">
+  <div class="intro-inner">
+    <a id="search"></a>
+    <div class="container" [formGroup]="introForm">
+      <h2>What are you looking for?</h2>
+      <mat-form-field appearance="standard">
+        <mat-label>cinema</mat-label>
+        <input
+          #cinemaInput
+          type="text"
+          matInput
+          [matAutocomplete]="autoCinema"
+          formControlName="cinema"
+          (input)="search(cinemaInput.value)"
+        >
+        <mat-autocomplete autoActiveFirstOption #autoCinema="matAutocomplete">
+          <mat-option
+            *ngFor="let cinema of cinemas$ | async"
+            [value]="cinema.name"
+          >
+            {{cinema.name}}
+          </mat-option>
+        </mat-autocomplete>
+      </mat-form-field>
+      <mat-form-field appearance="standard">
+        <mat-label>movie</mat-label>
+        <input
+          #movieInput
+          type="text"
+          matInput
+          [matAutocomplete]="autoMovie"
+          formControlName="film"
+          (input)="search(movieInput.value)"
+        >
+        <mat-autocomplete autoActiveFirstOption #autoMovie="matAutocomplete">
+          <mat-option
+            *ngFor="let movie of movies$ | async"
+            [value]="movie.title"
+          >
+            {{movie.title}}
+          </mat-option>
+        </mat-autocomplete>
+      </mat-form-field>
+      <button
+        mat-raised-button
+        class="button"
+        (click)="onSearchClick()"
       >
-    </mat-form-field>
-    <mat-form-field appearance="standard">
-      <mat-label>film</mat-label>
-      <input
-        type="text"
-        matInput
-        formControlName="film"
-      >
-    </mat-form-field>
-    <button
-      mat-raised-button
-      class="button"
-      (click)="onSearchClick()"
-    >
-      Search
-    </button>
+        Search
+      </button>
+    </div>
   </div>
 </div>

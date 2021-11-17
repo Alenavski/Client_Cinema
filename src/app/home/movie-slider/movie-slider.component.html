@@ -1,0 +1,35 @@
+<div class="slider">
+  <i class="icon left"
+    (click)="moveLeft(movieList)"
+  >&#10229;</i>
+  <div class="movie-list" #movieList>
+    <div
+      class="movie"
+      *ngFor="let movie of movies"
+    >
+      <div class="poster-container">
+        <img
+          src="data:image/png;base64,{{movie.poster}}"
+          onerror="this.src='../../assets/poster.png';"
+          alt=""
+        >
+      </div>
+      <div class="movie-info">
+        <h1 class="movie-title">{{movie.title}}</h1>
+        <h1 class="movie-title"><span class="movie-date">{{formatDate(movie.startDate)}}</span> - <span class="movie-date">{{formatDate(movie.endDate)}}</span></h1>
+        <p class="movie-description">{{movie.description}}</p>
+        <p class="movie-description">Duration:<span class="movie-duration">{{movie.minutesLength}}</span> minutes</p>
+        <button mat-raised-button class="book-button" (click)="navigateToOrder(movie.id!)">Book now</button>
+      </div>
+    </div>
+  </div>
+  <i class="right icon"
+    (click)="moveRight(movieList)"
+  >&#10230;</i>
+  <div class="search-popup">
+    <a [routerLink]="" fragment="search" class="popup-button">
+      Looking for something specific?
+      <i class="fas fa-long-arrow-alt-down popup-icon"></i>
+    </a>
+  </div>
+</div>

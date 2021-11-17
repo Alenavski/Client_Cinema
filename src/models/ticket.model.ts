@@ -1,6 +1,6 @@
 import { ShowtimeModel } from '@models/showtime.model';
+import { TicketAdditionModel } from '@models/ticket-addition.model';
 import { UserModel } from '@models/user.model';
-import { AdditionModel } from '@models/addition.model';
 import { Nullable } from '@tools/utilityTypes';
 import { TicketSeatModel } from '@models/ticket-seat.model';
 import { MovieModel } from '@models/movie.model';
@@ -12,6 +12,6 @@ export interface TicketModel {
   ticketsSeats?: TicketSeatModel[],
   dateOfBooking: Date,
   dateOfShowtime: Date,
-  ticketsAdditions?: AdditionModel[],
+  ticketsAdditions?: TicketAdditionModel[],
   movie?: Nullable<MovieModel>
 }
