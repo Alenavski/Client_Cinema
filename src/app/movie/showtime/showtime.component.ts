@@ -80,7 +80,6 @@ export class ShowtimeComponent implements OnInit {
       showtime = {
         id: 0,
         time: this.time,
-        numberOfFreeSeats: 0,
         hall: this.chosenHall,
         prices: [
           {
