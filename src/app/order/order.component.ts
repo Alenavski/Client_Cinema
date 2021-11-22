@@ -24,6 +24,8 @@ import { TicketService } from '@service/ticket.service';
 import { SnackBarService } from '@service/snack-bar.service';
 import { SeatService } from '@service/seat.service';
 
+const msecInDay = 86400000;
+
 @Component({
   selector: 'app-order',
   templateUrl: './order.component.html',
@@ -84,7 +86,7 @@ export class OrderComponent implements OnInit {
   public dateFilter = (d: Nullable<Date>): boolean => {
     if (this.movie){
       const day = (d ?? new Date());
-      return day.getTime() >= new Date().getTime() - 86400000
+      return day.getTime() >= new Date().getTime() - msecInDay
         && day.getTime() <= new Date(this.movie.endDate).getTime();
     }
     return true;

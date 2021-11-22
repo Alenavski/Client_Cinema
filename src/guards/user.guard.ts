@@ -20,7 +20,7 @@ export class UserGuard implements CanActivate {
   canActivate(
     route: ActivatedRouteSnapshot,
     state: RouterStateSnapshot
-  ):  boolean | UrlTree {
+  ):  boolean {
     const userModel = UserService.getUserModel();
     if (userModel?.role === Roles.User) {
       return true;
