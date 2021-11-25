@@ -81,25 +81,25 @@ export class HallComponent implements OnInit {
             this.fetchHall(this.hall.id);
           }
         );
-      if (this.editedSeats.length > 0) {
-        this.seatService.editSeats(this.editedSeats)
-          .subscribe(
-            () => {
+      this.seatService.editSeats(this.editedSeats)
+        .subscribe(
+          () => {
+            if (this.editedSeats.length > 0) {
               this.fetchHall(this.hall.id);
-              this.editedSeats = [];
-
-              if (this.deletedSeats.length > 0) {
-                this.seatService.removeDeletedSeats(this.deletedSeats)
-                  .subscribe(
-                    () => {
-                      this.fetchHall(this.hall.id);
-                      this.deletedSeats = [];
-                    }
-                  );
-              }
             }
-          );
-      }
+            this.editedSeats = [];
+
+            if (this.deletedSeats.length > 0) {
+              this.seatService.removeDeletedSeats(this.deletedSeats)
+                .subscribe(
+                  () => {
+                    this.fetchHall(this.hall.id);
+                    this.deletedSeats = [];
+                  }
+                );
+            }
+          }
+        );
     }
     this.isDirty = false;
   }
@@ -278,6 +278,7 @@ export class HallComponent implements OnInit {
       .subscribe(
         (hall: HallModel) => {
           this.hall = hall;
+          this.seatsLayout = [];
           this.fetchSeatsLayout();
         }
       );
