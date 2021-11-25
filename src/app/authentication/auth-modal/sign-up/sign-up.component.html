@@ -7,7 +7,7 @@
       formControlName="email"
     >
     <mat-error *ngIf="!regForm.get('email')?.valid">
-      Email is not valid.
+      Email is not valid. Valid: example@example.com
     </mat-error>
   </mat-form-field>
   <mat-form-field appearance="standard">
@@ -17,8 +17,8 @@
       matInput
       formControlName="password"
     >
-    <mat-error *ngIf="!!regForm.get('password')?.getError('minlength')">
-      Password is too short
+    <mat-error *ngIf="!regForm.get('password')?.valid">
+      Password is too short. Password must be minimum 8 chars long.
     </mat-error>
   </mat-form-field>
   <mat-form-field appearance="standard">
@@ -29,7 +29,7 @@
       formControlName="confirmPassword"
     >
     <mat-error *ngIf="!!regForm.get('confirmPassword')?.getError('confirmError')">
-      Passwords are not equal
+      Passwords are not equal.
     </mat-error>
   </mat-form-field>
 </div>
