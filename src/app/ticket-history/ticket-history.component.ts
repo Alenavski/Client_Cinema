@@ -31,13 +31,15 @@ export class TicketHistoryComponent implements OnInit{
 
   private static isPastTicket(ticket: TicketModel): boolean {
     const curDate = new Date();
-    const ticketDate = new Date(ticket.dateOfShowtime);
+    let ticketDate = new Date(ticket.dateOfShowtime);
+    ticketDate = new Date(Date.UTC(ticketDate.getUTCFullYear(), ticketDate.getUTCMonth(), ticketDate.getDate()));
     if (curDate.getUTCFullYear() > ticketDate.getUTCFullYear()) {
       return true;
     }
     if (curDate.getUTCMonth() > ticketDate.getUTCMonth()) {
       return true;
     }
+
     return curDate.getUTCDate() > ticketDate.getUTCDate();
   }
 
