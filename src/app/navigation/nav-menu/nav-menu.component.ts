@@ -1,8 +1,8 @@
 import { Component } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
+import { Router } from '@angular/router';
 import { AuthModalComponent } from '@app/authentication/auth-modal/auth-modal.component';
 import { AdminWindowComponent } from '@app/navigation/admin-window/admin-window.component';
-import { TicketHistoryComponent } from '@app/navigation/order-history/ticket-history.component';
 import { Roles } from '@models/constants/roles';
 import { ShowtimesFilterModel } from '@models/showtimes-filter.model';
 import { FilterService } from '@service/filter.service';
@@ -15,21 +15,21 @@ import { SelectCityComponent } from '../select-city/select-city.component';
   styleUrls: ['./nav-menu.component.less']
 })
 export class NavMenuComponent {
-  isAuthed = false;
   location = 'Minsk';
 
   constructor(
     public dialogCity: MatDialog,
     public dialogAuth: MatDialog,
+    private readonly router: Router,
     private readonly filterService: FilterService,
     private readonly userService: UserService
   ) {
-    const userModel = UserService.getUserModel();
-    if (userModel) {
-      this.isAuthed = true;
-    }
     const filter: ShowtimesFilterModel = { city: this.location };
     this.filterService.updateFilter(filter);
+  }
+
+  public get isAuthed(): boolean {
+    return !!UserService.getUserModel();
   }
 
   openDialogCity(): void {
@@ -48,15 +48,9 @@ export class NavMenuComponent {
   }
 
   openDialogAuth(): void {
-    const dialogRef = this.dialogAuth.open(AuthModalComponent, {
+    this.dialogAuth.open(AuthModalComponent, {
       width: '450px'
     });
-    dialogRef.afterClosed()
-      .subscribe(
-        (result: boolean) => {
-          this.isAuthed = result;
-        }
-      );
   }
 
   get isAdmin(): boolean {
@@ -71,13 +65,11 @@ export class NavMenuComponent {
   }
 
   openHistory(): void {
-    this.dialogAuth.open(TicketHistoryComponent, {
-      width: '700px'
-    });
+    const user = UserService.getUserModel();
+    void this.router.navigate([`user/${user?.id}/tickets`]);
   }
 
   logout(): void {
     this.userService.logout();
-    this.isAuthed = false;
   }
 }

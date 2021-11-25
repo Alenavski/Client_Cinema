@@ -93,16 +93,6 @@ export class AdditionComponent implements OnInit {
       );
   }
 
-  public deleteAddition(id: number): void {
-    this.additionService.deleteAddition(id)
-      .subscribe(
-        () => {
-          this.fetchHallAdditions();
-          this.fetchAllAdditions();
-        }
-      );
-  }
-
   private fetchAllAdditions(): void {
     this.additionService.getAdditions()
       .subscribe(

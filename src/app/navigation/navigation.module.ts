@@ -13,17 +13,13 @@ import { MatExpansionModule } from '@angular/material/expansion';
 import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 
 import { NavMenuComponent } from './nav-menu/nav-menu.component';
-import { SearchFilmComponent } from './search-film/search-film.component';
 import { SelectCityComponent } from './select-city/select-city.component';
 import { AdminWindowComponent } from './admin-window/admin-window.component';
-import { TicketHistoryComponent } from './order-history/ticket-history.component';
 
 const components = [
   NavMenuComponent,
   SelectCityComponent,
-  SearchFilmComponent,
-  AdminWindowComponent,
-  TicketHistoryComponent
+  AdminWindowComponent
 ];
 
 @NgModule({

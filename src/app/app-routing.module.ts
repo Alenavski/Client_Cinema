@@ -1,7 +1,10 @@
 import { NgModule } from '@angular/core';
-import { RouterModule, Routes } from '@angular/router';
+import { ExtraOptions, RouterModule, Routes } from '@angular/router';
+import { ShowtimeScheduleComponent } from '@app/showtime-schedule/showtime-schedule.component';
+import { TicketHistoryComponent } from '@app/ticket-history/ticket-history.component';
 
 import { AdminGuard } from '../guards/admin.guard';
+import { UserGuard } from '../guards/user.guard';
 
 import { HomeComponent } from './home/home.component';
 import { CinemaComponent } from '@app/cinema/cinema.component';
@@ -17,11 +20,18 @@ const routes: Routes = [
   { path: 'cinema/:idCinema/hall/:idHall', component: HallComponent, canActivate: [AdminGuard] },
   { path: 'movie', redirectTo: 'movie/', pathMatch: 'full' },
   { path: 'movie/:id', component: MovieComponent, canActivate: [AdminGuard] },
-  { path: 'movie/:id/order', component: OrderComponent }
+  { path: 'movie/:id/schedule', component: ShowtimeScheduleComponent },
+  { path: 'movie/:id/order', component: OrderComponent, canActivate: [UserGuard] },
+  { path: 'user/:id/tickets', component: TicketHistoryComponent, canActivate: [UserGuard] }
 ];
 
+const routerOptions: ExtraOptions = {
+  anchorScrolling: 'enabled',
+  scrollOffset: [0, 64],
+};
+
 @NgModule({
-  imports: [RouterModule.forRoot(routes)],
+  imports: [RouterModule.forRoot(routes, routerOptions)],
   exports: [RouterModule]
 })
 export class AppRoutingModule { }

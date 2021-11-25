@@ -34,8 +34,8 @@ export class ShowtimesSliderComponent {
   ) {
   }
 
-  public navigateToOrder(movieId: number): void {
-    void this.router.navigate([`movie/${movieId}/order`]);
+  public navigateToSchedule(movieId: number): void {
+    void this.router.navigate([`movie/${movieId}/schedule`]);
   }
 
   public makeMovieDescription(description: string): string {
@@ -60,11 +60,5 @@ export class ShowtimesSliderComponent {
     this.sliderIndex--;
     movieList.style.left = (-movieOuterWidth * this.sliderIndex) + 'px';
     this.calculateMovieIndent(movieList);
-  }
-
-  public getCinemasOfMovieAndTime(movie: MovieModel, time: string): HallModel[] {
-    const cinemas: Optional<HallModel[]> = movie.showtimes?.filter((showtime: ShowtimeModel) => showtime.time === time)
-      .map((showtime: ShowtimeModel) => showtime.hall);
-    return cinemas ? cinemas : [];
   }
 }

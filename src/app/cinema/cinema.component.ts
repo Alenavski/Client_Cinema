@@ -6,7 +6,10 @@ import { CinemaModel } from '@models/cinema.model';
 
 import { CinemaService } from '@service/cinema.service';
 import { HallService } from '@service/hall.service';
+import { SnackBarService } from '@service/snack-bar.service';
 import { Nullable } from '@tools/utilityTypes';
+import { Observable, Subject } from 'rxjs';
+import { debounceTime, distinctUntilChanged, switchMap } from 'rxjs/operators';
 
 @Component({
   selector: 'app-cinema',
@@ -14,6 +17,8 @@ import { Nullable } from '@tools/utilityTypes';
   styleUrls: ['./cinema.component.less']
 })
 export class CinemaComponent implements OnInit {
+  cities$!: Observable<string[]>;
+
   cinemaForm: FormGroup = new FormGroup({
     name: new FormControl('', [Validators.required]),
     city: new FormControl('', [Validators.required]),
@@ -30,10 +35,13 @@ export class CinemaComponent implements OnInit {
   allCinemas: CinemaModel[] = [];
   currentId?: number;
 
+  private readonly searchTerms = new Subject<string>();
+
   constructor(
     private readonly cinemaService: CinemaService,
     private readonly hallService: HallService,
     private readonly activatedRoute: ActivatedRoute,
+    private readonly snackBarService: SnackBarService,
     private readonly router: Router
   ) {
   }
@@ -47,6 +55,37 @@ export class CinemaComponent implements OnInit {
         }
       );
     this.fetchCinemaList();
+    this.cities$ = this.searchTerms.pipe(
+      debounceTime(300),
+      distinctUntilChanged(),
+      switchMap((term: string) => this.cinemaService.getCitiesByTerm(term))
+    );
+  }
+
+  public search(term: string): void {
+    this.searchTerms.next(term);
+  }
+
+  public onFileChanged(event: Event): void {
+    if (this.cinema?.id === 0) {
+      this.snackBarService.showMessage('Please, add cinema first');
+      return;
+    }
+
+    const target = event.target as HTMLInputElement;
+    const files = target.files as FileList;
+
+    const reader = new FileReader();
+    reader.onload = (e: any): void => {
+      this.cinema!.image = e.target.result.split('base64,')[1];
+      this.cinemaService.editCinema(this.cinema!)
+        .subscribe(
+          () => {
+            this.snackBarService.showMessage('Image for cinema added successful!');
+          }
+        );
+    };
+    reader.readAsDataURL(files[0]);
   }
 
   public navigateToHall(idCinema: number, idHall?: number): void {
@@ -61,37 +100,49 @@ export class CinemaComponent implements OnInit {
     if (id) {
       void this.router.navigate(['/cinema/', id]);
     } else {
-      void this.router.navigate(['/cinema']);
+      void this.router.navigate(['/cinema'])
+        .then(
+          () => {
+            this.cinema = {
+              id: 0,
+              name: '',
+              city: '',
+              address: ''
+            };
+          }
+        );
     }
   }
 
-  public deleteHall(idCinema: number, idHall: number): void {
+  public deleteHall(idCinema: number, idHall: number, hallName: string): void {
     this.hallService.deleteHall(idCinema, idHall)
       .subscribe(
         () => {
           this.fetchCinemaList();
+          this.snackBarService.showMessage(`${hallName} hall deleted successful!`);
         }
       );
   }
 
-
   public onApplyClick(): void {
     const newCinema: CinemaModel = {
-      name: this.cinemaForm.get('name')?.value,
-      city: this.cinemaForm.get('city')?.value,
-      address: this.cinemaForm.get('address')?.value
+      name: this.cinemaForm.get('name')?.value as string,
+      city: this.cinemaForm.get('city')?.value as string,
+      address: this.cinemaForm.get('address')?.value as string
     };
     if (this.currentId) {
       this.cinemaService.editCinema(Object.assign(this.cinema, newCinema))
         .subscribe(
           () => {
             this.fetchCinemaList();
+            this.snackBarService.showMessage(`Cinema ${newCinema.name} edited successful!`);
           }
         );
     } else {
       this.cinemaService.addCinema(newCinema)
         .subscribe(
           (id: number) => {
+            this.snackBarService.showMessage(`Cinema ${newCinema.name} added successful!`);
             this.navigateToCinema(id);
             this.fetchCinemaList();
           }
@@ -99,7 +150,7 @@ export class CinemaComponent implements OnInit {
     }
   }
 
-  public onDeleteCinemaClick(id?: number): void {
+  public onDeleteCinemaClick(id?: number, name?: string): void {
     if (id) {
       this.cinemaService.deleteCinema(id)
         .subscribe(
@@ -107,6 +158,7 @@ export class CinemaComponent implements OnInit {
             if (id === this.currentId) {
               void this.router.navigate(['cinema']);
             }
+            this.snackBarService.showMessage(`Cinema ${name ?? ''} deleted successful!`);
             this.fetchCinemaList();
           }
         );

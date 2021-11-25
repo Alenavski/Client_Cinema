@@ -83,9 +83,10 @@
 
   </div>
 </div>
-<div class="showtime-list">
-  <div *ngIf="currentMovie !== null">
+<div *ngIf="currentMovie !== null && currentMovie.showtimes!.length > 0" class="showtime-list">
+  <div>
     <h3>Showtimes:</h3>
+    <mat-accordion multi displayMode="flat">
       <mat-expansion-panel
         hideToggle
         *ngFor="let cinema of cinemasWithMovieShowtimes"
@@ -93,29 +94,34 @@
         <mat-expansion-panel-header>
           <mat-panel-title>Cinema: {{cinema.name}}</mat-panel-title>
         </mat-expansion-panel-header>
-        <mat-expansion-panel
-          hideToggle
-          *ngFor="let hall of cinema.halls"
-        >
-          <mat-expansion-panel-header>
-            <mat-panel-title>Hall: {{hall.name}}</mat-panel-title>
-          </mat-expansion-panel-header>
+        <mat-accordion multi displayMode="flat">
           <mat-expansion-panel
-            hideToggle
-            *ngFor="let showtime of currentMovie.showtimes"
+            class="inner-expansion-panel"
+            *ngFor="let hall of cinema.halls"
           >
-            <mat-expansion-panel-header *ngIf="showtime.hall.id === hall.id">
-              <mat-panel-title>
-                <span class="panel-title">Time: {{showtime.time}}</span>
-                <i class="fas fa-trash delete-showtime" (click)="deleteShowtime(showtime.id)"></i>
-              </mat-panel-title>
+            <mat-expansion-panel-header>
+              <mat-panel-title>Hall: {{hall.name}}</mat-panel-title>
             </mat-expansion-panel-header>
-            Prices:
-            <div *ngFor="let price of showtime.prices">
-              <p>{{price.seatType.name}}: {{price.price}}$</p>
-            </div>
+            <mat-accordion multi>
+              <mat-expansion-panel
+                class="inner-expansion-panel"
+                *ngFor="let showtime of currentMovie.showtimes"
+              >
+                <mat-expansion-panel-header *ngIf="showtime.hall.id === hall.id">
+                  <mat-panel-title>
+                    <span class="panel-title">Time: {{showtime.time}}</span>
+                    <i class="fas fa-trash delete-showtime" (click)="deleteShowtime(showtime.id, showtime.time)"></i>
+                  </mat-panel-title>
+                </mat-expansion-panel-header>
+                Prices:
+                <div *ngFor="let price of showtime.prices">
+                  <p>{{price.seatType.name}}: {{price.price}}$</p>
+                </div>
+              </mat-expansion-panel>
+            </mat-accordion>
           </mat-expansion-panel>
-        </mat-expansion-panel>
+        </mat-accordion>
       </mat-expansion-panel>
+    </mat-accordion>
   </div>
 </div>

@@ -5,7 +5,6 @@ import { AdditionModel } from '@models/addition.model';
 export interface ShowtimeModel {
   id: number,
   time: string,
-  numberOfFreeSeats: number,
   hall: HallModel,
   additions?: AdditionModel[],
   prices: TicketPriceModel[]

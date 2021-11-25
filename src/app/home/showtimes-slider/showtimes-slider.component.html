@@ -20,7 +20,7 @@
             src="data:image/png;base64,{{movie.poster}}"
             onerror="this.src='../../assets/poster.png';"
             alt=""
-            (click)="navigateToOrder(movie.id!)"
+            (click)="navigateToSchedule(movie.id!)"
           >
           <div class="movie-info" #info>
             <h1 class="movie-title">{{movie.title}}</h1>

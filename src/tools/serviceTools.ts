@@ -11,13 +11,27 @@ interface Options {
   body?: any
 }
 
+const StatusMatches: { [id: number]: string; } = {
+  400: 'Request is invalid.',
+  401: 'Token is invalid. Re-login, please.',
+  403: 'Access forbidden.',
+  404: 'Information not found.',
+  500: 'Internal error. Try again later.'
+};
+
 export function ErrorHandlerFactory(
   snackBarService: SnackBarService
 ) {
   return (httpErrorResponse: HttpErrorResponse) => {
-    const message: Nullable<string> = httpErrorResponse.error.message;
+    let message: Nullable<string> = httpErrorResponse.error.message;
+    if (!message) {
+      message = httpErrorResponse.error.title;
+    }
     if (message) {
       snackBarService.showMessage(message);
+    }
+    else {
+      snackBarService.showMessage(StatusMatches[httpErrorResponse.status] ?? 'Unknown error.');
     }
     if (!environment.production) {
       return throwError(httpErrorResponse);

@@ -1,7 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { ActivatedRoute, ParamMap } from '@angular/router';
+import { ActivatedRoute, ParamMap, Router } from '@angular/router';
 import { MatDatepickerInputEvent } from '@angular/material/datepicker';
+import { TicketAdditionModel } from '@models/ticket-addition.model';
 import * as moment from 'moment';
 
 import { CinemaModel } from '@models/cinema.model';
@@ -23,6 +24,8 @@ import { TicketService } from '@service/ticket.service';
 import { SnackBarService } from '@service/snack-bar.service';
 import { SeatService } from '@service/seat.service';
 
+const dayDuration = 86400000;
+
 @Component({
   selector: 'app-order',
   templateUrl: './order.component.html',
@@ -36,7 +39,7 @@ export class OrderComponent implements OnInit {
   chosenHall: Nullable<HallModel> = null;
   chosenDate: Nullable<Date> = null;
   chosenShowtime: Nullable<ShowtimeModel> = null;
-  chosenAdditions: AdditionModel[] = [];
+  chosenAdditions: TicketAdditionModel[] = [];
   chosenSeats: SeatModel[] = [];
 
   seatsLayout: SeatModel[][] = [];
@@ -49,6 +52,7 @@ export class OrderComponent implements OnInit {
   timeAndPlaceFormGroup: FormGroup = new FormGroup({
     cinema: new FormControl('', [Validators.required]),
     hall: new FormControl('', [Validators.required]),
+    date: new FormControl('', [Validators.required]),
     showtime: new FormControl('', [Validators.required])
   });
 
@@ -57,6 +61,7 @@ export class OrderComponent implements OnInit {
     private readonly movieService: MovieService,
     private readonly hallService: HallService,
     private readonly activatedRoute: ActivatedRoute,
+    private readonly router: Router,
     private readonly ticketService: TicketService,
     private readonly snackBarService: SnackBarService,
     private readonly seatService: SeatService
@@ -69,7 +74,6 @@ export class OrderComponent implements OnInit {
           const movieId = Number(params.get('id'));
           if (movieId != 0) {
             this.fetchMovie(movieId);
-            this.fetchCinemas(movieId);
           }
         }
       );
@@ -82,14 +86,15 @@ export class OrderComponent implements OnInit {
   public dateFilter = (d: Nullable<Date>): boolean => {
     if (this.movie){
       const day = (d ?? new Date());
-      return day.getTime() >= new Date(this.movie.startDate).getTime()
+      return day.getTime() >= new Date().getTime() - dayDuration
         && day.getTime() <= new Date(this.movie.endDate).getTime();
     }
     return true;
   };
 
   public onDateChange(event: MatDatepickerInputEvent<Date>): void {
-    this.chosenDate = event.value;
+    const chosenDate: Date = event.value ?? new Date(Date.now());
+    this.chosenDate = new Date(Date.UTC(chosenDate.getUTCFullYear(), chosenDate.getUTCMonth(), chosenDate.getDate()));
   }
 
   public calcFinalPrice(): number {
@@ -98,15 +103,32 @@ export class OrderComponent implements OnInit {
       price += this.getPrice(seat.seatType);
     }
     for (const addition of this.chosenAdditions) {
-      price += this.getAdditionPrice(addition);
+      price += this.getAdditionPrice(addition.addition) * addition.count;
     }
     return price;
   }
 
+  public isTicketIncludeAddition(addition: AdditionModel): boolean {
+    return !!this.chosenAdditions.find(a => a.addition.id === addition.id);
+  }
+
   public onMinusAdditionClick(addition: AdditionModel): void {
-    const index = this.chosenAdditions.indexOf(addition);
-    if (index != -1) {
-      this.chosenAdditions.splice(index, 1);
+    const ticketAddition = this.chosenAdditions.find(a => a.addition.id === addition.id);
+    if (ticketAddition) {
+      ticketAddition.count -= 1;
+      if (ticketAddition.count === 0) {
+        const index = this.chosenAdditions.indexOf(ticketAddition);
+        this.chosenAdditions.splice(index, 1);
+      }
+    }
+  }
+
+  public onPlusAdditionClick(addition: AdditionModel): void {
+    const ticketAddition = this.chosenAdditions.find(a => a.addition.id === addition.id);
+    if (ticketAddition) {
+      ticketAddition.count += 1;
+    } else {
+      this.chosenAdditions.push({ addition: addition, count: 1 });
     }
   }
 
@@ -122,8 +144,8 @@ export class OrderComponent implements OnInit {
   }
 
   public getAdditionsCount(addition: AdditionModel): number {
-    const additions = this.chosenAdditions.filter(ad => ad.id === addition.id);
-    return additions.length;
+    const ticketAddition = this.chosenAdditions.find(ad => ad.addition.id === addition.id);
+    return ticketAddition ? ticketAddition.count : 0;
   }
 
   public getPrice(seatType: SeatTypeModel): number {
@@ -178,7 +200,7 @@ export class OrderComponent implements OnInit {
 
   public onApplyClick(): void {
     if (this.currentTicket) {
-      this.currentTicket.additions = this.chosenAdditions;
+      this.currentTicket.ticketsAdditions = this.chosenAdditions;
       this.currentTicket.ticketsSeats = [];
       for (const seat of this.chosenSeats) {
         this.currentTicket.ticketsSeats.push({ seat: seat, isOrdered: true });
@@ -188,6 +210,7 @@ export class OrderComponent implements OnInit {
         .subscribe(
           () => {
             this.snackBarService.showMessage('Successful success');
+            void this.router.navigate(['']);
           }
         );
     }
@@ -231,6 +254,7 @@ export class OrderComponent implements OnInit {
       .subscribe(
         (movie: MovieModel) => {
           this.movie = movie;
+          this.fetchCinemas(movie.id!);
         }
       );
   }
@@ -240,6 +264,35 @@ export class OrderComponent implements OnInit {
       .subscribe(
         (cinemas: CinemaModel[]) => {
           this.cinemasWithShowtime = cinemas;
+          this.fillForm();
+        }
+      );
+  }
+
+  private fillForm(): void {
+    this.activatedRoute.queryParamMap
+      .subscribe(
+        (params: ParamMap) => {
+          const showtimeId = params.get('showtimeId');
+          const cinemaId = params.get('cinemaId');
+          const hallId = params.get('hallId');
+          if (showtimeId && cinemaId && hallId) {
+            const cinema = this.cinemasWithShowtime.find(c => c.id?.toString() === cinemaId);
+            if (cinema) {
+              this.timeAndPlaceFormGroup.get('cinema')?.setValue(cinema);
+              this.chosenCinema = cinema;
+              const hall = cinema.halls?.find(h => h.id.toString() === hallId);
+              if (hall) {
+                this.timeAndPlaceFormGroup.get('hall')?.setValue(hall);
+                this.chosenHall = hall;
+                const showtime = this.movie?.showtimes?.find(sh => sh.id.toString() === showtimeId);
+                if (showtime) {
+                  this.chosenShowtime = showtime;
+                  this.timeAndPlaceFormGroup.get('showtime')?.setValue(showtime);
+                }
+              }
+            }
+          }
         }
       );
   }

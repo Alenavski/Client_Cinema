@@ -62,6 +62,8 @@
 
 table {
   margin: 0 auto;
+  padding-top: 10px;
+  background-color: white;
 
   td {
     width: 50px;
@@ -76,12 +78,19 @@ table {
   }
 }
 
-.screen {
-  content: '';
-  margin: 0 auto 20px auto;
-  width: 250px;
-  min-height: 5px;
-  background: black;
+.no-showtimes {
+  color: red;
+  font-size: 20px;
+
+  p {
+    margin: 0;
+  }
+}
+
+.table-wrapper {
+  background: linear-gradient(to right, white 25%, black 25%, black 75%, white 75%);
+  padding-top: 10px;
+  display: inline-block;
 }
 
 .seat {
@@ -99,7 +108,7 @@ table {
     color: white;
 
     &.standard {
-      background-color: @main-blue;
+      background-color: @dark-blue;
     }
 
     &.comfort {
@@ -117,7 +126,7 @@ table {
     cursor: default;
 
     &.standard {
-      background-color: @main-blue;
+      background-color: @dark-blue;
     }
 
     &.comfort {
@@ -135,10 +144,10 @@ table {
   }
 
   &.standard {
-    border-color: @main-blue;
+    border-color: @dark-blue;
 
     &:hover {
-      background-color: @main-blue;
+      background-color: @dark-blue;
     }
   }
 
@@ -167,6 +176,7 @@ table {
 }
 
 .hall-layout {
+  overflow-x: scroll;
   background-color: rgba(0,0,0,0.05);
   margin: 0 auto;
 }

@@ -1,0 +1,37 @@
+<div class="page">
+  <div class="main-container">
+    <h1>Order history</h1>
+    <mat-slide-toggle class="toggle" color="primary" (change)="fetchFilteredTickets($event)">Only active tickets</mat-slide-toggle>
+    <mat-accordion>
+      <mat-expansion-panel *ngFor="let ticket of filteredTickets" class="ticket">
+        <mat-expansion-panel-header>
+          <mat-panel-title>
+            <span class="movie-title">{{ticket?.movie?.title}}</span>
+            <span class="showtime-time">{{getDateString(ticket.dateOfShowtime)}}</span>
+            <span class="showtime-time">{{ticket.showtime.time.substring(0,5)}}</span>
+          </mat-panel-title>
+          <span class="ticket-date-of-booking">{{getDateString(ticket.dateOfBooking)}}</span>
+        </mat-expansion-panel-header>
+        <div class="info-item">
+          Seats:
+          <p *ngFor="let ticketSeat of ticket.ticketsSeats">
+            {{ticketSeat.seat.seatType.name.toUpperCase()}}:
+            Row: {{ticketSeat.seat.row + 1}},
+            Place: {{ticketSeat.seat.place}},
+            Price: {{getPrice(ticketSeat.seat.seatType, ticket.showtime)}}$
+          </p>
+        </div>
+        <div *ngIf="ticket.ticketsAdditions">
+          <div *ngIf="ticket.ticketsAdditions.length > 0" class="info-item">
+            Additions:
+            <div *ngFor="let addition of ticket.ticketsAdditions">
+              <p>
+                {{addition.addition.name}} ({{getAdditionPrice(addition.addition, ticket.showtime)}}$): {{addition.count}}
+              </p>
+            </div>
+          </div>
+        </div>
+      </mat-expansion-panel>
+    </mat-accordion>
+  </div>
+</div>

@@ -1,5 +1,6 @@
 import { Component, EventEmitter, Output } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { AuthModel } from '@models/auth.model';
 import { UserService } from '@service/user.service';
 import { confirmValidator } from '@tools/form-validation';
 
@@ -36,8 +37,9 @@ export class SignUpComponent {
   onSignUpClick(): void {
     this.userService.register(this.regForm.get('email')?.value, this.regForm.get('password')?.value)
       .subscribe(
-        () => {
+        (authModel: AuthModel) => {
           this.closeRequest.emit(true);
+          UserService.saveToken(authModel.token);
         }
       );
   }

@@ -29,13 +29,17 @@ export class DatePickerComponent implements OnInit {
     this.selectedDay = this.currentDay;
   }
 
+  private static getTomorrow(today: Date): Date {
+    return new Date(today.getTime() + msecsInDay);
+  }
+
   public ngOnInit(): void {
     if (this.filterService.filterForShowtimes.date) {
       this.selectedDay = new Date(this.filterService.filterForShowtimes.date);
     }
     this.dates.push(this.selectedDay);
     for (let i = 0; i < dayCount; i++) {
-      this.dates.push(this.getTomorrow(this.dates[this.dates.length - 1]));
+      this.dates.push(DatePickerComponent.getTomorrow(this.dates[this.dates.length - 1]));
     }
   }
 
@@ -78,15 +82,11 @@ export class DatePickerComponent implements OnInit {
     this.filterService.updateFilter(filter);
   }
 
-  private getTomorrow(today: Date): Date {
-    return new Date(today.getTime() + msecsInDay);
-  }
-
   private setDates(firstDay: Date): void {
     this.dates = [];
     this.dates.push(firstDay);
     for (let i = 0; i < dayCount; i++) {
-      this.dates.push(this.getTomorrow(this.dates[this.dates.length - 1]));
+      this.dates.push(DatePickerComponent.getTomorrow(this.dates[this.dates.length - 1]));
     }
   }
 }

@@ -28,7 +28,7 @@ export class MovieService {
     if (date) {
       options = {
         params: new HttpParams({
-            fromObject: { date: date }
+          fromObject: { date: date }
         })
       };
     }
@@ -44,7 +44,13 @@ export class MovieService {
       return of([]);
     }
 
-    return this.httpClient.get<MovieModel[]>(`${environment.hostURL}movies/?term=${term}`)
+    const options = {
+      params: new HttpParams({
+          fromObject: { term: term }
+      })
+    };
+
+    return this.httpClient.get<MovieModel[]>(`${environment.hostURL}movies/with-showtimes`, options)
       .pipe(
         catchError(this.errorHandler)
       );

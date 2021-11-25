@@ -11,7 +11,7 @@
         <button mat-button (click)="navigateToMovie(curMovie.id!)">
           {{curMovie.title}}
         </button>
-        <i class="fas fa-trash" (click)="deleteMovie(curMovie.id!)"></i>
+        <i class="fas fa-trash" (click)="deleteMovie(curMovie.id!, curMovie.title)"></i>
       </div>
     </div>
     <div class="movie-list">
@@ -20,27 +20,40 @@
         <button mat-button (click)="navigateToMovie(endMovie.id!)">
           {{endMovie.title}}
         </button>
-        <i class="fas fa-trash" (click)="deleteMovie(endMovie.id!)"></i>
+        <i class="fas fa-trash" (click)="deleteMovie(endMovie.id!, endMovie.title)"></i>
       </div>
     </div>
   </div>
-  <div class="movie-container">
+  <div *ngIf="movie" class="movie-container">
     <div class="page">
-      <div
-        class="poster"
-        (mouseenter)="icon.classList.add('focused')"
-        (mouseleave)="icon.classList.remove('focused')"
-      >
-        <img
-          width="300"
-          height="450"
-          src="data:image/png;base64,{{movie?.poster}}"
-          onerror="this.src='../../assets/poster.png';"
-          alt=""
+      <div class="image">
+        <div
+          class="poster"
+          (mouseenter)="icon.classList.add('focused')"
+          (mouseleave)="icon.classList.remove('focused')"
+          (click)="fileInput.click()"
         >
-        <div class="icon" #icon>
-          <i class="fas fa-plus-circle"></i>
+          <input
+            style="display: none"
+            type="file"
+            accept="image/*"
+            (change)="onFileChanged($event)"
+            #fileInput
+          >
+          <img
+            width="300"
+            height="450"
+            src="data:image/png;base64,{{movie?.poster}}"
+            onerror="this.src='../../assets/poster.png';"
+            alt=""
+          >
+          <div class="icon" #icon>
+            <i class="fas fa-plus-circle"></i>
+          </div>
         </div>
+        <p class="info">
+          To add poster for movie move mouse on picture and click
+        </p>
       </div>
 
       <div [formGroup]="movieForm" class="movie-form">
@@ -49,7 +62,11 @@
           class="input-field title-field"
           formControlName="title"
         >
-        <p class="error" *ngIf="!movieForm.get('title')?.valid">
+        <p class="info">Title of movie</p>
+        <p
+          class="error"
+          *ngIf="movieForm.get('title')?.dirty && !movieForm.get('title')?.valid"
+        >
           Title is required
         </p>
         <textarea
@@ -58,21 +75,27 @@
           class="input-field"
           formControlName="description"
         ></textarea>
-        <p class="error" *ngIf="!movieForm.get('description')?.valid">
+        <p class="info">Description of movie</p>
+        <p
+          class="error"
+          *ngIf="movieForm.get('description')?.dirty && !movieForm.get('description')?.valid"
+        >
           Description is required
         </p>
         <div class="dates">
+          <span>Start date:</span>
           <mat-form-field class="date">
             <input
               matInput
-            type="date"
-            class="date"
-            formControlName="startDate"
+              type="date"
+              class="date"
+              formControlName="startDate"
             >
             <mat-error class="error" *ngIf="!movieForm.get('startDate')?.valid">
               Start date is required
             </mat-error>
           </mat-form-field>
+          <span>End date:</span>
           <mat-form-field class="date">
             <input
               matInput
@@ -92,6 +115,12 @@
             class="input-field minutes-length"
             formControlName="minutesLength"
           >
+          <p
+            class="error"
+            *ngIf="movieForm.get('minutesLength')?.dirty && !movieForm.get('minutesLength')?.valid"
+          >
+            Length of movie is required
+          </p>
         </div>
         <button
           class="button-apply"
@@ -105,7 +134,7 @@
     </div>
   </div>
 
-  <div class="showtimes-container">
+  <div *ngIf="movie?.id" class="showtimes-container">
     <app-showtime></app-showtime>
   </div>
 </div>

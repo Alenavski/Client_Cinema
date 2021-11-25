@@ -39,7 +39,7 @@
         Save
       </button>
     </div>
-    <div class="info-container">
+    <div *ngIf="hall.id" class="info-container">
       <app-addition></app-addition>
     </div>
   </div>
@@ -49,6 +49,7 @@
       <div class="screen"></div>
       <table>
         <tr *ngFor="let row of seatsLayout; let rowIndex = index">
+          <td>{{rowIndex + 1}}</td>
           <td
             *ngFor="let seat of row; let columnIndex = index"
             [class.sofa]="isSofa(seat)"
